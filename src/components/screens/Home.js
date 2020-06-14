@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import { Map, Search } from '../containers/containers';
-import CREDENTIALS from '../../credentials';
+import CREDENTIALS from '../../credentials'
 
 const styles = StyleSheet.create({
    container: {

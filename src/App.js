@@ -1,8 +1,8 @@
 import React from 'react';
-import CREDENTIALS from './credentials'
+// import CREDENTIALS from './credentials'
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
-import { HomeScreen } from './components/screens/screens';
+import { HomeScreen } from './components/screens/screens.js';
 
 export default class App extends React.Component {
 
