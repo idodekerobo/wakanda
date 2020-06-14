@@ -13,12 +13,16 @@ const styles = StyleSheet.create({
 });
 
 export default class HomeScreen extends React.Component {
+
+   constructor(props) {
+      super(props);
+   }
    render() {
       return (
          <View style={styles.container}>
             <Map/>
             <Search/>
-            <Text>this is the map</Text>
+            <Text>{this.props.location}</Text>
          </View>
       );
    }
