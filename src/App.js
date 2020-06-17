@@ -12,7 +12,6 @@ export default class App extends React.Component {
          location: {},
          errorMsg: ''
       }
-      // this.getLocation = this.getLocation.bind(this);
    }
 
    getLocation = async () => {
@@ -27,17 +26,18 @@ export default class App extends React.Component {
 
       const location =  await Location.getCurrentPositionAsync();
       this.setState({location});
+      console.log('ran get location funciton yessir');
    }
 
    componentDidMount() {
-      // this.findCurrentLocation();
       this.getLocation();
    }
 
    render() {
+
+      const location = (this.state.location && this.state.location.coords) ? this.state.location.coords : {};
       return (
-         <HomeScreen location={JSON.stringify(this.state.location)} />
-         // <Text></Text>
+         <HomeScreen latitude={location.latitude} longitude={location.longitude} />
       );
    }
 }

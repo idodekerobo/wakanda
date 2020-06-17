@@ -1,37 +1,35 @@
 import React from 'react';
 import MapView from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
    mapStyle: {
       position: 'absolute',
       height: '100%',
       width: '100%',
-      // top: 0,
-      // left: 0,
-      // right: 0,
-      // bottom: 0,
    },
 });
 
 export default class Map extends React.Component {
-
    constructor(props) {
       super(props);
       this.state = {
-
       }
    }
+   componentDidMount() {
 
+   }
    render() {
-      return (            
+      return (         
          <MapView 
             initialRegion={{
-               latitude: 33.3255288,
-               longitude: -111.9641728,
-               latitudeDelta: 0.0922,
-               longitudeDelta: 0.00421,
+               latitude: 5,
+               longitude: 20,
+               latitudeDelta: 180,
+               longitudeDelta: 180,
             }}
+            showsUserLocation={true}
+            region={this.props.region}
             style={styles.mapStyle}
          />
       );
