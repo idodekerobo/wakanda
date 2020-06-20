@@ -11,11 +11,38 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
    },
-   // TODO - style the location button
    locationIconStyle: {
-      borderWidth: 1,
-      borderStyle: 'dotted',
+      color: 'blue',
+      fontSize: 20,
    },
+   shadowWrapper: {
+      // shadow
+      shadowColor: "#000",
+      shadowOffset: {
+         width: 0,
+         height: 5,
+      },
+      shadowOpacity: 0.36,
+      shadowRadius: 6.68,
+      elevation: 11,
+      // position
+      position: 'absolute',
+      bottom: 70,
+      right: 15,
+   },
+   iconWrapper: {
+      // alignment
+      justifyContent: 'center',
+      alignItems: 'center',
+      // circular background
+      height: 60,
+      width: 60,
+      borderRadius: 60/2,
+      backgroundColor: 'white',
+      overflow: 'hidden',
+
+      
+   }
 });
 
 export default class HomeScreen extends React.Component {
@@ -39,25 +66,29 @@ export default class HomeScreen extends React.Component {
          region: {
             latitude: this.props.latitude,
             longitude: this.props.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitudeDelta: 0.0122,
+            longitudeDelta: 0.0221,
          }
       })
       console.log('end of find location icon button func');
    }
-   
+
    render() {
       return (
          <View style={styles.container}>
             <Map region={this.state.region}/>
-            <FontAwesome
-               style={styles.locationIconStyle}
-               name="location-arrow"
-               size={24}
-               color="black"
-               onPress={this.findLocationButton}
-            />
-            {/* <Search/> */}
+            <Search/>
+            <View style={styles.shadowWrapper}>
+               <View style={styles.iconWrapper}>
+                  <FontAwesome
+                     style={styles.locationIconStyle}
+                     name="location-arrow"
+                     size={24}
+                     color="black"
+                     onPress={this.findLocationButton}
+                     />
+               </View>
+            </View>
             <Text>This is the longitude and latitude: {this.props.latitude}, {this.props.longitude}</Text>
          </View>
       );
