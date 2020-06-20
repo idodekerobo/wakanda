@@ -78,6 +78,7 @@ export default class HomeScreen extends React.Component {
          <View style={styles.container}>
             <Map region={this.state.region}/>
             <Search/>
+            
             <View style={styles.shadowWrapper}>
                <View style={styles.iconWrapper}>
                   <FontAwesome
@@ -89,6 +90,7 @@ export default class HomeScreen extends React.Component {
                      />
                </View>
             </View>
+
             <Text>This is the longitude and latitude: {this.props.latitude}, {this.props.longitude}</Text>
          </View>
       );
