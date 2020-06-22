@@ -1,6 +1,8 @@
 import React from 'react';
-import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet } from 'react-native';
+import MapView, { Marker, CalloutSubview, Callout } from 'react-native-maps';
+import { StyleSheet, Text } from 'react-native';
+
+// TODO - import database into arr of markers for restaurants
 
 const styles = StyleSheet.create({
    mapStyle: {
@@ -19,7 +21,17 @@ export default class Map extends React.Component {
    componentDidMount() {
 
    }
+
+   onButtonPress = () => {
+      console.log('yerrrrrr');
+   } 
    render() {
+
+      const marker = <Marker coordinate={{latitude: 33.307360, longitude: -111.901600}} image={require('../../../assets/icons8-map-pin-48.png')}>
+         <Callout>
+            <Text>sldkfn</Text>
+         </Callout>
+      </Marker>
       return (         
          <MapView 
             initialRegion={{
@@ -31,12 +43,13 @@ export default class Map extends React.Component {
             showsUserLocation={true}
             region={this.props.region}
             style={styles.mapStyle}>
-               <Marker
-                  coordinate={{latitude: 33.3288581293983, longitude: -111.9571214756541}}
-                  title={'my location'}
-                  description={'home'}
-                  image={require('../../../assets/icons8-map-pin-48.png')}
-               />
+                  <Marker coordinate={{latitude: 33.307360, longitude: -111.901600}} image={require('../../../assets/icons8-map-pin-48.png')}>
+                     <Callout>
+                        <Text>Ocean Blue Caribbean</Text>
+                        <Text>Jamaican Restaurant</Text>
+                           <Text style={{color: 'blue'}} onPress={this.onButtonPress}>View Restaurant</Text>
+                     </Callout>
+                  </Marker>
             </MapView>
       );
    }
