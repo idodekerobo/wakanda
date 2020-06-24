@@ -1,6 +1,6 @@
 import React from 'react';
-import MapView, { Marker, CalloutSubview, Callout } from 'react-native-maps';
-import { StyleSheet, Text } from 'react-native';
+import MapView, { Marker, Callout } from 'react-native-maps';
+import { StyleSheet, Text, View } from 'react-native';
 
 // TODO - import database into arr of markers for restaurants
 
@@ -10,13 +10,14 @@ const styles = StyleSheet.create({
       height: '100%',
       width: '100%',
    },
+   viewStyle: {
+      backgroundColor: 'transparent',
+   },
 });
 
 export default class Map extends React.Component {
    constructor(props) {
       super(props);
-      this.state = {
-      }
    }
    componentDidMount() {
 
@@ -26,14 +27,9 @@ export default class Map extends React.Component {
       console.log('yerrrrrr');
    } 
    render() {
-
-      const marker = <Marker coordinate={{latitude: 33.307360, longitude: -111.901600}} image={require('../../../assets/icons8-map-pin-48.png')}>
-         <Callout>
-            <Text>sldkfn</Text>
-         </Callout>
-      </Marker>
       return (         
          <MapView 
+            compassOffset={{x: -10,y: 65}}
             initialRegion={{
                latitude: 5,
                longitude: 20,
@@ -43,11 +39,12 @@ export default class Map extends React.Component {
             showsUserLocation={true}
             region={this.props.region}
             style={styles.mapStyle}>
+                  {/* https://icons8.com/license */}
                   <Marker coordinate={{latitude: 33.307360, longitude: -111.901600}} image={require('../../../assets/icons8-map-pin-48.png')}>
                      <Callout>
                         <Text>Ocean Blue Caribbean</Text>
                         <Text>Jamaican Restaurant</Text>
-                           <Text style={{color: 'blue'}} onPress={this.onButtonPress}>View Restaurant</Text>
+                           <Text style={{color: 'blue'}} onPress={this.props.viewMore}>View Restaurant</Text>
                      </Callout>
                   </Marker>
             </MapView>

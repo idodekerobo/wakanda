@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
+import * as Linking from 'expo-linking';
 import { Map, Search } from '../containers/containers';
+import { Image, Card, Overlay, Button } from 'react-native-elements';
 import CREDENTIALS from '../../credentials'
 
 const styles = StyleSheet.create({
@@ -40,9 +42,18 @@ const styles = StyleSheet.create({
       borderRadius: 60/2,
       backgroundColor: 'white',
       overflow: 'hidden',
-
-      
-   }
+   },
+   overlayStyle: {
+      width: '85%',
+   },
+   cardStyle: {
+      // backgroundColor: 'transparent',
+      // borderTopWidth: 0,
+      // borderBottomWidth: 0,
+   },
+   buttonStyle: {
+      marginBottom: 13,
+   },
 });
 
 export default class HomeScreen extends React.Component {
@@ -54,12 +65,25 @@ export default class HomeScreen extends React.Component {
             longitude: 20,
             latitudeDelta: 180,
             longitudeDelta: 180,
-         }
+         },
+         overlayVisible: false,
       }
-      this.findLocationButton = this.findLocationButton.bind(this);
    }
 
-   findLocationButton() {
+   toggleOverlay = () => {
+      this.setState(prevState => {
+         return {
+            overlayVisible: !prevState.overlayVisible
+         }
+      });
+   }
+
+   backdropPress = () => {
+      console.log('backdrop press');
+      this.toggleOverlay();
+   }
+
+   findLocationButton = () => {
       console.log('pressed find location icon button');
       // change state to maps
       this.setState({
@@ -73,10 +97,22 @@ export default class HomeScreen extends React.Component {
       console.log('end of find location icon button func');
    }
 
+   callBusiness = (tel) => {
+      Linking.openURL('tel:4432481465')
+   }
+
+   openInMaps = (address) => {
+
+   }
+
+   visitWebsite = (websiteUrl) => {
+      Linking.openURL('http://idode.me');
+   }
+
    render() {
       return (
          <View style={styles.container}>
-            <Map region={this.state.region}/>
+            <Map region={this.state.region} viewMore={this.toggleOverlay}/>
             <Search/>
             
             <View style={styles.shadowWrapper}>
@@ -91,7 +127,17 @@ export default class HomeScreen extends React.Component {
                </View>
             </View>
 
-            <Text>This is the longitude and latitude: {this.props.latitude}, {this.props.longitude}</Text>
+            <Overlay overlayStyle={styles.overlayStyle} isVisible={this.state.overlayVisible} onBackdropPress={this.backdropPress} >
+               <Card containerStyle={styles.cardStyle} title="Ocean Blue" image={require('./../../../assets/300x200.gif')}>
+                  <Text style={{marginBottom: 10}}>Monday - Friday 10a-10p</Text>
+                  <Button style={styles.buttonStyle} onPress={this.callBusiness} title="Call Business"/>
+                  <Button style={styles.buttonStyle} title="Open in Maps"/>
+                  <Button style={styles.buttonStyle} onPress={this.visitWebsite} title="Visit Website"/>
+                  <Button onPress={this.backdropPress} title="Close"/>
+               </Card>
+            </Overlay>
+
+            {/* <Text>This is the longitude and latitude: {this.props.latitude}, {this.props.longitude}</Text> */}
          </View>
       );
    }
