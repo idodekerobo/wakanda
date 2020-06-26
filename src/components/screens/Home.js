@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
 import * as Linking from 'expo-linking';
 import { Map, Search } from '../containers/containers';
-import { Image, Card, Overlay, Button } from 'react-native-elements';
+import { Card, Overlay, Button } from 'react-native-elements';
 import CREDENTIALS from '../../credentials'
 
 const styles = StyleSheet.create({
