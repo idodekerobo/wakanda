@@ -3,7 +3,9 @@ import React from 'react';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import { HomeScreen } from './components/screens/screens.js';
-import { db } from '../api/firebase-config';
+// import { db, firestore } from '../api/firebase-config';
+// import { setData, getData } from '../api/firestore-api';
+import * as dbApi from '../api/firestore-api';
 
 export default class App extends React.Component {
 
@@ -30,16 +32,10 @@ export default class App extends React.Component {
       console.log('ran get location funciton yessir');
    }
 
-   getData = () => {
-      // db.ref('businesses/'+'ATL Wings').on('value', (snapshot) => {
-      //    const lat = snapshot.val().latitude;
-      //    console.log(lat);
-      // });
-   }
-
    componentDidMount() {
+      console.log('app running');
       this.getLocation();
-      this.getData();
+      dbApi.getData();
    }
 
    render() {

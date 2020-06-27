@@ -1,14 +1,11 @@
 import * as firebase from 'firebase/app';
-import "firebase/database";
-
-// import firebase from 'expo-firebase';
-// import 'expo-firebase-database';
+import "firebase/firestore";
 
 // Optionally import the services that you want to use
+// import "firebase/database";
 //import "firebase/auth";
 //import "firebase/functions";
 //import "firebase/storage";
-// import "firebase/firestore";
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -23,5 +20,5 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const fireDb = firebase.database();
-export default fireDb;
+const db = firebase.firestore();
+export { db };
