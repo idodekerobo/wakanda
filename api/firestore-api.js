@@ -1,24 +1,32 @@
 import { db } from './firebase-config';
 
-export function setData() {
-   db.collection("businesses").doc("idode's biz").set({
+function errorHandling(err) {
+   console.log('There was an error');
+   console.log(err);
+}
+
+export function setData(docId) {
+   db.collection("businesses").doc(docId)
+   .set({
       name: "idode's biz",
-      address: "1121 W Dawn Dr"
-   });
+      address: "somewhere in tempe, az"
+   })
+   .catch(err => errorHandling(err));
    console.log('data sent');
 }
 
-export function getData() {
-   const docRef = db.collection("businesses").doc("lmN6MEEHFrlwnEfGGLQm");
-   docRef.get()
-   .then(doc => {
-      if (doc.exists) {
-         console.log("here's the data", doc.data());
-      } else {
-         console.log('doesn\'t exist');
-      }
+export function getAllBusinesses() {
+   const docRef = db.collection("businesses");
+   var bizArr = [];
+   return docRef.get() // have to return here to return the resolved .get() promise since its async
+   .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+         var bizObj = {};
+         bizObj._id = doc.id;
+         Object.assign(bizObj, doc.data());
+         bizArr.push(bizObj);
+      });
+      return bizArr; // if resolved it'll return this 
    })
-   .catch(err => {
-      console.log('There was an error:', err);
-   });
+   .catch(err => errorHandling(err));
 }

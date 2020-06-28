@@ -13,7 +13,8 @@ export default class App extends React.Component {
       super(props);
       this.state = {
          location: {},
-         errorMsg: ''
+         errorMsg: '',
+         bizArr: [],
       }
    }
 
@@ -32,10 +33,18 @@ export default class App extends React.Component {
       console.log('ran get location funciton yessir');
    }
 
+   getData = async () => {
+      const bizArr = await dbApi.getAllBusinesses();
+      // console.log('biz map', dbApi.getAllBusinesses());
+      this.setState({bizArr});
+   }
+
    componentDidMount() {
+      console.log('==============================================');
       console.log('app running');
+      console.log();
+      this.getData();
       this.getLocation();
-      dbApi.getData();
    }
 
    render() {
