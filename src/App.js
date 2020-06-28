@@ -7,6 +7,8 @@ import { HomeScreen } from './components/screens/screens.js';
 // import { setData, getData } from '../api/firestore-api';
 import * as dbApi from '../api/firestore-api';
 
+// TODO - make the .getLocation() and .getData() methods call while app is loading
+
 export default class App extends React.Component {
 
    constructor(props) {
@@ -35,7 +37,6 @@ export default class App extends React.Component {
 
    getData = async () => {
       const bizArr = await dbApi.getAllBusinesses();
-      // console.log('biz map', dbApi.getAllBusinesses());
       this.setState({bizArr});
    }
 
@@ -48,10 +49,10 @@ export default class App extends React.Component {
    }
 
    render() {
-
+      console.log('biz arr', this.state.bizArr);
       const location = (this.state.location && this.state.location.coords) ? this.state.location.coords : {};
       return (
-         <HomeScreen latitude={location.latitude} longitude={location.longitude} />
+         <HomeScreen bizArr={this.state.bizArr} latitude={location.latitude} longitude={location.longitude} />
       );
    }
 }

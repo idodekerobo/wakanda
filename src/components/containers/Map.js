@@ -27,6 +27,15 @@ export default class Map extends React.Component {
       console.log('yerrrrrr');
    } 
    render() {
+      const markers = this.props.bizArr.slice().map(biz => (
+         <Marker key={biz._id} coordinate={biz.coordinates} image={require('../../../assets/icons8-map-pin-48.png')}>
+            <Callout>
+               <Text>{biz.name}</Text>
+               {/* <Text>Jamaican Restaurant</Text> */}
+               <Text style={{color: 'blue'}} onPress={this.props.viewMore}>View Restaurant</Text>
+            </Callout>
+         </Marker>
+      ))
       return (         
          <MapView 
             compassOffset={{x: -10,y: 65}}
@@ -40,14 +49,17 @@ export default class Map extends React.Component {
             region={this.props.region}
             style={styles.mapStyle}>
                   {/* https://icons8.com/license */}
-                  <Marker coordinate={{latitude: 33.307360, longitude: -111.901600}} image={require('../../../assets/icons8-map-pin-48.png')}>
-                     <Callout>
-                        <Text>Ocean Blue Caribbean</Text>
-                        <Text>Jamaican Restaurant</Text>
-                           <Text style={{color: 'blue'}} onPress={this.props.viewMore}>View Restaurant</Text>
-                     </Callout>
-                  </Marker>
+                  {markers}
             </MapView>
       );
    }
 }
+/*
+<Marker coordinate={{latitude: 33.307360, longitude: -111.901600}} image={require('../../../assets/icons8-map-pin-48.png')}>
+   <Callout>
+      <Text>Ocean Blue Caribbean</Text>
+      <Text>Jamaican Restaurant</Text>
+      <Text style={{color: 'blue'}} onPress={this.props.viewMore}>View Restaurant</Text>
+   </Callout>
+</Marker>
+*/

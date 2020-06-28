@@ -112,7 +112,7 @@ export default class HomeScreen extends React.Component {
    render() {
       return (
          <View style={styles.container}>
-            <Map region={this.state.region} viewMore={this.toggleOverlay}/>
+            <Map bizArr={this.props.bizArr} region={this.state.region} viewMore={this.toggleOverlay}/>
             <Search/>
             
             <View style={styles.shadowWrapper}>
