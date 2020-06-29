@@ -6,8 +6,11 @@ import { Map, Search } from '../containers/containers';
 import { Card, Overlay, Button } from 'react-native-elements';
 import CREDENTIALS from '../../credentials'
 
-import * as firebase from 'firebase/app';
-import "firebase/firestore";
+// TODO - have bizArr render the markers in map component
+// TODO - have selectedBiz in state feed everything in overlay
+// TODO - add bottom sheet package to manage businesses we're viewing
+// TODO - fix websites and address functions on overlay
+// TOOD - move style into separate js file and import in
 
 const styles = StyleSheet.create({
    container: {
@@ -59,8 +62,6 @@ const styles = StyleSheet.create({
    },
 });
 
-// TODO - lift bizArr prop/state up to this component and pass into Map and Overlay components
-
 export default class HomeScreen extends React.Component {
    constructor(props) {
       super(props);
@@ -73,7 +74,7 @@ export default class HomeScreen extends React.Component {
          },
          overlayVisible: false,
          bizArr: this.props.bizArr,
-         selectedBiz: null,
+         selectedBiz: {},
       }
    }
 
@@ -122,8 +123,9 @@ export default class HomeScreen extends React.Component {
       this.setState({selectedBiz});
    }  
 
-   callBusiness = (tel) => {
-      Linking.openURL('tel:4432481465')
+   callBusiness = () => {
+      const num = this.state.selectedBiz.tel;
+      Linking.openURL(`tel:${num}`).catch(e => console.log(e));
    }
 
    openInMaps = (address) => {      
@@ -152,7 +154,7 @@ export default class HomeScreen extends React.Component {
             </View>
 
             <Overlay overlayStyle={styles.overlayStyle} isVisible={this.state.overlayVisible} onBackdropPress={this.backdropPress} >
-               <Card containerStyle={styles.cardStyle} title="Ocean Blue" image={require('./../../../assets/300x200.gif')}>
+               <Card containerStyle={styles.cardStyle} title={this.state.selectedBiz.name} image={require('./../../../assets/300x200.gif')}>
                   <Text style={{marginBottom: 10}}>Monday - Friday 10a-10p</Text>
                   <Button style={styles.buttonStyle} onPress={this.callBusiness} title="Call Business"/>
                   <Button style={styles.buttonStyle} title="Open in Maps"/>
@@ -160,8 +162,7 @@ export default class HomeScreen extends React.Component {
                   <Button onPress={this.backdropPress} title="Close"/>
                </Card>
             </Overlay>
-
-            {/* <Text>This is the longitude and latitude: {this.props.latitude}, {this.props.longitude}</Text> */}
+            
          </View>
       );
    }

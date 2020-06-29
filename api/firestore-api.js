@@ -1,5 +1,7 @@
 import { db } from './firebase-config';
 
+// TODO - build out business document w/ website, hours, etc
+
 function errorHandling(err) {
    console.log('There was an error');
    console.log(err);
