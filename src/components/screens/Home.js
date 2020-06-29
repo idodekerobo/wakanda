@@ -6,6 +6,9 @@ import { Map, Search } from '../containers/containers';
 import { Card, Overlay, Button } from 'react-native-elements';
 import CREDENTIALS from '../../credentials'
 
+import * as firebase from 'firebase/app';
+import "firebase/firestore";
+
 const styles = StyleSheet.create({
    container: {
       flex: 1,
@@ -56,6 +59,8 @@ const styles = StyleSheet.create({
    },
 });
 
+// TODO - lift bizArr prop/state up to this component and pass into Map and Overlay components
+
 export default class HomeScreen extends React.Component {
    constructor(props) {
       super(props);
@@ -67,6 +72,8 @@ export default class HomeScreen extends React.Component {
             longitudeDelta: 180,
          },
          overlayVisible: false,
+         bizArr: this.props.bizArr,
+         selectedBiz: null,
       }
    }
 
@@ -97,12 +104,29 @@ export default class HomeScreen extends React.Component {
       console.log('end of find location icon button func');
    }
 
+   onMapPress = (e) => {
+      if (e.nativeEvent.action != "marker-press") return;
+      
+      const pressedLat = e.nativeEvent.coordinate.latitude;
+      const pressedLng = e.nativeEvent.coordinate.longitude;
+
+      const selectedBiz = this.props.bizArr.slice().find(biz => { 
+         const { latitude, longitude } = biz.coordinates;
+         // have to destructure to access coordinates from geopoint object in firebase
+         // DESTRUCTURING VALUE NAMES HAVE TO BE THE SAME AS WHATS IN THE OBJECT
+         // WON'T WORK IF CHANGED CONST'S TO bizLatitude or bizLongitude 
+            
+         if (latitude === pressedLat && longitude === pressedLng) return biz;
+      });
+      console.log('clicked biz', selectedBiz);
+      this.setState({selectedBiz});
+   }  
+
    callBusiness = (tel) => {
       Linking.openURL('tel:4432481465')
    }
 
-   openInMaps = (address) => {
-
+   openInMaps = (address) => {      
    }
 
    visitWebsite = (websiteUrl) => {
@@ -112,7 +136,7 @@ export default class HomeScreen extends React.Component {
    render() {
       return (
          <View style={styles.container}>
-            <Map bizArr={this.props.bizArr} region={this.state.region} viewMore={this.toggleOverlay}/>
+            <Map bizArr={this.props.bizArr} region={this.state.region} viewMore={this.toggleOverlay} onPress={this.onMapPress} />
             <Search/>
             
             <View style={styles.shadowWrapper}>

@@ -2,8 +2,6 @@ import React from 'react';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { StyleSheet, Text, View } from 'react-native';
 
-// TODO - import database into arr of markers for restaurants
-
 const styles = StyleSheet.create({
    mapStyle: {
       position: 'absolute',
@@ -26,18 +24,21 @@ export default class Map extends React.Component {
    onButtonPress = () => {
       console.log('yerrrrrr');
    } 
+
    render() {
       const markers = this.props.bizArr.slice().map(biz => (
-         <Marker key={biz._id} coordinate={biz.coordinates} image={require('../../../assets/icons8-map-pin-48.png')}>
+         <Marker key={biz._id} coordinate={biz.coordinates}  >
             <Callout>
                <Text>{biz.name}</Text>
                {/* <Text>Jamaican Restaurant</Text> */}
                <Text style={{color: 'blue'}} onPress={this.props.viewMore}>View Restaurant</Text>
             </Callout>
          </Marker>
-      ))
+      ));
+
       return (         
          <MapView 
+            onPress={this.props.onPress}
             compassOffset={{x: -10,y: 65}}
             initialRegion={{
                latitude: 5,
