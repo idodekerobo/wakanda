@@ -23,7 +23,7 @@ export default class Map extends React.Component {
 
    onButtonPress = () => {
       console.log('yerrrrrr');
-   } 
+   }
 
    render() {
       const markers = this.props.bizArr.slice().map(biz => (
