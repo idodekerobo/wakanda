@@ -4,30 +4,14 @@ import * as Linking from 'expo-linking';
 import BottomSheet from 'reanimated-bottom-sheet';
 import { Image, Divider } from 'react-native-elements';
 
-const listData = [
-   {
-      _id: "lmN6MEEHFrlwnEfGGLQm",
-      address: "3, 3460, 6140 W Chandler Blvd, Chandler, AZ 85226",
-      info: "Caribbean Restaurant",
-      name: "Ocean Blue Caribbean Restauarant",
-      hours: "7a-7p",
-      tel: "+14807536000",
-      website: "http://idode.me",
-   },
-   {
-      _id: "uVvSJ4hNJOngYWbx7cDj",
-      address: "655 W Warner Rd Suite 110, Tempe, AZ 85284",
-      name: "ATL Wings",
-      info: "Black owned wings",
-      hours: "10a-9p",
-      tel: "+14805060808",
-      website: "http://idode.me",
-   },
-]
-
-const extractKey = ({_id}) => _id;
-
 export default class BottomSheetComponent extends React.Component {
+
+   constructor(props) {
+      super(props);
+      this.bs = React.createRef();
+   }
+
+   extractKey = ({_id}) => _id;
 
    renderNearbyBiz = ({item}) => (
       <View style={styles.listItemContainer}>
@@ -42,7 +26,7 @@ export default class BottomSheetComponent extends React.Component {
                
             <View style={styles.listItemInfo}>
                <Text style={styles.listItemInfoText, styles.bizName}>{item.name}</Text>
-               <Text style={styles.listItemInfoText, styles.bizInfo}>{item.info}</Text>
+               <Text style={styles.listItemInfoText, styles.bizInfo}>{item.desc}</Text>
             </View>
          </TouchableOpacity>
          
@@ -72,9 +56,9 @@ export default class BottomSheetComponent extends React.Component {
       // showing nearby businesses
       <View style={styles.panel}>
          <FlatList
-            data={listData}
+            data={this.props.bizArr}
             renderItem={this.renderNearbyBiz}
-            keyExtractor={extractKey}
+            keyExtractor={this.extractKey}
          />
 
          {/* showing selected biz */}
@@ -132,6 +116,7 @@ export default class BottomSheetComponent extends React.Component {
       return (
          <View style={styles.container}>
             <BottomSheet
+               ref={this.props.domRef}
                snapPoints={[600, 80]}
                initialSnap={1}
                renderContent={this.renderContent}

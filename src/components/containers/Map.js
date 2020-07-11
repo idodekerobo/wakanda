@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView, { Marker, Callout } from 'react-native-maps';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'; // have to import TouchableOpacity from here
 
 const styles = StyleSheet.create({
    mapStyle: {
@@ -16,22 +16,33 @@ const styles = StyleSheet.create({
 export default class Map extends React.Component {
    constructor(props) {
       super(props);
+      // this.onButtonPress = this.onButtonPress.bind(this);
    }
    componentDidMount() {
 
    }
 
+   // THIS FUNCTION ISN'T FIRING IN THE ONPRESS HANDLER OF TEXT OR TOUCHABLE OPACITY
    onButtonPress = () => {
-      console.log('yerrrrrr');
+      console.log('view more press in marker of location');
+   }
+
+   // this works
+   onMarkerPress = (e) => {
+      console.log('is this shit working');
+      console.log('marker press: ', e.nativeEvent);
    }
 
    render() {
       const markers = this.props.bizArr.slice().map(biz => (
-         <Marker key={biz._id} coordinate={biz.coordinates}  >
+         <Marker key={biz._id} coordinate={biz.coordinates} onPress={this.onMarkerPress} >
             <Callout>
-               <Text>{biz.name}</Text>
-               {/* <Text>Jamaican Restaurant</Text> */}
-               <Text style={{color: 'blue'}} onPress={this.props.viewMore}>View Restaurant</Text>
+                  <Text>{biz.name}</Text>
+                  <TouchableOpacity onPress={this.onButtonPress} >
+                     <Text style={{color: 'blue'}} >
+                        View Restaurant
+                     </Text>
+                  </TouchableOpacity>
             </Callout>
          </Marker>
       ));

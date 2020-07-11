@@ -87,10 +87,12 @@ export default class HomeScreen extends React.Component {
       Linking.openURL('http://idode.me');
    }
 
+   // bottomSheetRef = React.forwardRef(())
+
    render() {
       return (
          <View style={styles.container}>
-            <Map bizArr={this.props.bizArr} region={this.state.region} viewMore={this.toggleOverlay} onPress={this.onMapPress} />
+            <Map bizArr={this.props.bizArr} region={this.state.region} viewMore={() => this.bottomSheetRef.current.snapTo(0)} onPress={this.onMapPress} />
             <Search/>
             
             <TouchableHighlight
@@ -107,9 +109,9 @@ export default class HomeScreen extends React.Component {
                   </View>
             </TouchableHighlight>
 
-            <BottomSheetComponent/>
+            <BottomSheetComponent bizArr={this.props.bizArr}/>
 
-            <Overlay overlayStyle={styles.overlayStyle} isVisible={this.state.overlayVisible} onBackdropPress={this.backdropPress} >
+            {/* <Overlay overlayStyle={styles.overlayStyle} isVisible={this.state.overlayVisible} onBackdropPress={this.backdropPress} >
                <Card containerStyle={styles.cardStyle} title={this.state.selectedBiz.name} image={require('./../../../assets/300x200.gif')}>
                   <Text style={{marginBottom: 10}}>Monday - Friday 10a-10p</Text>
                   <Button style={styles.buttonStyle} onPress={this.callBusiness} title="Call Business"/>
@@ -117,7 +119,7 @@ export default class HomeScreen extends React.Component {
                   <Button style={styles.buttonStyle} onPress={this.visitWebsite} title="Visit Website"/>
                   <Button onPress={this.backdropPress} title="Close"/>
                </Card>
-            </Overlay>
+            </Overlay> */}
 
          </View>
       );
