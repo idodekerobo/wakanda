@@ -7,7 +7,6 @@ import { Card, Overlay, Button } from 'react-native-elements';
 import BottomSheetComponent from '../containers/BottomSheet';
 import CREDENTIALS from '../../credentials'
 
-// TODO - have bizArr render the markers in map component
 // TODO - have selectedBiz in state feed everything in overlay
 // TODO - add bottom sheet package to manage businesses we're viewing
 // TODO - fix websites and address functions on overlay
@@ -28,50 +27,51 @@ export default class HomeScreen extends React.Component {
          bizArr: this.props.bizArr,
          selectedBiz: {},
       }
+      this.parentMapRef = React.createRef();
    }
 
-   toggleOverlay = () => {
-      this.setState(prevState => {
-         return {
-            overlayVisible: !prevState.overlayVisible
-         }
-      });
-   }
-
-   backdropPress = () => {
-      console.log('backdrop press');
-      this.toggleOverlay();
+   onRegionChangeComplete = (region) => {
+      this.setState({region});
    }
 
    findLocationButton = () => {
       console.log('pressed find location icon button');
-      // change state to maps
-      this.setState({
-         region: {
-            latitude: this.props.latitude,
-            longitude: this.props.longitude,
-            latitudeDelta: 0.0122,
-            longitudeDelta: 0.0221,
-         }
-      })
+      const region = { 
+         latitude: this.props.latitude,
+         longitude: this.props.longitude,
+         latitudeDelta: 0.0122,
+         longitudeDelta: 0.0221,
+      }
+      this.parentMapRef.current.animateToMethod(region);
       console.log('end of find location icon button func');
    }
+
+   // toggleOverlay = () => {
+   //    this.setState(prevState => {
+   //       return {
+   //          overlayVisible: !prevState.overlayVisible
+   //       }
+   //    });
+   // }
+
+   // backdropPress = () => {
+   //    console.log('backdrop press');
+   //    this.toggleOverlay();
+   // }
 
    onMapPress = (e) => {
       if (e.nativeEvent.action != "marker-press") return;
       
       const pressedLat = e.nativeEvent.coordinate.latitude;
       const pressedLng = e.nativeEvent.coordinate.longitude;
-
+      
       const selectedBiz = this.props.bizArr.slice().find(biz => { 
          const { latitude, longitude } = biz.coordinates;
          // have to destructure to access coordinates from geopoint object in firebase
          // DESTRUCTURING VALUE NAMES HAVE TO BE THE SAME AS WHATS IN THE OBJECT
          // WON'T WORK IF CHANGED CONST'S TO bizLatitude or bizLongitude 
-            
          if (latitude === pressedLat && longitude === pressedLng) return biz;
       });
-      console.log('clicked biz', selectedBiz);
       this.setState({selectedBiz});
    }  
 
@@ -87,12 +87,22 @@ export default class HomeScreen extends React.Component {
       Linking.openURL('http://idode.me');
    }
 
-   // bottomSheetRef = React.forwardRef(())
+   onCalloutPress = () => {
+      console.log('pressed the callout of a marker');
+   }
 
    render() {
       return (
          <View style={styles.container}>
-            <Map bizArr={this.props.bizArr} region={this.state.region} viewMore={() => this.bottomSheetRef.current.snapTo(0)} onPress={this.onMapPress} />
+            <Map
+               ref={this.parentMapRef}
+               currentRegion={this.currentRegion}
+               bizArr={this.props.bizArr}
+               onRegionChangeComplete={this.onRegionChangeComplete}
+               onCalloutPress={this.onCalloutPress}
+               onPress={this.onMapPress}
+            />
+
             <Search/>
             
             <TouchableHighlight

@@ -3,6 +3,12 @@ import MapView, { Marker, Callout } from 'react-native-maps';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'; // have to import TouchableOpacity from here
 
 const styles = StyleSheet.create({
+   container: {
+      flex: 1,
+      backgroundColor: 'transparent',
+      alignItems: 'center',
+      justifyContent: 'center',
+   },
    mapStyle: {
       position: 'absolute',
       height: '100%',
@@ -16,49 +22,44 @@ const styles = StyleSheet.create({
 export default class Map extends React.Component {
    constructor(props) {
       super(props);
-      // this.onButtonPress = this.onButtonPress.bind(this);
+      this.state = {
+
+      }
+      this.region = this.props.region;
+      this.map = React.createRef();
+      
    }
+
    componentDidMount() {
-
    }
 
-   // THIS FUNCTION ISN'T FIRING IN THE ONPRESS HANDLER OF TEXT OR TOUCHABLE OPACITY
-   onButtonPress = () => {
-      console.log('view more press in marker of location');
-   }
-
-   // this works
-   onMarkerPress = (e) => {
-      console.log('is this shit working');
-      console.log('marker press: ', e.nativeEvent);
+   animateToMethod(region) {
+      this.map.current.animateToRegion(region);
    }
 
    render() {
       const markers = this.props.bizArr.slice().map(biz => (
-         <Marker key={biz._id} coordinate={biz.coordinates} onPress={this.onMarkerPress} >
+         // using onCalloutPress as workaround since TouchableOpacity onPress isn't working
+         <Marker stopPropagation={false} key={biz._id} coordinate={biz.coordinates} onCalloutPress={this.props.onCalloutPress}>
             <Callout>
-                  <Text>{biz.name}</Text>
-                  <TouchableOpacity onPress={this.onButtonPress} >
-                     <Text style={{color: 'blue'}} >
-                        View Restaurant
-                     </Text>
+                  <TouchableOpacity >
+                        <Text>{biz.name}</Text>
+                        <Text style={{color: 'blue'}}>
+                           View Restaurant
+                        </Text>
                   </TouchableOpacity>
             </Callout>
          </Marker>
       ));
 
       return (         
-         <MapView 
+         <MapView
+            ref={this.map}
             onPress={this.props.onPress}
+            initialRegion={this.props.region}
             compassOffset={{x: -10,y: 65}}
-            initialRegion={{
-               latitude: 5,
-               longitude: 20,
-               latitudeDelta: 180,
-               longitudeDelta: 180,
-            }}
+            onRegionChangeComplete={this.props.onRegionChangeComplete}
             showsUserLocation={true}
-            region={this.props.region}
             style={styles.mapStyle}>
                   {/* https://icons8.com/license */}
                   {markers}
@@ -66,12 +67,3 @@ export default class Map extends React.Component {
       );
    }
 }
-/*
-<Marker coordinate={{latitude: 33.307360, longitude: -111.901600}} image={require('../../../assets/icons8-map-pin-48.png')}>
-   <Callout>
-      <Text>Ocean Blue Caribbean</Text>
-      <Text>Jamaican Restaurant</Text>
-      <Text style={{color: 'blue'}} onPress={this.props.viewMore}>View Restaurant</Text>
-   </Callout>
-</Marker>
-*/
