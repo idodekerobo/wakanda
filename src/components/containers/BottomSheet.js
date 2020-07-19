@@ -8,15 +8,29 @@ export default class BottomSheetComponent extends React.Component {
 
    constructor(props) {
       super(props);
-      this.bs = React.createRef();
+      this.bsRef = React.createRef();
+   }
+
+   callBusiness = (tel) => {
+      // const num = this.props.selectedBiz.tel;
+      Linking.openURL(`tel:${tel}`).catch(e => console.log(e));
+   }
+
+   openInMaps = (address) => {      
+      console.log('open in maps', address);
+   }
+
+   visitWebsite = (website) => {
+      // Linking.openURL(this.props.selectedBiz.website);
+      Linking.openURL(website);
    }
 
    extractKey = ({_id}) => _id;
 
-   renderNearbyBiz = ({item}) => (
+   renderNearbyBizJSX = ({item}) => (
       <View style={styles.listItemContainer}>
          
-         <TouchableOpacity>
+         {/* <TouchableOpacity> */}
             <View style={styles.listItemPic}>
                <Image
                   source={{url:'https://via.placeholder.com/800x200'}}
@@ -28,10 +42,10 @@ export default class BottomSheetComponent extends React.Component {
                <Text style={styles.listItemInfoText, styles.bizName}>{item.name}</Text>
                <Text style={styles.listItemInfoText, styles.bizInfo}>{item.desc}</Text>
             </View>
-         </TouchableOpacity>
+         {/* </TouchableOpacity> */}
          
          <View style={styles.listItemLinks}>
-            <TouchableOpacity onPress={() => console.log('yerrr')}>
+            <TouchableOpacity onPress={() => this.callBusiness(item.tel)}>
                <View style={styles.customButtonStyle}>
                   <Text style={styles.customButtonTextStyle}>
                      Call
@@ -39,7 +53,7 @@ export default class BottomSheetComponent extends React.Component {
                </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => console.log('yerrr')}>
+            <TouchableOpacity onPress={() => this.openInMaps(item.address)}>
                <View style={styles.customButtonStyle}>
                   <Text style={styles.customButtonTextStyle}>
                   Get Directions
@@ -50,19 +64,11 @@ export default class BottomSheetComponent extends React.Component {
 
       </View>
    )
-
-   // have to make sure this is returned using paren's instead of brackets OR using the return statement
-   renderContent = () => (
-      // showing nearby businesses
-      <View style={styles.panel}>
-         <FlatList
-            data={this.props.bizArr}
-            renderItem={this.renderNearbyBiz}
-            keyExtractor={this.extractKey}
-         />
-
-         {/* showing selected biz */}
-         {/* <View style={styles.listItemContainer}>
+   
+   // showing selected biz 
+   renderSelectedBiz = () => {
+      return <View style={styles.panel}>
+         <View style={styles.listItemContainer}>
             <View style={styles.listItemPic}>
                <Image
                   source={{ url: 'https://via.placeholder.com/800x200' }}
@@ -71,36 +77,49 @@ export default class BottomSheetComponent extends React.Component {
             </View>
 
             <View style={styles.listItemLinks}>
-               <TouchableOpacity onPress={() => console.log('yerrr')}>
+               <TouchableOpacity onPress={() => this.callBusiness(this.props.selectedBiz.tel)}>
                   <View style={styles.customButtonStyle}>
                      <Text style={styles.customButtonTextStyle}>
                         Call
-                     </Text>
+                  </Text>
                   </View>
                </TouchableOpacity>
 
-               <TouchableOpacity onPress={() => console.log('yerrr')}>
+               <TouchableOpacity onPress={() => this.openInMaps(this.props.selectedBiz.address)}>
                   <View style={styles.customButtonStyle}>
                      <Text style={styles.customButtonTextStyle}>
                         Get Directions
-                     </Text>
+                  </Text>
                   </View>
                </TouchableOpacity>
             </View>
 
             <View style={styles.selectedBizInfo}>
-               <Text style={styles.bizName}>Ocean Blue Caribbean Restarurant</Text>
+               <Text style={styles.bizName}>{this.props.selectedBiz.name}</Text>
                <Divider style={{ alignSelf: 'center', width: '100%', backgroundColor: '#b8b8b8' }} />
 
-               <Text style={styles.bizInfo}>Caribbean Restaruant in Chandler, AZ</Text>
+               <Text style={styles.bizInfo}>{this.props.selectedBiz.desc}</Text>
                <Divider style={{ alignSelf: 'center', width: '100%', backgroundColor: '#b8b8b8' }} />
 
-               <Text style={styles.bizInfo}>3, 3460, 6140 W Chandler Blvd, Chandler, AZ 85226</Text>
+               <Text style={styles.bizInfo}>{this.props.selectedBiz.address}</Text>
                <Divider style={{ alignSelf: 'center', width: '100%', backgroundColor: '#b8b8b8' }} />
 
-               <Text style={styles.bizInfo}>Monday-Friday: 9a-9p, Saturday-Sunday: 10a-8p</Text>
+               <Text style={styles.bizInfo}>{this.props.selectedBiz.hours}</Text>
             </View>
-         </View> */}
+         </View>
+      </View>
+   }
+
+
+   // have to make sure this is returned using paren's instead of brackets OR using the return statement
+   // showing nearby businesses
+   renderNearbyBiz = () => (
+      <View style={styles.panel}>
+         <FlatList
+            data={this.props.bizArr}
+            renderItem={this.renderNearbyBizJSX}
+            keyExtractor={this.extractKey}
+         />
       </View>
    )
 
@@ -112,14 +131,19 @@ export default class BottomSheetComponent extends React.Component {
       </View>
    )
 
+   snapToOpen() {
+      this.bsRef.current.snapTo(0);
+   }
+
    render() {
       return (
          <View style={styles.container}>
             <BottomSheet
-               ref={this.props.domRef}
+               ref={this.bsRef}
                snapPoints={[600, 80]}
                initialSnap={1}
-               renderContent={this.renderContent}
+               renderContent={ (this.props.bizSelected) ? this.renderSelectedBiz : this.renderNearbyBiz}
+               // renderContent={this.renderNearbyBiz}
                renderHeader={this.renderHeader}
             />
          </View>

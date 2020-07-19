@@ -7,9 +7,8 @@ import { Card, Overlay, Button } from 'react-native-elements';
 import BottomSheetComponent from '../containers/BottomSheet';
 import CREDENTIALS from '../../credentials'
 
-// TODO - have selectedBiz in state feed everything in overlay
 // TODO - add bottom sheet package to manage businesses we're viewing
-// TODO - fix websites and address functions on overlay
+// TODO - fix websites and address functions on view business bottom sheet
 // TODO - move style into separate js file and import in
 
 
@@ -23,11 +22,12 @@ export default class HomeScreen extends React.Component {
             latitudeDelta: 180,
             longitudeDelta: 180,
          },
-         overlayVisible: false,
          bizArr: this.props.bizArr,
+         bizSelected: false,
          selectedBiz: {},
       }
       this.parentMapRef = React.createRef();
+      this.parentBottomSheetRef = React.createRef();
    }
 
    onRegionChangeComplete = (region) => {
@@ -35,7 +35,6 @@ export default class HomeScreen extends React.Component {
    }
 
    findLocationButton = () => {
-      console.log('pressed find location icon button');
       const region = { 
          latitude: this.props.latitude,
          longitude: this.props.longitude,
@@ -43,21 +42,16 @@ export default class HomeScreen extends React.Component {
          longitudeDelta: 0.0221,
       }
       this.parentMapRef.current.animateToMethod(region);
-      console.log('end of find location icon button func');
    }
 
-   // toggleOverlay = () => {
-   //    this.setState(prevState => {
-   //       return {
-   //          overlayVisible: !prevState.overlayVisible
-   //       }
-   //    });
-   // }
-
-   // backdropPress = () => {
-   //    console.log('backdrop press');
-   //    this.toggleOverlay();
-   // }
+   showNearbyBizButton = () => {
+      // this.setState(prevState => {
+      //    return {
+      //       bizSelected: !prevState.bizSelected
+      //    }
+      // });
+      this.setState({bizSelected: false}, () => {this.parentBottomSheetRef.current.snapToOpen()});
+   }
 
    onMapPress = (e) => {
       if (e.nativeEvent.action != "marker-press") return;
@@ -72,23 +66,21 @@ export default class HomeScreen extends React.Component {
          // WON'T WORK IF CHANGED CONST'S TO bizLatitude or bizLongitude 
          if (latitude === pressedLat && longitude === pressedLng) return biz;
       });
-      this.setState({selectedBiz});
-   }  
-
-   callBusiness = () => {
-      const num = this.state.selectedBiz.tel;
-      Linking.openURL(`tel:${num}`).catch(e => console.log(e));
-   }
-
-   openInMaps = (address) => {      
-   }
-
-   visitWebsite = (websiteUrl) => {
-      Linking.openURL('http://idode.me');
+      this.setState(prevState => {
+         return {
+            bizSelected: !prevState.bizSelected,
+            selectedBiz,
+         }
+      });
    }
 
    onCalloutPress = () => {
-      console.log('pressed the callout of a marker');
+      this.setState(prevState => {
+         return {
+            bizSelected: !prevState.bizSelected,
+         }
+      }, () => {this.parentBottomSheetRef.current.snapToOpen()});
+      
    }
 
    render() {
@@ -106,7 +98,7 @@ export default class HomeScreen extends React.Component {
             <Search/>
             
             <TouchableHighlight
-               style={styles.shadowWrapper}
+               style={styles.locationButtWrapper}
                onPressIn={this.findLocationButton}
                accessibilityLabel={"Find location button"}>
                   <View style={styles.iconWrapper}>
@@ -119,18 +111,25 @@ export default class HomeScreen extends React.Component {
                   </View>
             </TouchableHighlight>
 
-            <BottomSheetComponent bizArr={this.props.bizArr}/>
+            <TouchableHighlight
+               style={styles.nearbyBizButtonWrapper}
+               onPressIn={this.showNearbyBizButton}
+               accessibilityLabel={"See nearby businesses"}>
+                  <View style={styles.iconWrapper}>
+                     <FontAwesome
+                        style={styles.locationIconStyle}
+                        name="briefcase"
+                        size={24}
+                        color="black"
+                     />
+                  </View>
+            </TouchableHighlight>
 
-            {/* <Overlay overlayStyle={styles.overlayStyle} isVisible={this.state.overlayVisible} onBackdropPress={this.backdropPress} >
-               <Card containerStyle={styles.cardStyle} title={this.state.selectedBiz.name} image={require('./../../../assets/300x200.gif')}>
-                  <Text style={{marginBottom: 10}}>Monday - Friday 10a-10p</Text>
-                  <Button style={styles.buttonStyle} onPress={this.callBusiness} title="Call Business"/>
-                  <Button style={styles.buttonStyle} title="Open in Maps"/>
-                  <Button style={styles.buttonStyle} onPress={this.visitWebsite} title="Visit Website"/>
-                  <Button onPress={this.backdropPress} title="Close"/>
-               </Card>
-            </Overlay> */}
-
+            <BottomSheetComponent 
+               bizSelected={this.state.bizSelected}
+               selectedBiz={this.state.selectedBiz}
+               ref={this.parentBottomSheetRef}
+               bizArr={this.props.bizArr}/>
          </View>
       );
    }
@@ -147,7 +146,7 @@ const styles = StyleSheet.create({
       color: 'blue',
       fontSize: 20,
    },
-   shadowWrapper: {
+   locationButtWrapper: {
       borderRadius: 100,
       // shadow
       shadowColor: "#000",
@@ -162,6 +161,22 @@ const styles = StyleSheet.create({
       position: 'absolute',
       bottom: 70,
       right: 15,
+   },
+   nearbyBizButtonWrapper: {
+      borderRadius: 100,
+      // shadow
+      shadowColor: "#000",
+      shadowOffset: {
+         width: 0,
+         height: 5,
+      },
+      shadowOpacity: 0.36,
+      shadowRadius: 6.68,
+      elevation: 11,
+      // position
+      position: 'absolute',
+      bottom: 70,
+      left: 15,
    },
    iconWrapper: {
       // alignment
