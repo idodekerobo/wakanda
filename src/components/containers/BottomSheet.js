@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native
 import * as Linking from 'expo-linking';
 import BottomSheet from 'reanimated-bottom-sheet';
 import { Image, Divider } from 'react-native-elements';
+import openMap from 'react-native-open-maps';
 
 export default class BottomSheetComponent extends React.Component {
 
@@ -16,8 +17,8 @@ export default class BottomSheetComponent extends React.Component {
       Linking.openURL(`tel:${tel}`).catch(e => console.log(e));
    }
 
-   openInMaps = (address) => {      
-      console.log('open in maps', address);
+   openInMaps = (coordinates, name) => {
+      openMap({coordinates, query: name});
    }
 
    visitWebsite = (website) => {
@@ -53,7 +54,7 @@ export default class BottomSheetComponent extends React.Component {
                </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => this.openInMaps(item.address)}>
+            <TouchableOpacity onPress={() => this.openInMaps(item.coordinates, item.name)}>
                <View style={styles.customButtonStyle}>
                   <Text style={styles.customButtonTextStyle}>
                   Get Directions
@@ -85,7 +86,7 @@ export default class BottomSheetComponent extends React.Component {
                   </View>
                </TouchableOpacity>
 
-               <TouchableOpacity onPress={() => this.openInMaps(this.props.selectedBiz.address)}>
+               <TouchableOpacity onPress={() => this.openInMaps(this.props.selectedBiz.coordinates, this.props.selectedBiz.name)}>
                   <View style={styles.customButtonStyle}>
                      <Text style={styles.customButtonTextStyle}>
                         Get Directions
@@ -136,6 +137,7 @@ export default class BottomSheetComponent extends React.Component {
    }
 
    render() {
+      console.log(this.props.bizArr);
       return (
          <View style={styles.container}>
             <BottomSheet
