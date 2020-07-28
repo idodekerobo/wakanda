@@ -56,7 +56,7 @@ export default class Map extends React.Component {
          <MapView
             ref={this.map}
             onPress={this.props.onPress}
-            initialRegion={this.props.region}
+            // initialRegion={this.props.region}
             compassOffset={{x: -10,y: 65}}
             onRegionChangeComplete={this.props.onRegionChangeComplete}
             showsUserLocation={true}

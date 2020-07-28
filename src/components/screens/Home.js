@@ -45,12 +45,11 @@ export default class HomeScreen extends React.Component {
    }
 
    showNearbyBizButton = () => {
-      // this.setState(prevState => {
-      //    return {
-      //       bizSelected: !prevState.bizSelected
-      //    }
-      // });
-      this.setState({bizSelected: false}, () => {this.parentBottomSheetRef.current.snapToOpen()});
+      this.setState({bizSelected: false}, () => {
+         console.log("state", this.state);
+         console.log(this.props);
+         this.parentBottomSheetRef.current.snapToOpen()
+      });
    }
 
    onMapPress = (e) => {
@@ -66,21 +65,17 @@ export default class HomeScreen extends React.Component {
          // WON'T WORK IF CHANGED CONST'S TO bizLatitude or bizLongitude 
          if (latitude === pressedLat && longitude === pressedLng) return biz;
       });
-      this.setState(prevState => {
-         return {
-            bizSelected: !prevState.bizSelected,
-            selectedBiz,
-         }
+      this.setState({
+            bizSelected:true,
+            selectedBiz}
+      , () => {
+         console.log("state", this.state);
+         console.log(this.props);
       });
    }
 
    onCalloutPress = () => {
-      this.setState(prevState => {
-         return {
-            bizSelected: !prevState.bizSelected,
-         }
-      }, () => {this.parentBottomSheetRef.current.snapToOpen()});
-      
+      this.parentBottomSheetRef.current.snapToOpen();
    }
 
    render() {
@@ -88,7 +83,7 @@ export default class HomeScreen extends React.Component {
          <View style={styles.container}>
             <Map
                ref={this.parentMapRef}
-               currentRegion={this.currentRegion}
+               // currentRegion={this.currentRegion}
                bizArr={this.props.bizArr}
                onRegionChangeComplete={this.onRegionChangeComplete}
                onCalloutPress={this.onCalloutPress}

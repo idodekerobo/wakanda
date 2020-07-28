@@ -18,7 +18,7 @@ export default class BottomSheetComponent extends React.Component {
    }
 
    openInMaps = (coordinates, name) => {
-      openMap({coordinates, query: name});
+      openMap({ coordinates, query: name });
    }
 
    visitWebsite = (website) => {
@@ -26,25 +26,25 @@ export default class BottomSheetComponent extends React.Component {
       Linking.openURL(website);
    }
 
-   extractKey = ({_id}) => _id;
+   extractKey = ({ _id }) => _id;
 
-   renderNearbyBizJSX = ({item}) => (
+   renderNearbyBizJSX = ({ item }) => (
       <View style={styles.listItemContainer}>
-         
+
          {/* <TouchableOpacity> */}
-            <View style={styles.listItemPic}>
-               <Image
-                  source={{url:'https://via.placeholder.com/800x200'}}
-                  style={{width: '100%',height: 100}}
-               />
-            </View>
-               
-            <View style={styles.listItemInfo}>
-               <Text style={styles.listItemInfoText, styles.bizName}>{item.name}</Text>
-               <Text style={styles.listItemInfoText, styles.bizInfo}>{item.desc}</Text>
-            </View>
+         <View style={styles.listItemPic}>
+            <Image
+               source={{ url: 'https://via.placeholder.com/800x200' }}
+               style={{ width: '100%', height: 100 }}
+            />
+         </View>
+
+         <View style={styles.listItemInfo}>
+            <Text style={styles.listItemInfoText, styles.bizName}>{item.name}</Text>
+            <Text style={styles.listItemInfoText, styles.bizInfo}>{item.desc}</Text>
+         </View>
          {/* </TouchableOpacity> */}
-         
+
          <View style={styles.listItemLinks}>
             <TouchableOpacity onPress={() => this.callBusiness(item.tel)}>
                <View style={styles.customButtonStyle}>
@@ -57,7 +57,7 @@ export default class BottomSheetComponent extends React.Component {
             <TouchableOpacity onPress={() => this.openInMaps(item.coordinates, item.name)}>
                <View style={styles.customButtonStyle}>
                   <Text style={styles.customButtonTextStyle}>
-                  Get Directions
+                     Get Directions
                   </Text>
                </View>
             </TouchableOpacity>
@@ -65,7 +65,7 @@ export default class BottomSheetComponent extends React.Component {
 
       </View>
    )
-   
+
    // showing selected biz 
    renderSelectedBiz = () => {
       return <View style={styles.panel}>
@@ -144,7 +144,7 @@ export default class BottomSheetComponent extends React.Component {
                ref={this.bsRef}
                snapPoints={[600, 80]}
                initialSnap={1}
-               renderContent={ (this.props.bizSelected) ? this.renderSelectedBiz : this.renderNearbyBiz}
+               renderContent={(this.props.bizSelected) ? this.renderSelectedBiz : this.renderNearbyBiz}
                // renderContent={this.renderNearbyBiz}
                renderHeader={this.renderHeader}
             />
@@ -165,45 +165,47 @@ const styles = StyleSheet.create({
       paddingTop: 10,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
-    },
+   },
    panelHeader: {
       alignItems: 'center',
-    },
-    panelHandle: {
+   },
+   panelHandle: {
       width: 40,
       height: 8,
       borderRadius: 4,
       backgroundColor: '#00000040',
       marginBottom: 10,
-    },
-    panel: {
+   },
+   panel: {
       height: 600,
       padding: 20,
       backgroundColor: '#f7f5eee8',
-    },
-    listItemContainer: {
+   },
+   listItemContainer: {
       flexDirection: "column",
       flex: 1,
       marginBottom: 30,
-      // height: 300, // remove after testing
-    },
-    listItemInfo: {
-       paddingTop: 12,
-    },
-    listItemInfoText: {
+   },
+   listItemInfo: {
+      paddingTop: 12,
+   },
+   listItemPic: {
+      marginBottom: -5,
+   },
+   listItemInfoText: {
       //   fontFamily: 'System',
-       fontSize: 16,
-       paddingBottom: 5,
-    },
-    listItemLinks: {
+      fontSize: 16,
+      paddingBottom: 5,
+   },
+   listItemLinks: {
       height: 40,
       flexDirection: "row",
       //  justifyContent: "space-evenly",
       justifyContent: "flex-start",
       marginTop: 10,
       marginBottom: 10,
-    },
-    customButtonStyle: {
+   },
+   customButtonStyle: {
       flex: 1,
       backgroundColor: 'blue',
       borderRadius: 5,
@@ -211,25 +213,23 @@ const styles = StyleSheet.create({
       paddingLeft: 30,
       paddingRight: 30,
       marginRight: 30,
-    },
-    customButtonTextStyle: {
-       color: 'white',
-       backgroundColor: 'blue',
-    },
-    bizName: {
+   },
+   customButtonTextStyle: {
+      color: 'white',
+      backgroundColor: 'blue',
+   },
+   bizName: {
       fontSize: 22,
-      marginTop: 10,
-      marginBottom: 10,
-    },
-    bizInfo: {
+   },
+   bizInfo: {
       fontSize: 14,
-      marginTop: 10,
-      marginBottom: 10,
-    },
-    selectedBizInfo: {
+      marginTop: 3,
+      marginBottom: 3,
+   },
+   selectedBizInfo: {
       flex: 1,
       flexDirection: 'column',
       alignItems: 'flex-start',
       // margin: 0,
-    },
+   },
 })
