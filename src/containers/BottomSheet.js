@@ -137,7 +137,6 @@ export default class BottomSheetComponent extends React.Component {
    }
 
    render() {
-      console.log(this.props.bizArr);
       return (
          <View style={styles.container}>
             <BottomSheet

@@ -1,18 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
-import * as Linking from 'expo-linking';
-import { Map, Search } from '../containers/containers';
-import { Card, Overlay, Button } from 'react-native-elements';
+// import * as Linking from 'expo-linking';
+import { Map } from '../containers/Container-Exports';
+import { Search } from '../components/Component-Exports';
 import BottomSheetComponent from '../containers/BottomSheet';
-import CREDENTIALS from '../../credentials'
 
 // TODO - add bottom sheet package to manage businesses we're viewing
 // TODO - fix websites and address functions on view business bottom sheet
 // TODO - move style into separate js file and import in
 
 
-export default class HomeScreen extends React.Component {
+export default class MapTab extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -46,8 +45,8 @@ export default class HomeScreen extends React.Component {
 
    showNearbyBizButton = () => {
       this.setState({bizSelected: false}, () => {
-         console.log("state", this.state);
-         console.log(this.props);
+         // console.log("state", this.state);
+         // console.log(this.props);
          this.parentBottomSheetRef.current.snapToOpen()
       });
    }
@@ -68,10 +67,7 @@ export default class HomeScreen extends React.Component {
       this.setState({
             bizSelected:true,
             selectedBiz}
-      , () => {
-         console.log("state", this.state);
-         console.log(this.props);
-      });
+      , () => { });
    }
 
    onCalloutPress = () => {

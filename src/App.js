@@ -1,7 +1,8 @@
 import React from 'react';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
-import { HomeScreen } from './components/screens/screens.js';
+import { MapTab } from './screens/Screen-Exports.js';
+import { TabNavigator } from './screens/Tab-Navigator';
 // import { db, firestore } from '../api/firebase-config';
 // import { setData, getData } from '../api/firestore-api';
 import * as dbApi from '../api/firestore-api';
@@ -23,15 +24,12 @@ export default class App extends React.Component {
       console.log('function is running')
       const { status } = await Permissions.askAsync(Permissions.LOCATION);
       if (status !== 'granted') {
-         console.log('Permission not granted');
          this.setState({
             errorMsg: 'Permission not granted'
          });
       }
-
       const location =  await Location.getCurrentPositionAsync();
       this.setState({location});
-      console.log('ran get location funciton yessir');
    }
 
    getData = async () => {
@@ -48,10 +46,9 @@ export default class App extends React.Component {
    }
 
    render() {
-      console.log('biz arr', this.state.bizArr);
       const location = (this.state.location && this.state.location.coords) ? this.state.location.coords : {};
       return (
-         <HomeScreen bizArr={this.state.bizArr} latitude={location.latitude} longitude={location.longitude} />
+         <MapTab bizArr={this.state.bizArr} latitude={location.latitude} longitude={location.longitude} />
       );
    }
 }

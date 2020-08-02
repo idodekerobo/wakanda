@@ -8,6 +8,10 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/masked-view": "0.1.6",
+    "@react-navigation/bottom-tabs": "^5.7.3",
+    "@react-navigation/native": "^5.7.2",
+    "@react-navigation/stack": "^5.8.0",
     "expo": "~37.0.3",
     "expo-location": "~8.1.0",
     "expo-permissions": "~8.1.0",
@@ -20,6 +24,8 @@
     "react-native-maps": "0.26.1",
     "react-native-open-maps": "^0.3.5",
     "react-native-reanimated": "~1.7.0",
+    "react-native-safe-area-context": "0.7.3",
+    "react-native-screens": "~2.2.0",
     "react-native-web": "~0.11.7",
     "reanimated-bottom-sheet": "^1.0.0-alpha.20"
   },
