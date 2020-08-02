@@ -1,6 +1,4 @@
 import { db } from './firebase-config';
-import * as firebase from 'firebase/app';
-import "firebase/firestore";
 
 // TODO - build out business document w/ website, hours, etc
 
