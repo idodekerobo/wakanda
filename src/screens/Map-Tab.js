@@ -1,10 +1,11 @@
-import React from 'react';
+import React from 'react'; // importing useContext for global state
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
-// import * as Linking from 'expo-linking';
 import { Map } from '../containers/Container-Exports';
 import { Search } from '../components/Component-Exports';
 import BottomSheetComponent from '../containers/BottomSheet';
+
+import { GlobalContext } from '../context/GlobalState'; // importing global store
 
 // TODO - add bottom sheet package to manage businesses we're viewing
 // TODO - fix websites and address functions on view business bottom sheet
@@ -15,13 +16,7 @@ export default class MapTab extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
-         region: {
-            latitude: 5,
-            longitude: 20,
-            latitudeDelta: 180,
-            longitudeDelta: 180,
-         },
-         bizArr: this.props.bizArr,
+         region: {},
          bizSelected: false,
          selectedBiz: {},
       }
@@ -29,18 +24,21 @@ export default class MapTab extends React.Component {
       this.parentBottomSheetRef = React.createRef();
    }
 
+   static contextType = GlobalContext;
+
    onRegionChangeComplete = (region) => {
       this.setState({region});
    }
 
    findLocationButton = () => {
+      const { state } = this.context;
       const region = { 
-         latitude: this.props.latitude,
-         longitude: this.props.longitude,
+         latitude: state.location.coords.latitude,
+         longitude: state.location.coords.longitude,
          latitudeDelta: 0.0122,
          longitudeDelta: 0.0221,
       }
-      this.parentMapRef.current.animateToMethod(region);
+      this.parentMapRef.current.animateToRegion(region);
    }
 
    showNearbyBizButton = () => {
@@ -57,7 +55,8 @@ export default class MapTab extends React.Component {
       const pressedLat = e.nativeEvent.coordinate.latitude;
       const pressedLng = e.nativeEvent.coordinate.longitude;
       
-      const selectedBiz = this.props.bizArr.slice().find(biz => { 
+      const { state } = this.context;
+      const selectedBiz = state.bizArr.slice().find(biz => { 
          const { latitude, longitude } = biz.coordinates;
          // have to destructure to access coordinates from geopoint object in firebase
          // DESTRUCTURING VALUE NAMES HAVE TO BE THE SAME AS WHATS IN THE OBJECT
@@ -120,7 +119,7 @@ export default class MapTab extends React.Component {
                bizSelected={this.state.bizSelected}
                selectedBiz={this.state.selectedBiz}
                ref={this.parentBottomSheetRef}
-               bizArr={this.props.bizArr}/>
+               bizArr={this.context.state.bizArr}/>
          </View>
       );
    }
@@ -150,7 +149,7 @@ const styles = StyleSheet.create({
       elevation: 11,
       // position
       position: 'absolute',
-      bottom: 70,
+      bottom: 45,
       right: 15,
    },
    nearbyBizButtonWrapper: {
@@ -166,7 +165,7 @@ const styles = StyleSheet.create({
       elevation: 11,
       // position
       position: 'absolute',
-      bottom: 70,
+      bottom: 45,
       left: 15,
    },
    iconWrapper: {

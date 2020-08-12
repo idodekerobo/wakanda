@@ -3,18 +3,15 @@ import { db } from './firebase-config';
 // TODO - build out business document w/ website, hours, etc
 
 function errorHandling(err) {
-   console.log('There was an error');
+   console.log('There was a FIREBASE API ERROR');
    console.log(err);
 }
 
-export function setData(docId) {
-   // db.collection("businesses").doc(docId)
-   //    .set({
-   //       name: "idode's biz",
-   //       address: "somewhere in tempe, az"
-   //    })
-   //    .catch(err => errorHandling(err));
-   // console.log('data sent');
+export function addBusiness(bizObj) {
+   db.collection("submittedBusinesses")
+      .add(bizObj)
+      .then(docRef => console.log(`Added business w/ ID: ${docRef.id}`))
+      .catch(err => errorHandling(err));
 }
 
 export function getAllBusinesses() {

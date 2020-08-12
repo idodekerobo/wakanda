@@ -141,7 +141,7 @@ export default class BottomSheetComponent extends React.Component {
          <View style={styles.container}>
             <BottomSheet
                ref={this.bsRef}
-               snapPoints={[600, 80]}
+               snapPoints={[600, 40]}
                initialSnap={1}
                renderContent={(this.props.bizSelected) ? this.renderSelectedBiz : this.renderNearbyBiz}
                // renderContent={this.renderNearbyBiz}
@@ -159,11 +159,12 @@ const styles = StyleSheet.create({
       alignItems: "center"
    },
    header: {
-      backgroundColor: '#f7f5eee8',
+      // backgroundColor: '#f7f5eee8', // translucent background
+      backgroundColor: 'white',
       shadowColor: '#000000',
       paddingTop: 10,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
+      // borderTopLeftRadius: 20,
+      // borderTopRightRadius: 20,
    },
    panelHeader: {
       alignItems: 'center',
@@ -178,7 +179,8 @@ const styles = StyleSheet.create({
    panel: {
       height: 600,
       padding: 20,
-      backgroundColor: '#f7f5eee8',
+      // backgroundColor: '#f7f5eee8', // translucent background
+      backgroundColor: 'white',
    },
    listItemContainer: {
       flexDirection: "column",
