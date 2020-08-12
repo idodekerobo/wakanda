@@ -1,6 +1,5 @@
 import React from 'react';
 import Wakanda from './Wakanda';
-import * as dbApi from '../api/firestore-api';
 
 // global state
 import { GlobalProvider } from './context/GlobalState';

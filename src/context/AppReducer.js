@@ -1,6 +1,3 @@
-import * as Permissions from 'expo-permissions';
-import * as Location from 'expo-location';
-import * as dbApi from '../../api/firestore-api';
 import { FETCH_BIZ_DATA, GET_LOCATION } from './ActionCreators';
 
 // how we specify how app state changes in response to certain actions to our store

@@ -1,7 +1,6 @@
 import React from 'react';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
-import { MapTab } from './screens/Screen-Exports.js';
 import TabNavigator from './screens/Tab-Navigator';
 import * as dbApi from '../api/firestore-api';
 
@@ -40,7 +39,7 @@ export default class Wakanda extends React.Component {
       console.log('==============================================');
       console.log('app running');
       console.log();
-      this.getData();
+      // this.getData();
       this.getLocation();
    }
 

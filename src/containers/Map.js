@@ -1,8 +1,7 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import MapView, { Marker, Callout } from 'react-native-maps';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'; // have to import TouchableOpacity from here
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'; // have to import TouchableOpacity from here
 import { GlobalContext } from '../context/GlobalState';
-import * as dbApi from '../../api/firestore-api';
 
 const styles = StyleSheet.create({
    container: {
