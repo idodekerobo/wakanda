@@ -42,8 +42,8 @@ export default class Wakanda extends React.Component {
       console.log('==============================================');
       console.log('app running');
       console.log();
-      // this.getData();
-      // this.getLocation();
+      this.getData();
+      this.getLocation();
    }
 
    render() {
