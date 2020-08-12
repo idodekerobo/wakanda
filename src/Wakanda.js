@@ -12,9 +12,7 @@ export default class Wakanda extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
-         // location: {},
          errorMsg: '',
-         // bizArr: [],
       }
    }
    static contextType = GlobalContext;
@@ -48,8 +46,7 @@ export default class Wakanda extends React.Component {
 
    render() {
       return (
-            <TabNavigator />
-            // {/* <MapTab bizArr={this.state.bizArr} latitude={location.latitude} longitude={location.longitude} /> */}
+         <TabNavigator />
       );
    }  
 }

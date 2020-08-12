@@ -7,8 +7,6 @@ import BottomSheetComponent from '../containers/BottomSheet';
 
 import { GlobalContext } from '../context/GlobalState'; // importing global store
 
-// TODO - add bottom sheet package to manage businesses we're viewing
-// TODO - fix websites and address functions on view business bottom sheet
 // TODO - move style into separate js file and import in
 
 
@@ -43,8 +41,6 @@ export default class MapTab extends React.Component {
 
    showNearbyBizButton = () => {
       this.setState({bizSelected: false}, () => {
-         // console.log("state", this.state);
-         // console.log(this.props);
          this.parentBottomSheetRef.current.snapToOpen()
       });
    }
@@ -78,7 +74,6 @@ export default class MapTab extends React.Component {
          <View style={styles.container}>
             <Map
                ref={this.parentMapRef}
-               // currentRegion={this.currentRegion}
                bizArr={this.props.bizArr}
                onRegionChangeComplete={this.onRegionChangeComplete}
                onCalloutPress={this.onCalloutPress}
