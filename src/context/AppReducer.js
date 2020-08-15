@@ -1,4 +1,4 @@
-import { FETCH_BIZ_DATA, GET_LOCATION } from './ActionCreators';
+import { FETCH_BIZ_DATA, GET_LOCATION, SELECTED_CATEGORY } from './ActionCreators';
 
 // how we specify how app state changes in response to certain actions to our store
 export const Reducer = (state, action) => {
@@ -12,6 +12,12 @@ export const Reducer = (state, action) => {
          return {
             ...state,
             location: action.location 
+         };
+      case SELECTED_CATEGORY: 
+         return {
+            // do stuff
+            ...state, 
+            selectedCategory: action.category,
          };
       default: 
          return state;

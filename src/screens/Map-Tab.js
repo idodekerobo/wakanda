@@ -2,7 +2,7 @@ import React from 'react'; // importing useContext for global state
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Map } from '../containers/Container-Exports';
-import { Search } from '../components/Component-Exports';
+import { Search, ButtonGroupComponent } from '../components/Component-Exports';
 import BottomSheetComponent from '../containers/BottomSheet';
 
 import { GlobalContext } from '../context/GlobalState'; // importing global store
@@ -80,7 +80,8 @@ export default class MapTab extends React.Component {
                onPress={this.onMapPress}
             />
 
-            <Search/>
+            {/* <Search/> */}
+            <ButtonGroupComponent/>
             
             <TouchableHighlight
                style={styles.locationButtWrapper}

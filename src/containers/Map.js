@@ -20,22 +20,60 @@ const styles = StyleSheet.create({
    },
 });
 
+
+const categoryGetter = (bizCategory) => {
+   if (bizCategory === 'restaurant') return 1;
+   if (bizCategory === 'arts') return 2;
+   if (bizCategory === 'service') return 3;
+   if (bizCategory === 'other') return 4
+}
+
+
 const Map = React.forwardRef((props,mapRef) => {
    const { state } = useContext(GlobalContext);
 
    // using onCalloutPress as workaround since TouchableOpacity onPress isn't working
+   // IMPLEMENTED VERSION W/ CATEGORIES
+   const markers = state.bizArr.slice().map(biz => {
+      if (state.selectedCategory === 0) {
+         return <Marker stopPropagation={false} key={biz._id} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress}>
+            <Callout>
+               <TouchableOpacity >
+                  <Text>{biz.name}</Text>
+                  <Text style={{ color: 'blue' }}>
+                     View Restaurant
+                  </Text>
+               </TouchableOpacity>
+            </Callout>
+         </Marker>
+      } else if (categoryGetter(biz.category) === state.selectedCategory) {
+         return <Marker stopPropagation={false} key={biz._id} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress}>
+            <Callout>
+               <TouchableOpacity >
+                  <Text>{biz.name}</Text>
+                  <Text style={{ color: 'blue' }}>
+                     View More
+                    </Text>
+               </TouchableOpacity>
+            </Callout>
+         </Marker>
+      }
+   });
+   
+   /*
    const markers = state.bizArr.slice().map(biz => (
-      <Marker stopPropagation={false} key={biz._id} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress}>
-         <Callout>
-            <TouchableOpacity >
-               <Text>{biz.name}</Text>
-               <Text style={{ color: 'blue' }}>
-                  View Restaurant
-               </Text>
-            </TouchableOpacity>
-         </Callout>
-      </Marker>
+         <Marker stopPropagation={false} key={biz._id} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress}>
+            <Callout>
+               <TouchableOpacity >
+                  <Text>{biz.name}</Text>
+                  <Text style={{ color: 'blue' }}>
+                     View Restaurant
+                  </Text>
+               </TouchableOpacity>
+            </Callout>
+         </Marker>
    ));
+   */
 
    return (
       <MapView

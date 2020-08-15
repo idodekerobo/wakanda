@@ -13,41 +13,32 @@ export default class BottomSheetComponent extends React.Component {
    }
 
    callBusiness = (tel) => {
-      // const num = this.props.selectedBiz.tel;
+      if (tel === undefined || tel === '') return;
       Linking.openURL(`tel:${tel}`).catch(e => console.log(e));
    }
 
    openInMaps = (coordinates, name) => {
+      if (coordinates === undefined || coordinates === '') return;
       openMap({ coordinates, query: name });
    }
 
    visitWebsite = (website) => {
-      // Linking.openURL(this.props.selectedBiz.website);
-      Linking.openURL(website);
+      if (website === undefined || website === '') return;
+      Linking.openURL(website).catch(e => console.log(e));;
    }
 
    extractKey = ({ _id }) => _id;
 
    renderNearbyBizJSX = ({ item }) => (
-      <View style={styles.listItemContainer}>
-
-         {/* <TouchableOpacity> */}
-         <View style={styles.listItemPic}>
-            <Image
-               source={{ url: 'https://via.placeholder.com/800x200' }}
-               style={{ width: '100%', height: 100 }}
-            />
-         </View>
-
+      <View>
          <View style={styles.listItemInfo}>
-            <Text style={styles.listItemInfoText, styles.bizName}>{item.name}</Text>
-            <Text style={styles.listItemInfoText, styles.bizInfo}>{item.desc}</Text>
+            <Text style={{fontSize: 28, paddingBottom: 10}}>{item.name}</Text>
+            <Text style={{fontSize: 16, paddingBottom: 10}}>{item.desc}</Text>
          </View>
-         {/* </TouchableOpacity> */}
 
          <View style={styles.listItemLinks}>
             <TouchableOpacity onPress={() => this.callBusiness(item.tel)}>
-               <View style={styles.customButtonStyle}>
+            <View style={{...styles.customButtonStyle, marginRight: 5, paddingRight: 20, paddingLeft: 20}}>
                   <Text style={styles.customButtonTextStyle}>
                      Call
                   </Text>
@@ -55,60 +46,83 @@ export default class BottomSheetComponent extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => this.openInMaps(item.coordinates, item.name)}>
-               <View style={styles.customButtonStyle}>
+               <View style={{...styles.customButtonStyle, marginRight: 5, paddingRight: 20, paddingLeft: 20}}>
                   <Text style={styles.customButtonTextStyle}>
-                     Get Directions
+                     Directions
+                  </Text>
+               </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => this.visitWebsite(item.website)}>
+            <View style={{...styles.customButtonStyle, marginRight: 5, paddingRight: 20, paddingLeft: 20}}>
+                  <Text style={styles.customButtonTextStyle}>
+                     Website
                   </Text>
                </View>
             </TouchableOpacity>
          </View>
+
+         <Divider style={styles.divider} />
 
       </View>
    )
 
    // showing selected biz 
    renderSelectedBiz = () => {
-      return <View style={styles.panel}>
-         <View style={styles.listItemContainer}>
-            <View style={styles.listItemPic}>
-               <Image
-                  source={{ url: 'https://via.placeholder.com/800x200' }}
-                  style={{ width: '100%', height: 200 }}
-               />
-            </View>
+      return (
+         <View style={styles.panel}>
+            <View style={styles.listItemContainer}>
+               <View style={styles.selectedBizInfo}>
+                  <Text style={styles.bizName}>{this.props.selectedBiz.name}</Text>
 
-            <View style={styles.listItemLinks}>
-               <TouchableOpacity onPress={() => this.callBusiness(this.props.selectedBiz.tel)}>
-                  <View style={styles.customButtonStyle}>
-                     <Text style={styles.customButtonTextStyle}>
-                        Call
-                  </Text>
+                  <Divider style={styles.divider} />
+                  <View style={styles.infoLineItem}>
+                     <Text style={styles.bizInfo}>{this.props.selectedBiz.desc}</Text>
                   </View>
-               </TouchableOpacity>
 
-               <TouchableOpacity onPress={() => this.openInMaps(this.props.selectedBiz.coordinates, this.props.selectedBiz.name)}>
-                  <View style={styles.customButtonStyle}>
-                     <Text style={styles.customButtonTextStyle}>
-                        Get Directions
-                  </Text>
+                  <Divider style={styles.divider} />
+                  <View style={styles.infoLineItem}>
+                     <Text style={styles.bizInfo}>{this.props.selectedBiz.address}</Text>
                   </View>
-               </TouchableOpacity>
-            </View>
 
-            <View style={styles.selectedBizInfo}>
-               <Text style={styles.bizName}>{this.props.selectedBiz.name}</Text>
-               <Divider style={{ alignSelf: 'center', width: '100%', backgroundColor: '#b8b8b8' }} />
+                  <Divider style={styles.divider} />
+                  <View style={styles.infoLineItem}>
+                     <Text style={styles.bizInfo}>{this.props.selectedBiz.hours}</Text>
+                  </View>
 
-               <Text style={styles.bizInfo}>{this.props.selectedBiz.desc}</Text>
-               <Divider style={{ alignSelf: 'center', width: '100%', backgroundColor: '#b8b8b8' }} />
+               </View>
 
-               <Text style={styles.bizInfo}>{this.props.selectedBiz.address}</Text>
-               <Divider style={{ alignSelf: 'center', width: '100%', backgroundColor: '#b8b8b8' }} />
+               <View style={styles.listItemLinks}>
+                  <TouchableOpacity onPress={() => this.callBusiness(this.props.selectedBiz.tel)}>
+                     <View style={{ ...styles.customButtonStyle, ...(this.props.selectedBiz.tel === '' || this.props.selectedBiz.tel === undefined) ? styles.inactiveButton : null }}>
+                        <Text style={{ ...styles.customButtonTextStyle, ...(this.props.selectedBiz.tel === '' || this.props.selectedBiz.tel === undefined) ? styles.inactiveButton : null }}>
+                           Call
+                  </Text>
+                     </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => this.openInMaps(this.props.selectedBiz.coordinates, this.props.selectedBiz.name)}>
+                     <View style={{ ...styles.customButtonStyle, ...(this.props.selectedBiz.coordinates === '' || this.props.selectedBiz.coordinates === undefined) ? styles.inactiveButton : null }}>
+                        <Text style={{ ...styles.customButtonTextStyle, ...(this.props.selectedBiz.coordinates === '' || this.props.selectedBiz.coordinates === undefined) ? styles.inactiveButton : null }}>
+                           Get Directions
+                  </Text>
+                     </View>
+                  </TouchableOpacity>
 
-               <Text style={styles.bizInfo}>{this.props.selectedBiz.hours}</Text>
+               </View>
+               <View style={styles.listItemLinks}>
+                  <TouchableOpacity onPress={() => this.visitWebsite(this.props.selectedBiz.website)}>
+                     <View style={{ ...styles.customButtonStyle, ...(this.props.selectedBiz.website === '' || this.props.selectedBiz.website === undefined) ? styles.inactiveButton : null }}>
+                        <Text style={{ ...styles.customButtonTextStyle, ...(this.props.selectedBiz.website === '' || this.props.selectedBiz.website === undefined) ? styles.inactiveButton : null }}>
+                           Visit Website
+                  </Text>
+                     </View>
+                  </TouchableOpacity>
+               </View>
+
+
             </View>
          </View>
-      </View>
+      )
    }
 
 
@@ -141,7 +155,7 @@ export default class BottomSheetComponent extends React.Component {
          <View style={styles.container}>
             <BottomSheet
                ref={this.bsRef}
-               snapPoints={[600, 40]}
+               snapPoints={[500, 40]}
                initialSnap={1}
                renderContent={(this.props.bizSelected) ? this.renderSelectedBiz : this.renderNearbyBiz}
                // renderContent={this.renderNearbyBiz}
@@ -177,15 +191,19 @@ const styles = StyleSheet.create({
       marginBottom: 10,
    },
    panel: {
-      height: 600,
+      height: 500,
       padding: 20,
       // backgroundColor: '#f7f5eee8', // translucent background
       backgroundColor: 'white',
    },
    listItemContainer: {
       flexDirection: "column",
-      flex: 1,
-      marginBottom: 30,
+      height: '100%',
+      width: '100%',
+      justifyContent: 'flex-start',
+   },
+   nearbyBizListItem: {
+
    },
    listItemInfo: {
       paddingTop: 12,
@@ -193,18 +211,31 @@ const styles = StyleSheet.create({
    listItemPic: {
       marginBottom: -5,
    },
-   listItemInfoText: {
-      //   fontFamily: 'System',
+   divider: {
+      alignSelf: 'center',
+      width: '100%',
+      height: 1,
+      backgroundColor: '#b8b8b8',
+   },
+   bizName: {
+      fontSize: 28,
+      paddingBottom: 20,
+   },
+   bizInfo: {
       fontSize: 16,
-      paddingBottom: 5,
+      paddingBottom: 20,
+      paddingTop: 20,
+   },
+   infoLineItem: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
    },
    listItemLinks: {
-      height: 40,
       flexDirection: "row",
-      //  justifyContent: "space-evenly",
-      justifyContent: "flex-start",
-      marginTop: 10,
-      marginBottom: 10,
+      alignItems: 'flex-start',
+      height: 40,
+      marginBottom: 20,
    },
    customButtonStyle: {
       flex: 1,
@@ -215,22 +246,15 @@ const styles = StyleSheet.create({
       paddingRight: 30,
       marginRight: 30,
    },
+   inactiveButton: {
+      backgroundColor: 'grey',
+   },
    customButtonTextStyle: {
       color: 'white',
       backgroundColor: 'blue',
    },
-   bizName: {
-      fontSize: 22,
-   },
-   bizInfo: {
-      fontSize: 14,
-      marginTop: 3,
-      marginBottom: 3,
-   },
    selectedBizInfo: {
-      flex: 1,
       flexDirection: 'column',
       alignItems: 'flex-start',
-      // margin: 0,
    },
 })

@@ -6,6 +6,7 @@ const initialState = {
    location: {},
    // errorMsg: 'is this working?',
    bizArr: [{name: "init state in global state context"}],
+   selectedCategory: 0,
 }
 
 // create context

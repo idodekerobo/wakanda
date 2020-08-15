@@ -8,6 +8,8 @@ const styles = StyleSheet.create({
       position: 'absolute',
       top: 25,
       width: '100%',
+      
+      // shadow
       shadowColor: "#000",
       shadowOffset: {
          width: 0,

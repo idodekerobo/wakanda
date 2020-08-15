@@ -39,7 +39,7 @@ export default class Wakanda extends React.Component {
       console.log('==============================================');
       console.log('app running');
       console.log();
-      // this.getData();
+      this.getData();
       this.getLocation();
    }
 
