@@ -15,9 +15,7 @@ const SubmitFormScreen = () => {
          </View>
          
          <KeyboardAwareScrollView>
-            <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-               <BizForm/>
-            </ScrollView>
+            <ScrollView contentContainerStyle={styles.scrollViewContainer}><BizForm/></ScrollView>
          </KeyboardAwareScrollView>
       
       </View>

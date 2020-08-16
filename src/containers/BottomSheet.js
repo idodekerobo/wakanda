@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import * as Linking from 'expo-linking';
 import BottomSheet from 'reanimated-bottom-sheet';
-import { Image, Divider } from 'react-native-elements';
+import { Divider } from 'react-native-elements';
 import openMap from 'react-native-open-maps';
 
 export default class BottomSheetComponent extends React.Component {
@@ -158,7 +158,6 @@ export default class BottomSheetComponent extends React.Component {
                snapPoints={[500, 40]}
                initialSnap={1}
                renderContent={(this.props.bizSelected) ? this.renderSelectedBiz : this.renderNearbyBiz}
-               // renderContent={this.renderNearbyBiz}
                renderHeader={this.renderHeader}
             />
          </View>

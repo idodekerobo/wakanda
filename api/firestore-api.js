@@ -1,10 +1,27 @@
-import { db } from './firebase-config';
-
-// TODO - build out business document w/ website, hours, etc
+import { db, auth } from './firebase-config';
 
 function errorHandling(err) {
+   console.log();
    console.log('There was a FIREBASE API ERROR');
+   console.log();
+   console.log(`Error code: ${err.code}`);
+   console.log(`Error message: ${err.message}`);
    console.log(err);
+   console.log();
+}
+
+export function signInAnon() {
+   auth.signInAnonymously().catch(err => errorHandling(err));
+}
+
+export function authListener() {
+   auth.onAuthStateChanged(user => {
+      if (user) {
+         console.log(user);
+      } else {
+         console.log('user is signed out');
+      }
+   });
 }
 
 export function addBusiness(bizObj) {

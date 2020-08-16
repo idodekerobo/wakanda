@@ -11,9 +11,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/bermuda-699.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#fffef5"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

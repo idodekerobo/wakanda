@@ -5,7 +5,7 @@ import { GlobalContext } from '../context/GlobalState';
 
 const ButtonGroupComponent = () => {
    const { dispatch } = useContext(GlobalContext);
-   const buttons = ['All', 'Food', 'Arts', 'Service', 'Other']
+   const buttons = ['All', 'Food', 'Cosmetic', 'Arts', 'Other']
    const [selectedIndex, setIndex] = useState(0);
    
    const onPress = (selectedIndex) => {
@@ -13,6 +13,12 @@ const ButtonGroupComponent = () => {
       // global state lags after the local state
       dispatch({type: 'SELECTED_CATEGORY', category: selectedIndex});
    }
+   // categories
+      // restaurant
+      // technology
+      // cosmetics
+      // clothing
+      // arts
    
    return (
       <View style={styles.buttonGroupWrapper}>
