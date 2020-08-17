@@ -4,8 +4,7 @@
     "slug": "afe",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "0.1.0",
     "orientation": "portrait",
@@ -22,7 +21,7 @@
       "**/*"
     ],
     "ios": {
-      "package": ".com.idodekerobo.afe",
+      "bundleIdentifier": ".com.idodekerobo.afe",
       "buildNumber": "0.1.0",
       "supportsTablet": true
     }

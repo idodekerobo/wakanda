@@ -30,14 +30,8 @@ export default class Wakanda extends React.Component {
       const location =  await Location.getCurrentPositionAsync();
       dispatch({type: 'GET_LOCATION', location})
    }
-
-   anonSignIn = async () => {
-      dbApi.signInAnon();
-   }
    
    getData = async () => {
-      const signIn = await dbApi.signInAnon();
-      signIn; // is this correct?????
       const fetchBizArr = await dbApi.getAllBusinesses();
       const { dispatch } = this.context;
       dispatch({type: 'FETCH_BIZ_DATA', arr: fetchBizArr});
