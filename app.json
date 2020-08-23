@@ -21,7 +21,7 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": ".com.idodekerobo.afe",
+      "bundleIdentifier": "io.afeapp.afe",
       "buildNumber": "0.1.0",
       "supportsTablet": true
     }
