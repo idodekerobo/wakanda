@@ -33,12 +33,12 @@ const categoryGetter = (bizCategory) => {
 
 const Map = React.forwardRef((props,mapRef) => {
    const { state } = useContext(GlobalContext);
-
+   
    // using onCalloutPress as workaround since TouchableOpacity onPress isn't working
    const markers = state.bizArr.slice().map(biz => {
       if (state.selectedCategory === 0) {
          return <Marker stopPropagation={false} key={biz._id} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress}>
-            <Callout>
+            <Callout key={biz._id}>
                <TouchableOpacity >
                   <Text>{biz.name}</Text>
                   <Text style={{ color: 'blue' }}>
@@ -49,7 +49,7 @@ const Map = React.forwardRef((props,mapRef) => {
          </Marker>
       } else if (categoryGetter(biz.category) === state.selectedCategory) {
          return <Marker stopPropagation={false} key={biz._id} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress}>
-            <Callout>
+            <Callout key={biz._id}>
                <TouchableOpacity >
                   <Text>{biz.name}</Text>
                   <Text style={{ color: 'blue' }}>

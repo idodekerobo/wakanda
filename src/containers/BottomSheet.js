@@ -27,10 +27,10 @@ export default class BottomSheetComponent extends React.Component {
       Linking.openURL(website).catch(e => console.log(e));;
    }
 
-   extractKey = ({ _id }) => _id;
+   // extractKey = ({ _id }) => _id;
 
    renderNearbyBizJSX = ({ item }) => (
-      <View>
+      <View key={item._id}>
          <View style={styles.listItemInfo}>
             <Text style={{fontSize: 28, paddingBottom: 10}}>{item.name}</Text>
             <Text style={{fontSize: 16, paddingBottom: 10}}>{item.desc}</Text>
@@ -125,7 +125,6 @@ export default class BottomSheetComponent extends React.Component {
       )
    }
 
-
    // have to make sure this is returned using paren's instead of brackets OR using the return statement
    // showing nearby businesses
    renderNearbyBiz = () => (
@@ -133,7 +132,7 @@ export default class BottomSheetComponent extends React.Component {
          <FlatList
             data={this.props.bizArr}
             renderItem={this.renderNearbyBizJSX}
-            keyExtractor={this.extractKey}
+            keyExtractor={(item) => item._id}
          />
       </View>
    )
@@ -155,7 +154,7 @@ export default class BottomSheetComponent extends React.Component {
          <View style={styles.container}>
             <BottomSheet
                ref={this.bsRef}
-               snapPoints={[500, 40]}
+               snapPoints={[500, 90]}
                initialSnap={1}
                renderContent={(this.props.bizSelected) ? this.renderSelectedBiz : this.renderNearbyBiz}
                renderHeader={this.renderHeader}

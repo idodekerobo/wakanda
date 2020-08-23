@@ -8,11 +8,11 @@
     ],
     "version": "0.1.0",
     "orientation": "portrait",
-    "icon": "./assets/bermuda-699.png",
+    "icon": "./assets/afe-v2.png",
     "splash": {
-      "image": "./assets/bermuda-699.png",
+      "image": "./assets/afe-v2.png",
       "resizeMode": "contain",
-      "backgroundColor": "#fffef5"
+      "backgroundColor": "#105927"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
