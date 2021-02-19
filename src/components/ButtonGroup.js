@@ -21,28 +21,29 @@ const ButtonGroupComponent = () => {
       // arts
    
    return (
-      <View style={styles.buttonGroupWrapper}>
+      // <View style={styles.buttonGroupWrapper}>
          <ButtonGroup
             selectedIndex={selectedIndex}
             onPress={onPress}
+            vertical
             buttons={buttons}
             containerStyle={styles.buttonGroupContainer}
             buttonContainerStyle={styles.buttonContainer}
             buttonStyle={styles.buttonStyle}
+            textStyle={styles.textStyle}
          />
-      </View>
+      // </View>
    );
 }
 export default ButtonGroupComponent;
 
 const styles = StyleSheet.create({
    buttonGroupWrapper: {
-      // flex: 1,
       //position
       display: 'flex',
       position: 'absolute',
       top: 27,
-      width: '100%',
+      width: '95%',
       height: '8%',
       backgroundColor: 'transparent',
       // shadow
@@ -63,4 +64,7 @@ const styles = StyleSheet.create({
    },
    buttonStyle: {
    },
+   textStyle: {
+      fontSize: 13,
+   }
 })

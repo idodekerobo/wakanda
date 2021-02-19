@@ -32,13 +32,13 @@ export default class BottomSheetComponent extends React.Component {
    renderNearbyBizJSX = ({ item }) => (
       <View key={item._id}>
          <View style={styles.listItemInfo}>
-            <Text style={{fontSize: 28, paddingBottom: 10}}>{item.name}</Text>
-            <Text style={{fontSize: 16, paddingBottom: 10}}>{item.desc}</Text>
+            <Text style={{ fontSize: 28, paddingBottom: 10 }}>{item.name}</Text>
+            <Text style={{ fontSize: 16, paddingBottom: 10 }}>{item.desc}</Text>
          </View>
 
          <View style={styles.listItemLinks}>
             <TouchableOpacity onPress={() => this.callBusiness(item.tel)}>
-            <View style={{...styles.customButtonStyle, marginRight: 5, paddingRight: 20, paddingLeft: 20}}>
+               <View style={{ ...styles.customButtonStyle, marginRight: 5, paddingRight: 20, paddingLeft: 20 }}>
                   <Text style={styles.customButtonTextStyle}>
                      Call
                   </Text>
@@ -46,7 +46,7 @@ export default class BottomSheetComponent extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => this.openInMaps(item.coordinates, item.name)}>
-               <View style={{...styles.customButtonStyle, marginRight: 5, paddingRight: 20, paddingLeft: 20}}>
+               <View style={{ ...styles.customButtonStyle, marginRight: 5, paddingRight: 20, paddingLeft: 20 }}>
                   <Text style={styles.customButtonTextStyle}>
                      Directions
                   </Text>
@@ -54,7 +54,7 @@ export default class BottomSheetComponent extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => this.visitWebsite(item.website)}>
-            <View style={{...styles.customButtonStyle, marginRight: 5, paddingRight: 20, paddingLeft: 20}}>
+               <View style={{ ...styles.customButtonStyle, marginRight: 5, paddingRight: 20, paddingLeft: 20 }}>
                   <Text style={styles.customButtonTextStyle}>
                      Website
                   </Text>
@@ -132,7 +132,7 @@ export default class BottomSheetComponent extends React.Component {
          <FlatList
             data={this.props.bizArr}
             renderItem={this.renderNearbyBizJSX}
-            keyExtractor={(item) => item._id}
+            keyExtractor={(item, i) => `${item._id}${i}`}
          />
       </View>
    )

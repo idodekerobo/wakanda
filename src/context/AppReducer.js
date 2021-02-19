@@ -17,7 +17,7 @@ export const Reducer = (state, action) => {
          return {
             // do stuff
             ...state, 
-            selectedCategory: action.category,
+            selectedCategories: action.selectedCategories,
          };
       default: 
          return state;

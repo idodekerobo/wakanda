@@ -1,13 +1,12 @@
 import React from 'react'; // importing useContext for global state
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, Modal } from 'react-native';
+// import { CheckBox, Overlay } from 'react-native-elements'
 import { FontAwesome } from '@expo/vector-icons'; 
-import { Map } from '../containers/Container-Exports';
-import { Search, ButtonGroupComponent } from '../components/Component-Exports';
-import BottomSheetComponent from '../containers/BottomSheet';
-
+import { Map, BottomSheetComponent, NearbyBizBS, SelectedBizBS } from '../containers/Container-Exports';
 import { GlobalContext } from '../context/GlobalState'; // importing global store
 
 // TODO - move style into separate js file and import in
+
 
 
 export default class MapTab extends React.Component {
@@ -15,8 +14,8 @@ export default class MapTab extends React.Component {
       super(props);
       this.state = {
          region: {},
-         bizSelected: false,
          selectedBiz: {},
+         selectedBizModalVisible: false,
       }
       this.parentMapRef = React.createRef();
       this.parentBottomSheetRef = React.createRef();
@@ -26,6 +25,10 @@ export default class MapTab extends React.Component {
 
    onRegionChangeComplete = (region) => {
       this.setState({region});
+   }
+
+   onHamburgerPress = () => {
+      this.props.navigation.openDrawer();
    }
 
    findLocationButton = () => {
@@ -41,7 +44,7 @@ export default class MapTab extends React.Component {
 
    showNearbyBizButton = () => {
       this.setState({bizSelected: false}, () => {
-         this.parentBottomSheetRef.current.snapToOpen()
+         this.parentBottomSheetRef.current.snapToOpen();
       });
    }
 
@@ -60,9 +63,11 @@ export default class MapTab extends React.Component {
          if (latitude === pressedLat && longitude === pressedLng) return biz;
       });
       this.setState({
-            bizSelected:true,
-            selectedBiz}
-      , () => { });
+         // nearbyModalVisible: false,
+         // selectedBizModalVisible: true,
+         bizSelected: true,
+         selectedBiz
+      }, () => { });
    }
 
    onCalloutPress = () => {
@@ -80,8 +85,14 @@ export default class MapTab extends React.Component {
                onPress={this.onMapPress}
             />
 
-            {/* <Search/> */}
-            <ButtonGroupComponent/>
+            <TouchableHighlight
+               style={styles.hambugerMenuWrapper}
+               onPressIn={this.onHamburgerPress}
+               accessibilityLabel={"choose a category"}>
+               <View style={styles.iconWrapper}>
+                  <FontAwesome style={styles.hambugerMenu} name="bars" size={24} color="black" />
+               </View>
+            </TouchableHighlight>
             
             <TouchableHighlight
                style={styles.locationButtWrapper}
@@ -117,6 +128,7 @@ export default class MapTab extends React.Component {
                ref={this.parentBottomSheetRef}
                bizArr={this.context.state.bizArr}/>
          </View>
+         
       );
    }
 }
@@ -127,6 +139,24 @@ const styles = StyleSheet.create({
       backgroundColor: '#f5fcff',
       alignItems: 'center',
       justifyContent: 'center',
+   },
+   hambugerMenuWrapper: {
+      borderRadius: 100,
+      
+      // shadow
+      shadowColor: "#000",
+      shadowOffset: {
+         width: 0,
+         height: 5,
+      },
+      shadowOpacity: 0.36,
+      shadowRadius: 6.68,
+      elevation: 11,
+      
+      //position
+      position: 'absolute',
+      top: 45,
+      left: 15,
    },
    locationIconStyle: {
       color: 'blue',

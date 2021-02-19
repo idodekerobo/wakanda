@@ -35,31 +35,35 @@ const Map = React.forwardRef((props,mapRef) => {
    const { state } = useContext(GlobalContext);
    
    // using onCalloutPress as workaround since TouchableOpacity onPress isn't working
-   const markers = state.bizArr.slice().map(biz => {
-      if (state.selectedCategory === 0) {
-         return <Marker stopPropagation={false} key={biz._id} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress}>
-            <Callout key={biz._id}>
-               <TouchableOpacity >
-                  <Text>{biz.name}</Text>
-                  <Text style={{ color: 'blue' }}>
-                     View Restaurant
-                  </Text>
-               </TouchableOpacity>
-            </Callout>
-         </Marker>
-      } else if (categoryGetter(biz.category) === state.selectedCategory) {
-         return <Marker stopPropagation={false} key={biz._id} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress}>
-            <Callout key={biz._id}>
-               <TouchableOpacity >
-                  <Text>{biz.name}</Text>
-                  <Text style={{ color: 'blue' }}>
-                     View More
-                    </Text>
-               </TouchableOpacity>
-            </Callout>
-         </Marker>
-      }
-   });
+   // const markers = state.bizArr.slice().map((biz, i) => {
+   let markers;
+   if ((state.bizArr !== undefined) && (state.bizArr !== null)) {
+      markers = state.bizArr.slice().map((biz, i) => {
+         if (state.selectedCategories.includes(0)) {
+            return <Marker stopPropagation={false} key={`${biz._id}${i}`} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress}>
+               <Callout key={biz._id}>
+                  <TouchableOpacity >
+                     <Text>{biz.name}</Text>
+                     <Text style={{ color: 'blue' }}>
+                        View Restaurant
+                     </Text>
+                  </TouchableOpacity>
+               </Callout>
+            </Marker>
+         } else if (state.selectedCategories.includes(categoryGetter(biz.category))) {
+            return <Marker stopPropagation={false} key={`${biz._id}${i}`} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress}>
+               <Callout key={biz._id}>
+                  <TouchableOpacity >
+                     <Text>{biz.name}</Text>
+                     <Text style={{ color: 'blue' }}>
+                        View More
+                       </Text>
+                  </TouchableOpacity>
+               </Callout>
+            </Marker>
+         }
+      });
+   }
 
    return (
       <MapView

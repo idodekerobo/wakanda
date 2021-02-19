@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MapTab, SubmitFormScreen, Categories } from './Screen-Exports';
+import { SubmitFormScreen } from './Screen-Exports';
+import MapTabContainer from './MapTabContainer';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -28,7 +29,7 @@ export default function TabNavigator() {
                showLabel: false,
             }}
             >
-            <Tab.Screen name="Map" component={MapTab}/>
+            <Tab.Screen name="Map" component={MapTabContainer}/>
             {/* <Tab.Screen name="Categories" component={Categories} /> */}
             <Tab.Screen name="Submit-Biz" component={SubmitFormScreen} />
          </Tab.Navigator>
