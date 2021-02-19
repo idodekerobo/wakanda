@@ -40,22 +40,22 @@ const Map = React.forwardRef((props,mapRef) => {
    if ((state.bizArr !== undefined) && (state.bizArr !== null)) {
       markers = state.bizArr.slice().map((biz, i) => {
          if (state.selectedCategories.includes(0)) {
-            return <Marker stopPropagation={false} key={`${biz._id}${i}`} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress}>
+            return <Marker stopPropagation={false} key={`${biz._id}${i}`} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress} pinColor="#0a431d">
                <Callout key={biz._id}>
                   <TouchableOpacity >
                      <Text>{biz.name}</Text>
-                     <Text style={{ color: 'blue' }}>
+                     <Text style={{ color: '#0a431d' }}>
                         View Restaurant
                      </Text>
                   </TouchableOpacity>
                </Callout>
             </Marker>
          } else if (state.selectedCategories.includes(categoryGetter(biz.category))) {
-            return <Marker stopPropagation={false} key={`${biz._id}${i}`} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress}>
+            return <Marker stopPropagation={false} key={`${biz._id}${i}`} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress} pinColor="#0a431d">
                <Callout key={biz._id}>
                   <TouchableOpacity >
                      <Text>{biz.name}</Text>
-                     <Text style={{ color: 'blue' }}>
+                     <Text style={{ color: '#0a431d' }}>
                         View More
                        </Text>
                   </TouchableOpacity>

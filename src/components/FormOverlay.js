@@ -8,7 +8,7 @@ const FormOverlay = ({visible, toggleOverlay}) => {
       <Overlay isVisible={visible} overlayStyle={styles.overlayStyle}>
 
          <Text style={styles.text}>
-            Thank you for helping grow Afe!
+            Thank you for supporting minorities in your community!
          </Text>
 
          <View style={styles.iconContainer}>
@@ -23,7 +23,7 @@ export default FormOverlay;
 
 const styles = StyleSheet.create({
    overlayStyle: {
-      height: '60%',
+      height: '50%',
       width: '85%',
       padding: 10,
       display: 'flex',
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
       flex: 1,
       display: 'flex',
       justifyContent: 'center',
+      marginTop: -20,
       alignItems: 'center',
-      paddingTop: 15,
    },
    buttonContainerStyle: {
       alignItems: 'center',
@@ -46,15 +46,22 @@ const styles = StyleSheet.create({
    buttonStyle: {
       width: '80%',
       textAlign: 'center',
+      backgroundColor: "#0a431d",
    },
    buttonTitleStyle: {
       flex: 1,
+      fontSize: 24,
+      fontWeight: '500',
    },
    iconStyle: {
       marginBottom: 0,
    },
    text: {
       marginTop: 50,
-      fontSize: 18,
+      fontSize: 28,
+      width: '80%',
+      textAlign: 'center',
+      fontWeight: '300',
+      color: "#0a431d",
    },
 })

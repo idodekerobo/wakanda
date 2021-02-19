@@ -46,38 +46,45 @@ const BizForm = (props) => {
             {({ handleChange, handleSubmit, values, errors, isSubmitting }) => (
                
                <View style={styles.formContainer}>
-                  <Input placeholder="Name" disabled={(isSubmitting) ? true : false} containerStyle={styles.inputStyle} onChangeText={handleChange('name')} value={values.name} />
-                  <Text style={styles.errorText}>
-                     {(errors.name) ? "Please enter a name for the business!" : null}
-                  </Text>
-                  
-                  <View style={styles.addressInput}>
-                     <Input placeholder="Street Address" containerStyle={[styles.inputStyle, styles.streetAddressInputStyle]} onChangeText={handleChange('streetAddress')} value={values.streetAddress} />
-                     <View style={styles.cityStateZip}>
-                        <Input placeholder="City" containerStyle={{ ...styles.inputStyle, ...styles.cityInput }} onChangeText={handleChange('city')} value={values.city} />
-                        <Input placeholder="State" containerStyle={[styles.inputStyle, styles.stateInput]} onChangeText={handleChange('state')} value={values.state} />
-                        <Input placeholder="ZIP" keyboardType="numeric" containerStyle={[styles.inputStyle, styles.zipInput]} onChangeText={handleChange('zip')} value={values.zip} />
-                     </View>
+                  <View style={styles.inputFieldWrapperView}>
+                     <Input placeholder="Business Name" disabled={(isSubmitting) ? true : false} inputStyle={styles.inputStyle} containerStyle={styles.inputContainerStyle} onChangeText={handleChange('name')} value={values.name} />
                      <Text style={styles.errorText}>
-                        {/* {errors.streetAddress || errors.city || errors.state || errors.zip} */}
-                        {(errors.streetAddress) ? "Please enter a valid street address!" : (errors.city) ? "Please enter a valid city!" : (errors.state) ? "Please enter a valid state!" : (errors.zip) ? "ZIP code is not required but please enter a valid ZIP code" : null}
+                        {(errors.name) ? "Please enter a name for the business!" : null}
                      </Text>
-                  </View>
+                     
+                     <View style={styles.addressInput}>
+                        <Input placeholder="Street Address" inputStyle={styles.inputStyle} containerStyle={[styles.inputContainerStyle, styles.streetAddressInputStyle]} onChangeText={handleChange('streetAddress')} value={values.streetAddress} />
+                        <View style={styles.cityStateZipContainer}>
+                           <Input placeholder="City" inputStyle={styles.inputStyle} containerStyle={{ ...styles.inputContainerStyle, ...styles.cityInput }} onChangeText={handleChange('city')} value={values.city} />
+                           <View style={styles.stateZipContainer}>
+                              <Input placeholder="State" inputStyle={styles.inputStyle} containerStyle={[styles.inputContainerStyle, styles.stateInput]} onChangeText={handleChange('state')} value={values.state} />
+                              <Input placeholder="ZIP" keyboardType="numeric" inputStyle={styles.inputStyle} containerStyle={[styles.inputContainerStyle, styles.zipInput]} onChangeText={handleChange('zip')} value={values.zip} />
+                           </View>
+                        </View>
+                        <Text style={styles.errorText}>
+                           {/* {errors.streetAddress || errors.city || errors.state || errors.zip} */}
+                           {(errors.streetAddress) ? "Please enter a valid street address!" : (errors.city) ? "Please enter a valid city!" : (errors.state) ? "Please enter a valid state!" : (errors.zip) ? "ZIP code is not required but please enter a valid ZIP code" : null}
+                        </Text>
+                     </View>
 
-                  <Input placeholder="Phone Number" keyboardType="phone-pad" containerStyle={styles.inputStyle} onChangeText={handleChange('tel')} value={values.tel} />
-                  <Text style={styles.errorText}>
-                     {(errors.tel) ? "A contact phone number is required!" : null}
-                  </Text>
-
-                  <View style={styles.optionalWrapper}>
-                     <Input placeholder="Email Address" keyboardType="email-address" containerStyle={[styles.inputStyle]} inputContainerStyle={styles.emailInput} onChangeText={handleChange('email')} value={values.email} />
-                     <Text style={(errors.email) ? styles.optionalErr : styles.optional}>
-                        {((errors.email) ? "Please enter a valid email address!" : null) || 'Optional'}
+                     <Input placeholder="Phone Number" keyboardType="phone-pad" inputStyle={styles.inputStyle} containerStyle={styles.inputContainerStyle} onChangeText={handleChange('tel')} value={values.tel} />
+                     <Text style={styles.errorText}>
+                        {(errors.tel) ? "A contact phone number is required!" : null}
                      </Text>
+
+                     <View style={styles.optionalWrapper}>
+                        {/* <Input placeholder="Email Address" keyboardType="email-address" inputStyle={styles.inputStyle} containerStyle={[styles.inputContainerStyle]} inputContainerStyle={styles.emailInput} onChangeText={handleChange('email')} value={values.email} />
+                        <Text style={(errors.email) ? styles.optionalErr : styles.optional}>
+                           {((errors.email) ? "Please enter a valid email address!" : null) || 'Optional'}
+                        </Text> */}
+
+                     </View>
 
                   </View>
                   
-                  <Button title="Submit" onPress={handleSubmit} containerStyle={styles.submitButtonContainerStyle} disabled={isSubmitting} disabledStyle={styles.disabledButtonStyle} titleStyle={(isSubmitting) ? {color: 'lightgrey'} : {}} />
+                  <View style={styles.buttonWrapperView}>
+                     <Button title="Submit" onPress={handleSubmit} containerStyle={styles.submitButtonContainerStyle} buttonStyle={styles.submitButtonStyle} disabled={isSubmitting} disabledStyle={styles.disabledButtonStyle} titleStyle={(isSubmitting) ? {color: 'lightgrey', fontSize: 24, fontWeight: '500',} : {fontSize: 24,fontWeight: '500',}} />
+                  </View>
                </View>
 
             )}
@@ -88,20 +95,34 @@ export default BizForm;
 
 
 const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      paddingTop: 50,
-      alignItems: 'center',
-   },
+   // container: {
+   //    flex: 1,
+   //    paddingTop: 50,
+   //    // height: '100%',
+   //    display: 'flex',
+   //    flexDirection: 'column',
+   //    justifyContent: 'space-between',
+   // },
    formContainer: {
       flex: 1,
       width: '90%',
+      height: '100%',
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      // alignItems: 'flex-start',
    },
+   inputFieldWrapperView: {
+      flex: 1,
+      width: '100%',
+   },
+   buttonWrapperView: {},
    inputStyle: {
+      color: "#0a431d",
+   },
+   inputContainerStyle: {
       width: '95%',
+      
    },
    errorText: {
       color: 'red',
@@ -120,21 +141,25 @@ const styles = StyleSheet.create({
       width: '100%',
    },
    streetAddressInputStyle: {
-      marginBottom: -15,
+      // marginBottom: -15,
    },
-   cityStateZip: {
+   cityStateZipContainer: {
       width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+   },
+   stateZipContainer: {
       display: 'flex',
       flexDirection: 'row',
    },
    cityInput: {
-      width: '43%',
+      width: '95%',
    },
    stateInput: {
-      width: '25%',
+      width: '67%',
    },
    zipInput: {
-      width: '27%'
+      width: '28%'
    },
    optionalWrapper: {
       width: '100%',
@@ -154,9 +179,13 @@ const styles = StyleSheet.create({
       marginBottom: 7,
    },
    submitButtonContainerStyle: {
-      width: '75%',
+      width: '90%',
       alignSelf: 'center',
       marginTop: 13,
+      marginBottom: 30,
+   },
+   submitButtonStyle: {
+      backgroundColor: "#0a431d",
    },
    disabledButtonStyle: {
       backgroundColor: 'grey',

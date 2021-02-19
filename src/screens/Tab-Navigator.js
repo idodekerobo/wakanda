@@ -24,7 +24,12 @@ export default function TabNavigator() {
                },
             })}
             tabBarOptions={{
-               activeTintColor: 'blue',
+               // style: {backgroundColor: '#0a431d', borderColor: '#0a431d',},
+               // activeBackgroundColor: '#0a431d',
+               // inactiveBackgroundColor: '#0a431d',
+               
+               // activeTintColor: '#fff',
+               activeTintColor: '#0a431d',
                inactiveTintColor: 'grey',
                showLabel: false,
             }}

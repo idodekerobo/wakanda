@@ -8,9 +8,9 @@
     ],
     "version": "0.1.0",
     "orientation": "portrait",
-    "icon": "./assets/afe-v2.png",
+    "icon": "./assets/afe-v4.png",
     "splash": {
-      "image": "./assets/afe-v2.png",
+      "image": "./assets/afe-v4.png",
       "resizeMode": "contain",
       "backgroundColor": "#105927"
     },

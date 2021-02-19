@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { CheckBox, } from 'react-native-elements'
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
-import { Text } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { GlobalContext } from '../context/GlobalState';
 import { SELECTED_CATEGORY } from '../context/ActionCreators';
 
@@ -76,18 +76,43 @@ const DrawerContent = (props) => {
    }
 
    const categoryCheckboxes = checkboxes.map((el, i) => {
-      return <CheckBox title={el.name} key={i} checked={el.checked} onPress={() => onCheckboxClick(el)}/>
+      return <CheckBox title={el.name} key={i} containerStyle={styles.checkboxStyle} textStyle={styles.checkboxTextStyle} checkedColor={styles.checkedColor.color} checked={el.checked} onPress={() => onCheckboxClick(el)}/>
    })
 
    return (
       <DrawerContentScrollView {...props}>
          <DrawerItemList {...props} />
          {/* <DrawerItem label="Categories" onPress={() => console.log(`Pressed category label`)}/> */}
-            <Text style={{marginLeft: 15, fontSize: 18, fontWeight: '400', color: '#0a431d'}}>Categories</Text>
-            <CheckBox title={selectAll.name} checked={selectAll.checked} onPress={onSelectAllClick} />
+            <Text style={styles.labelStyle}>Categories</Text>
+            <CheckBox title={selectAll.name} containerStyle={styles.checkboxStyle} textStyle={styles.checkboxTextStyle} checkedColor={styles.checkedColor.color} checked={selectAll.checked} onPress={onSelectAllClick} />
             {categoryCheckboxes}
       </DrawerContentScrollView>
    )
 }
 
 export default DrawerContent;
+
+const styles = StyleSheet.create({
+   labelStyle: {
+      marginLeft: 17,
+      fontSize: 21,
+      fontWeight: '400',
+      color: '#0a431d',
+      // color: '#fff'
+   },
+   checkboxStyle: {
+      // backgroundColor: '#f2fff7',
+      // backgroundColor: '#d5e8dc',
+      // backgroundColor: '#0a431d',
+      // borderColor: '#0a431d',
+   },
+   checkboxTextStyle: {
+      // color: '#fff'
+   },
+   checkedColor: {
+      color: '#0a431d'
+   },
+   // checkedColor: {
+   //    color: '#fff'
+   // },
+})

@@ -4,6 +4,9 @@ import * as Linking from 'expo-linking';
 import BottomSheet from 'reanimated-bottom-sheet';
 import { Divider } from 'react-native-elements';
 import openMap from 'react-native-open-maps';
+import { Feather } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 export default class BottomSheetComponent extends React.Component {
 
@@ -33,31 +36,25 @@ export default class BottomSheetComponent extends React.Component {
       <View key={item._id}>
          <View style={styles.listItemInfo}>
             <Text style={{ fontSize: 28, paddingBottom: 10 }}>{item.name}</Text>
-            <Text style={{ fontSize: 16, paddingBottom: 10 }}>{item.desc}</Text>
+            <Text style={{ fontSize: 16, paddingBottom: 5 }}>{item.desc}</Text>
          </View>
 
          <View style={styles.listItemLinks}>
             <TouchableOpacity onPress={() => this.callBusiness(item.tel)}>
-               <View style={{ ...styles.customButtonStyle, marginRight: 5, paddingRight: 20, paddingLeft: 20 }}>
-                  <Text style={styles.customButtonTextStyle}>
-                     Call
-                  </Text>
+               <View style={styles.iconWrapper}>
+                  <Feather name="phone-call" size={22} color="white" />
                </View>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => this.openInMaps(item.coordinates, item.name)}>
-               <View style={{ ...styles.customButtonStyle, marginRight: 5, paddingRight: 20, paddingLeft: 20 }}>
-                  <Text style={styles.customButtonTextStyle}>
-                     Directions
-                  </Text>
+               <View style={styles.iconWrapper}>
+                  <FontAwesome5 name="directions" size={22} color="white" />
                </View>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => this.visitWebsite(item.website)}>
-               <View style={{ ...styles.customButtonStyle, marginRight: 5, paddingRight: 20, paddingLeft: 20 }}>
-                  <Text style={styles.customButtonTextStyle}>
-                     Website
-                  </Text>
+               <View style={styles.iconWrapper}>
+                  <AntDesign name="earth" size={22} color="white" />
                </View>
             </TouchableOpacity>
          </View>
@@ -94,31 +91,22 @@ export default class BottomSheetComponent extends React.Component {
 
                <View style={styles.listItemLinks}>
                   <TouchableOpacity onPress={() => this.callBusiness(this.props.selectedBiz.tel)}>
-                     <View style={{ ...styles.customButtonStyle, ...(this.props.selectedBiz.tel === '' || this.props.selectedBiz.tel === undefined) ? styles.inactiveButton : null }}>
-                        <Text style={{ ...styles.customButtonTextStyle, ...(this.props.selectedBiz.tel === '' || this.props.selectedBiz.tel === undefined) ? styles.inactiveButton : null }}>
-                           Call
-                  </Text>
-                     </View>
+                        <View style={ (this.props.selectedBiz.tel === '' || this.props.selectedBiz.tel === undefined) ? {...styles.iconWrapper, ...styles.inactiveLinkStyle} : styles.iconWrapper }>
+                           <Feather name="phone-call" size={22} color="white" />
+                        </View>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => this.openInMaps(this.props.selectedBiz.coordinates, this.props.selectedBiz.name)}>
-                     <View style={{ ...styles.customButtonStyle, ...(this.props.selectedBiz.coordinates === '' || this.props.selectedBiz.coordinates === undefined) ? styles.inactiveButton : null }}>
-                        <Text style={{ ...styles.customButtonTextStyle, ...(this.props.selectedBiz.coordinates === '' || this.props.selectedBiz.coordinates === undefined) ? styles.inactiveButton : null }}>
-                           Get Directions
-                  </Text>
+                     <View style={ (this.props.selectedBiz.coordinates === '' || this.props.selectedBiz.coordinates === undefined) ? {...styles.iconWrapper, ...styles.inactiveLinkStyle} : styles.iconWrapper }>
+                        <FontAwesome5 name="directions" size={22} color="white" />
                      </View>
                   </TouchableOpacity>
 
-               </View>
-               <View style={styles.listItemLinks}>
                   <TouchableOpacity onPress={() => this.visitWebsite(this.props.selectedBiz.website)}>
-                     <View style={{ ...styles.customButtonStyle, ...(this.props.selectedBiz.website === '' || this.props.selectedBiz.website === undefined) ? styles.inactiveButton : null }}>
-                        <Text style={{ ...styles.customButtonTextStyle, ...(this.props.selectedBiz.website === '' || this.props.selectedBiz.website === undefined) ? styles.inactiveButton : null }}>
-                           Visit Website
-                  </Text>
+                     <View style={ (this.props.selectedBiz.website === '' || this.props.selectedBiz.website === undefined) ? {...styles.iconWrapper, ...styles.inactiveLinkStyle} : styles.iconWrapper }>
+                        <AntDesign name="earth" size={22} color="white" />
                      </View>
                   </TouchableOpacity>
                </View>
-
 
             </View>
          </View>
@@ -194,20 +182,29 @@ const styles = StyleSheet.create({
       // backgroundColor: '#f7f5eee8', // translucent background
       backgroundColor: 'white',
    },
+   iconWrapper: {
+      // alignment
+      justifyContent: 'center',
+      alignItems: 'center',
+      // circular background
+      height: 45,
+      width: 45,
+      borderRadius: 45/2,
+      // backgroundColor: 'white',
+      backgroundColor: '#0a431d',
+      overflow: 'hidden',
+      marginRight: 5,
+      marginBottom: 5,
+   },
    listItemContainer: {
       flexDirection: "column",
       height: '100%',
       width: '100%',
       justifyContent: 'flex-start',
    },
-   nearbyBizListItem: {
-
-   },
    listItemInfo: {
+      marginTop: 8,
       paddingTop: 12,
-   },
-   listItemPic: {
-      marginBottom: -5,
    },
    divider: {
       alignSelf: 'center',
@@ -231,25 +228,14 @@ const styles = StyleSheet.create({
    },
    listItemLinks: {
       flexDirection: "row",
+      justifyContent: 'space-around',
       alignItems: 'flex-start',
       height: 40,
+      marginTop: 10,
       marginBottom: 20,
    },
-   customButtonStyle: {
-      flex: 1,
-      backgroundColor: 'blue',
-      borderRadius: 5,
-      padding: 10,
-      paddingLeft: 30,
-      paddingRight: 30,
-      marginRight: 30,
-   },
-   inactiveButton: {
+   inactiveLinkStyle: {
       backgroundColor: 'grey',
-   },
-   customButtonTextStyle: {
-      color: 'white',
-      backgroundColor: 'blue',
    },
    selectedBizInfo: {
       flexDirection: 'column',

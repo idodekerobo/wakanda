@@ -9,12 +9,12 @@ const SubmitFormScreen = () => {
       <View style={styles.container}>
 
          <View style={styles.textContainer}>
-            <Text h4 h4Style={styles.header}>Help get businesses on Afe!</Text>
-            <Text style={styles.subHeader}>Know a black-owned business that we don't?</Text>
+            <Text h4 h4Style={styles.header}>Know a <Text h4 h4Style={styles.blackOwned}>black-owned</Text> business?</Text>
+            {/* <Text style={styles.subHeader}>Know a black-owned business that we don't?</Text> */}
             <Text style={styles.subHeader}>Get us acquainted!</Text>
          </View>
          
-         <KeyboardAwareScrollView>
+         <KeyboardAwareScrollView style={styles.formContainer}>
             <ScrollView contentContainerStyle={styles.scrollViewContainer}><BizForm/></ScrollView>
          </KeyboardAwareScrollView>
       
@@ -25,8 +25,10 @@ export default SubmitFormScreen;
 
 const styles = StyleSheet.create({
    container: {
+      marginTop: '1%',
       flex: 1,
       paddingTop: 50,
+      // backgroundColor: '#0a431d',
    },
    textContainer: {
       marginLeft: 25,
@@ -35,12 +37,27 @@ const styles = StyleSheet.create({
    },
    header: {
       marginBottom: 5,
+      // color: '#fff',
+   },
+   blackOwned: {
+      color: '#0a431d',
+      textDecorationLine: 'underline',
+      textDecorationColor: '#0a431d',
+      // textDecorationStyle: 'double',
    },
    subHeader: {
-      fontSize: 16
+      fontSize: 18
+   },
+   formContainer: {
+      flex: 1,
+      height: '100%',
+      backgroundColor: '#fff',
+      borderRadius: 20,
    },
    scrollViewContainer: {
       flex: 1,
       alignItems: 'center',
+      marginTop: 20,
+      // marginBottom: 20,
    },
 });

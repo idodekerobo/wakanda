@@ -90,7 +90,7 @@ export default class MapTab extends React.Component {
                onPressIn={this.onHamburgerPress}
                accessibilityLabel={"choose a category"}>
                <View style={styles.iconWrapper}>
-                  <FontAwesome style={styles.hambugerMenu} name="bars" size={24} color="black" />
+                  <FontAwesome style={styles.iconStyle} name="bars" size={24} color="black" />
                </View>
             </TouchableHighlight>
             
@@ -100,7 +100,7 @@ export default class MapTab extends React.Component {
                accessibilityLabel={"Find location button"}>
                   <View style={styles.iconWrapper}>
                      <FontAwesome
-                        style={styles.locationIconStyle}
+                        style={styles.iconStyle}
                         name="location-arrow"
                         size={24}
                         color="black"
@@ -114,7 +114,7 @@ export default class MapTab extends React.Component {
                accessibilityLabel={"See nearby businesses"}>
                   <View style={styles.iconWrapper}>
                      <FontAwesome
-                        style={styles.locationIconStyle}
+                        style={styles.iconStyle}
                         name="briefcase"
                         size={24}
                         color="black"
@@ -142,7 +142,6 @@ const styles = StyleSheet.create({
    },
    hambugerMenuWrapper: {
       borderRadius: 100,
-      
       // shadow
       shadowColor: "#000",
       shadowOffset: {
@@ -158,9 +157,10 @@ const styles = StyleSheet.create({
       top: 45,
       left: 15,
    },
-   locationIconStyle: {
-      color: 'blue',
-      fontSize: 20,
+   iconStyle: {
+      // color: '#0a431d',
+      color: '#fff',
+      fontSize: 28,
    },
    locationButtWrapper: {
       borderRadius: 100,
@@ -202,7 +202,8 @@ const styles = StyleSheet.create({
       height: 60,
       width: 60,
       borderRadius: 60/2,
-      backgroundColor: 'white',
+      // backgroundColor: 'white',
+      backgroundColor: '#0a431d',
       overflow: 'hidden',
    },
    overlayStyle: {
