@@ -8,7 +8,7 @@
     ],
     "version": "0.1.0",
     "orientation": "portrait",
-    "icon": "./assets/afe-v4.png",
+    "icon": "./assets/afe-v4-icon.png",
     "splash": {
       "image": "./assets/afe-v4.png",
       "resizeMode": "contain",
