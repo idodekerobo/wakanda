@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { CheckBox, } from 'react-native-elements'
-import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { Text, StyleSheet } from 'react-native';
 import { GlobalContext } from '../context/GlobalState';
 import { SELECTED_CATEGORY } from '../context/ActionCreators';
@@ -51,7 +51,6 @@ const DrawerContent = (props) => {
          } else {
             return oldCheckbox;
          }
-         // return oldCheckbox.name === el.name ? {...oldCheckbox, checked: !oldCheckbox.checked} : oldCheckbox 
       });
       
       setCheckboxes(newState);
@@ -82,7 +81,6 @@ const DrawerContent = (props) => {
    return (
       <DrawerContentScrollView {...props}>
          <DrawerItemList {...props} />
-         {/* <DrawerItem label="Categories" onPress={() => console.log(`Pressed category label`)}/> */}
             <Text style={styles.labelStyle}>Categories</Text>
             <CheckBox title={selectAll.name} containerStyle={styles.checkboxStyle} textStyle={styles.checkboxTextStyle} checkedColor={styles.checkedColor.color} checked={selectAll.checked} onPress={onSelectAllClick} />
             {categoryCheckboxes}
@@ -98,21 +96,12 @@ const styles = StyleSheet.create({
       fontSize: 21,
       fontWeight: '400',
       color: '#0a431d',
-      // color: '#fff'
    },
    checkboxStyle: {
-      // backgroundColor: '#f2fff7',
-      // backgroundColor: '#d5e8dc',
-      // backgroundColor: '#0a431d',
-      // borderColor: '#0a431d',
    },
    checkboxTextStyle: {
-      // color: '#fff'
    },
    checkedColor: {
       color: '#0a431d'
    },
-   // checkedColor: {
-   //    color: '#fff'
-   // },
 })

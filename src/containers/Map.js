@@ -45,7 +45,7 @@ const Map = React.forwardRef((props,mapRef) => {
                   <TouchableOpacity >
                      <Text>{biz.name}</Text>
                      <Text style={{ color: '#0a431d' }}>
-                        View Restaurant
+                        View More
                      </Text>
                   </TouchableOpacity>
                </Callout>

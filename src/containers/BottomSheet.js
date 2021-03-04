@@ -7,27 +7,40 @@ import openMap from 'react-native-open-maps';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { signInAnon, pinBusinessToProfile} from '../../api/firestore-api';
+
+import BizActionButton from '../components/BizActionButton';
 
 export default class BottomSheetComponent extends React.Component {
 
    constructor(props) {
       super(props);
-      this.bsRef = React.createRef();
+      this.bsRef = React.createRef();      
    }
 
    callBusiness = (tel) => {
+      // console.log(`call biz`)
       if (tel === undefined || tel === '') return;
       Linking.openURL(`tel:${tel}`).catch(e => console.log(e));
    }
 
    openInMaps = (coordinates, name) => {
+      // console.log(`open in maps`)
       if (coordinates === undefined || coordinates === '') return;
       openMap({ coordinates, query: name });
    }
 
    visitWebsite = (website) => {
+      // console.log(`visit website`)
       if (website === undefined || website === '') return;
       Linking.openURL(website).catch(e => console.log(e));;
+   }
+
+   pinBusiness = (biz) => {
+      console.log(`pin this business: ${biz.name}`)
+      // console.log(biz);
+      // signInAnon();
+      pinBusinessToProfile(biz._id)
    }
 
    // extractKey = ({ _id }) => _id;
@@ -40,23 +53,10 @@ export default class BottomSheetComponent extends React.Component {
          </View>
 
          <View style={styles.listItemLinks}>
-            <TouchableOpacity onPress={() => this.callBusiness(item.tel)}>
-               <View style={styles.iconWrapper}>
-                  <Feather name="phone-call" size={22} color="white" />
-               </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => this.openInMaps(item.coordinates, item.name)}>
-               <View style={styles.iconWrapper}>
-                  <FontAwesome5 name="directions" size={22} color="white" />
-               </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => this.visitWebsite(item.website)}>
-               <View style={styles.iconWrapper}>
-                  <AntDesign name="earth" size={22} color="white" />
-               </View>
-            </TouchableOpacity>
+            <BizActionButton action={this.callBusiness.bind(this,item.tel)} logo={<Feather name="phone-call" size={22} color="white" />} />
+            <BizActionButton action={this.openInMaps.bind(this, item.coordinates, item.name)} logo={<FontAwesome5 name="directions" size={22} color="white" />}/>
+            <BizActionButton action={this.visitWebsite.bind(this, item.website)} logo={<AntDesign name="earth" size={22} color="white" />} />
+            <BizActionButton action={this.pinBusiness.bind(this,item)} logo={<AntDesign name="pushpino" size={22} color="white" />} />
          </View>
 
          <Divider style={styles.divider} />
@@ -104,6 +104,12 @@ export default class BottomSheetComponent extends React.Component {
                   <TouchableOpacity onPress={() => this.visitWebsite(this.props.selectedBiz.website)}>
                      <View style={ (this.props.selectedBiz.website === '' || this.props.selectedBiz.website === undefined) ? {...styles.iconWrapper, ...styles.inactiveLinkStyle} : styles.iconWrapper }>
                         <AntDesign name="earth" size={22} color="white" />
+                     </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => this.pinBusiness(this.props.selectedBiz)}>
+                     <View style={ (this.props.selectedBiz === null || this.props.selectedBiz === undefined) ? {...styles.iconWrapper, ...styles.inactiveLinkStyle} : styles.iconWrapper }>
+                     <AntDesign name="pushpino" size={22} color="white" />
                      </View>
                   </TouchableOpacity>
                </View>

@@ -19,6 +19,11 @@ export const Reducer = (state, action) => {
             ...state, 
             selectedCategories: action.selectedCategories,
          };
+      case TAKE_SNAPSHOT: 
+         return {
+            ...state,
+            mapSnapshot: action.url,
+         }
       default: 
          return state;
    }

@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TouchableHighlight, Modal } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Map, BottomSheetComponent, NearbyBizBS, SelectedBizBS } from '../containers/Container-Exports';
 import { GlobalContext } from '../context/GlobalState'; // importing global store
+import { TAKE_SNAPSHOT } from '../context/ActionCreators';
 
 // TODO - move style into separate js file and import in
 
@@ -63,15 +64,43 @@ export default class MapTab extends React.Component {
          if (latitude === pressedLat && longitude === pressedLng) return biz;
       });
       this.setState({
-         // nearbyModalVisible: false,
-         // selectedBizModalVisible: true,
          bizSelected: true,
          selectedBiz
       }, () => { });
    }
 
+   takeSnapshot = () => {
+      // const { dispatch } = this.context;
+      // console.log(this.parentMapRef);
+      const snapshot = this.parentMapRef.current.takeSnapshot({
+         width: 300,      // optional, when omitted the view-width is used
+         height: 300,     // optional, when omitted the view-height is used
+         // region: { // iOS only, optional region to render
+            // latitude: state.location.coords.latitude,
+            // longitude: state.location.coords.longitude,
+            // latitudeDelta: 0.0122,
+            // longitudeDelta: 0.0221,
+         // },    
+         format: 'png',   // image formats: 'png', 'jpg' (default: 'png')
+         quality: 0.8,    // image quality: 0..1 (only relevant for jpg, default: 1)
+         result: 'file'   // result types: 'file', 'base64' (default: 'file')
+      });
+      snapshot.then(url => {
+         console.log(`screenshot url: ${url}`);
+         // dispatch({type: TAKE_SNAPSHOT, url })
+      })
+   }
+
    onCalloutPress = () => {
       this.parentBottomSheetRef.current.snapToOpen();
+      // this.takeSnapshot();
+   }
+
+   signIn = () => {
+      
+   }
+   componentDidMount() {
+
    }
 
    render() {

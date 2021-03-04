@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import { StyleSheet, View, } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 import * as yup from 'yup';
-import * as dbApi from '../../api/firestore-api';
+import { addBusiness } from '../../api/firestore-api';
 
 const initValues = {
    name: '',
@@ -36,7 +36,7 @@ const BizForm = (props) => {
    return (
          <Formik initialValues={initValues}
             onSubmit={(bizObj, actions) => {
-               dbApi.addBusiness(bizObj);
+               addBusiness(bizObj);
                actions.resetForm();
                props.toggleOverlay();
             }}

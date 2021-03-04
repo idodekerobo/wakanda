@@ -2,3 +2,4 @@
 export const FETCH_BIZ_DATA = 'FETCH_BIZ_DATA';
 export const GET_LOCATION = 'GET_LOCATION';
 export const SELECTED_CATEGORY = 'SELECTED_CATEGORY';
+export const TAKE_SNAPSHOT = 'TAKE_SNAPSHOT';
