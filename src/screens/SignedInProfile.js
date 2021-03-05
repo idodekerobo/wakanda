@@ -1,59 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, ImageBackground } from 'react-native';
-import { Dimensions } from 'react-native';
 import { Divider } from 'react-native-elements';
 import ProfileOverlay from '../components/ProfileOverlay';
 import { Feather } from '@expo/vector-icons';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import BizCard from '../components/BizCard'
-import { getUserPinnedBusinesses } from  '../../api/firestore-api'
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-const biz = [
-   {name: 'ocean blue', city: 'Chandler, AZ', visits: 7, },
-   {name: 'ATL Wings', city: 'Mesa, AZ', visits: 12, },
-   {name: 'Sweetest Season', city: 'Tempe, AZ', visits: 3, },
-   {name: 'Lolo\'s Chicken & Waffles', city: 'Phoenix, AZ', visits: 3, },
-]
-
-const friendBiz = [
-   {friendName: 'sude', name: 'ocean blue', city: 'Chandler, AZ', visits: 7, },
-   {friendName: 'imodu', name: 'ATL Wings', city: 'Mesa, AZ', visits: 12, },
-   {friendName: 'omuwa', name: 'Sweetest Season', city: 'Tempe, AZ', visits: 3, },
-   {friendName: 'omuwa', name: 'Lolo\'s Chicken & Waffles', city: 'Phoenix, AZ', visits: 3, },
-]
-
-const initState = [
-   {name: '', address: '', desc: '' },
-   {name: '', address: '', desc: '' },
-]
+import { db } from '../../api/firebase-config';
+import { getCurrentAuthUser, getUserPinnedBusinesses } from  '../../api/firestore-api'
 
 const SignedInProfile = () => {
-   const [ pinnedBusinesses, setPinnedBusinesses ] = useState(initState)
+   const [ pinnedBusinesses, setPinnedBusinesses ] = useState([])
 
    const onViewMorePress = (e) => {
       console.log('view more press');
    }
 
-   // const el = [0, 12, 3]
    const pinBizCard = pinnedBusinesses.map((el, i) => {
-   // const pinBizCard = el.map((el, i) => {
       return <BizCard key={i} name={el.name} address={el.address} description={el.desc}/>
    })
 
-   const pinnedBiz = async () => {
+   const pinnedBizHeader = ((pinnedBusinesses) && (pinnedBusinesses.length > 0)) ? <Text style={styles.pinnedBizHeader}>Your Pinned Businesses</Text> : <Text style={styles.pinnedBizHeader}>Your Pinned Businesses Will Go Here</Text>
+
+   const getPinnedBiz = async () => {
       // TODO -  this only waits if i use auth.currentUser, but the docs say listen on onAuthStateChanged???
       // TODO - work around, make sure user is anonSigned in before running this
       const biz = await getUserPinnedBusinesses(); 
-      console.log(`logging from pinnedBiz async function in signedinprofile component ${biz}`);
-      setPinnedBusinesses(biz)
-      // return biz;
+      if (biz) setPinnedBusinesses(biz);
+   }
+
+   const getUserUid = async () => {
+      const currentUser = await getCurrentAuthUser(); 
+      return currentUser.uid;
+   }
+
+   const watchUserObject = async () => {
+      const currentUserUid = await getUserUid();
+      // https://stackoverflow.com/a/61468950/9352841
+      const subscriber = db
+         .collection("users")
+         .doc(currentUserUid)
+         .onSnapshot(snapshot => {
+            // TODO - optimize this to pass in user uid directly since you get it earlier in functoin and not re-read it from database
+            getPinnedBiz();
+         })
+
+      // stop listening for updates when no longer required
+      return () => subscriber();
    }
 
    useEffect(() => {
-      pinnedBiz();
+      watchUserObject();
    }, [ ])
 
    return (
@@ -70,8 +66,9 @@ const SignedInProfile = () => {
             
             <ProfileOverlay />
                <View >
+                  {pinnedBizHeader}
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
-                     {pinBizCard}
+                     {(pinnedBusinesses) ? pinBizCard : null}
                   </ScrollView>
                </View>
 
@@ -94,29 +91,11 @@ const styles = StyleSheet.create({
    feather: {
       marginRight: 10,
    },
-   pinnedBizContainer: {
-      marginTop: 40,
-      marginLeft: 10,
-   },
    pinnedBizHeader: {
-      fontFamily: 'AppleSDGothicNeo-UltraLight',
+      marginLeft: 15,
+      // fontFamily: 'AppleSDGothicNeo-UltraLight',
+      fontFamily: 'HelveticaNeue',
       fontWeight: '300',
       fontSize: 24,
-   },
-   
-   pinnedBizScrollView: {
-      // marginTop: 10,
-   },
-   pinnedBizScrollViewContent: {
-      // marginLeft: 'auto',
-      marginRight: 'auto',
-      // width: '100%',
-   },
-   pinnedBizElement: {
-      // width: '33%',
-      flexDirection: 'row',
-   },
-   pinnedBizElementStats: {
-      // width: '23%',
    },
 })

@@ -8,7 +8,14 @@ import { TAKE_SNAPSHOT } from '../context/ActionCreators';
 
 // TODO - move style into separate js file and import in
 
-
+const categoryGetter = (bizCategory) => {
+   if (bizCategory === 'restaurant') return 1;
+   if (bizCategory === 'cosmetics') return 2;
+   if (bizCategory === 'arts') return 3;
+   if (bizCategory === 'clothing') return 3;
+   if (bizCategory === 'technology') return 4;
+   if (bizCategory === 'other') return 4;
+}
 
 export default class MapTab extends React.Component {
    constructor(props) {
@@ -96,9 +103,20 @@ export default class MapTab extends React.Component {
       // this.takeSnapshot();
    }
 
-   signIn = () => {
-      
+   returnSelectedCategoryBiz = () => {
+      const { state } = this.context;
+      let arr = [ ];
+      arr = state.bizArr.map(biz => {
+         if ( state.selectedCategories.includes(categoryGetter(biz.category)) ) {
+            return biz;
+         } else {
+            return;
+         }
+      })
+      console.log(arr);
+      return arr;
    }
+
    componentDidMount() {
 
    }
@@ -156,6 +174,7 @@ export default class MapTab extends React.Component {
                selectedBiz={this.state.selectedBiz}
                ref={this.parentBottomSheetRef}
                bizArr={this.context.state.bizArr}/>
+               {/* bizArr={this.returnSelectedCategoryBiz} /> */}
          </View>
          
       );

@@ -17,8 +17,11 @@ export async function signInAnon() {
       const user = response.user;
       console.log('this is the user object uid ', user.uid, ' ', user.displayName)
       
+      // set userIdToken to local storage
       const idToken = await user.getIdToken();
       await AsyncStorage.setItem('userIdToken', idToken);
+
+      return user;
    } catch (e) {
       console.log(`There was an error: ${e}`)
    }
@@ -40,6 +43,18 @@ export async function getCurrentAuthUser() {
    let fbUser = null;
    fbUser = auth.currentUser;
 
+   if (fbUser) {
+      return fbUser;
+   } else {
+      // if there is no user signedIn -> look for idToken, if no idToken, signInAnon?
+      const user = await signInAnon();
+      return user;
+   }
+   
+   // CAN'T GET .onAuthStateChanged() to work
+      // can't get it to run synchronously so fbUser value gets set to user
+      // also can't just return user from the inner onAuthStateChanged function to the outer wrapper function
+   /*
    auth.onAuthStateChanged(user => {
       fbUser = user
       // THE BELOW CONSOLE.LOG WORKS
@@ -47,18 +62,19 @@ export async function getCurrentAuthUser() {
    })
    console.log(`return value from getCurrentAuthUser func ${fbUser}`)
    // BUT THIS RETURNS THE NULL FROM EARLIER IN THE FUNC ??
-
-   // CAN'T GET .onAuthStateChanged() to work synchronously, can't return user from an inner function into an outer function
-   return fbUser;
+   */
+   
 }
 
-
-export function pinBusinessToProfile(bizId) {
-   auth.onAuthStateChanged(user => {
+// will eventually have to limit pins to 3 per user
+export async function pinBusinessToProfile(bizId) {
+   // auth.onAuthStateChanged(user => {
+      const user = await getCurrentAuthUser();
+      const collectionName = 'users';
       if (user) {
          console.log(`user is signed in`)
          const uid = user.uid;
-         db.collection('users')
+         db.collection(collectionName)
          .doc(uid)
          .set({ // may have to use update({}) to not overwrite existing data
             pinnedBizArr: firebase.firestore.FieldValue.arrayUnion(bizId)
@@ -72,34 +88,11 @@ export function pinBusinessToProfile(bizId) {
          })
       } else {
          console.log('user is NOT signed in CANNOT pin business');
-         auth.signInAnonymously()
-         .then(returnObj => {
-            // user is signed in
-            const currentUser = returnObj.user;
-            const uid = currentUser.uid;
-
-            // pin biz to profile
-            db.collection('users')
-            .doc(uid)
-            .set({ // may have to use update({}) to not overwrite existing data
-               pinnedBizArr: firebase.firestore.FieldValue.arrayUnion(bizId)
-            },
-               { merge: true })
-            .then(() => {
-               console.log(`the doc set was successful`)
-            })
-            .catch(err => {
-               console.log(`there was an error setting the document ${err}`);
-            })
-         })
-         .catch(err => {
-            console.log(`could not sign user in anonymously ${err}`);
-         })
       }
-   });
+   // });
 }
 
-export async function getUserObjectFromFirestore(user) {
+export async function getUserDataFromFirestore(user) {
    if (!user) return;
 
    let userObj;
@@ -153,11 +146,10 @@ export async function getOneBusinessFromFirestore(docId) {
 }
 
 export async function getUserPinnedBusinesses() {
-   const user = await getCurrentAuthUser(); // this isn't working so just wrapped this in onAuthStateChanged
-   console.log(`user from getUserPinnedBiz func ${user}`);
+   const user = await getCurrentAuthUser();
    // auth.onAuthStateChanged(async user => {
       if (user) {
-         const userObject = await getUserObjectFromFirestore(user); // do i have to await this???
+         const userObject = await getUserDataFromFirestore(user); // do i have to await this???
          if (!userObject) return userObject;
    
          const pinnedBusinessIdArray = userObject.pinnedBizArr;
@@ -167,10 +159,9 @@ export async function getUserPinnedBusinesses() {
             const bizObj = await getOneBusinessFromFirestore(bizId); // do i have to await this too???
             arrayOfPinnedBusinessObjects.push(bizObj);
          }
-         // console.log(`arr of pinned biz from getUserPinnedBiz func ${arrayOfPinnedBusinessObjects}`)
          return arrayOfPinnedBusinessObjects;
       } else {
-         console.log('user is falsy')
+         console.log('user is falsy (null or undefined)')
       }
    // })
 }

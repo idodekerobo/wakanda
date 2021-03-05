@@ -3,20 +3,25 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Button, Overlay } from 'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+const OverlayChildren = ({ toggleOverlay }) => {
+   return (
+   <View style={styles.viewContainer}>
+      <Text style={styles.text}>
+         Thank you for supporting minorities in your community!
+            </Text>
+
+      <View style={styles.iconContainer}>
+         <MaterialCommunityIcons name="check" size={128} color="green" />
+      </View>
+
+      <Button title="Close" onPress={toggleOverlay} containerStyle={styles.buttonContainerStyle} buttonStyle={styles.buttonStyle} titleStyle={styles.buttonTitleStyle} />
+   </View>
+   )
+}
+
 const FormOverlay = ({visible, toggleOverlay}) => {
    return (
-      <Overlay isVisible={visible} overlayStyle={styles.overlayStyle}>
-
-         <Text style={styles.text}>
-            Thank you for supporting minorities in your community!
-         </Text>
-
-         <View style={styles.iconContainer}>
-            <MaterialCommunityIcons name="check" size={128} color="green" />
-         </View>
-         
-         <Button title="Close" onPress={toggleOverlay} containerStyle={styles.buttonContainerStyle} buttonStyle={styles.buttonStyle} titleStyle={styles.buttonTitleStyle}/>
-      </Overlay>
+      <Overlay children={<OverlayChildren toggleOverlay={toggleOverlay} />} isVisible={visible} overlayStyle={styles.overlayStyle} />
    )
 }
 export default FormOverlay;
@@ -30,6 +35,14 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'column',
+   },
+   viewContainer: {
+      flex: 1,
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',     
    },
    iconContainer: {
       flex: 1,

@@ -30,7 +30,7 @@ const ValidationSchema = yup.object({
    email: yup.string().email(),
 })
 
-const BizForm = (props) => {
+const BizForm = ({ toggleOverlay }) => {
    const [submitted, setSubmitted] = useState(false);
    
    return (
@@ -38,7 +38,7 @@ const BizForm = (props) => {
             onSubmit={(bizObj, actions) => {
                addBusiness(bizObj);
                actions.resetForm();
-               props.toggleOverlay();
+               toggleOverlay();
             }}
             validationSchema={ValidationSchema}
          >

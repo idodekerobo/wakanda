@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 import * as Linking from 'expo-linking';
 import BottomSheet from 'reanimated-bottom-sheet';
 import { Divider } from 'react-native-elements';
@@ -7,9 +7,14 @@ import openMap from 'react-native-open-maps';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { signInAnon, pinBusinessToProfile} from '../../api/firestore-api';
-
+import { pinBusinessToProfile} from '../../api/firestore-api';
 import BizActionButton from '../components/BizActionButton';
+
+const windowHeight = Dimensions.get('window').height;
+const screenHeight = Dimensions.get('screen').height;
+
+const topSnapPoint = (windowHeight > 800) ? 650 : 500
+const bottomSnapPoint = (windowHeight > 800) ? 190 : 90
 
 export default class BottomSheetComponent extends React.Component {
 
@@ -148,7 +153,7 @@ export default class BottomSheetComponent extends React.Component {
          <View style={styles.container}>
             <BottomSheet
                ref={this.bsRef}
-               snapPoints={[500, 90]}
+               snapPoints={['69.5%', '15%']}
                initialSnap={1}
                renderContent={(this.props.bizSelected) ? this.renderSelectedBiz : this.renderNearbyBiz}
                renderHeader={this.renderHeader}
@@ -157,7 +162,11 @@ export default class BottomSheetComponent extends React.Component {
       )
    }
 }
-
+// snapPoints={[topSnapPoint, bottomSnapPoint]}
+// snapPoints={[500, (windowHeight*0.21)]}
+// snapPoints={[500, 190]}
+// snapPoints={[500, 90]}
+// snapPoints={[600, bottomSnapPoint]}
 const styles = StyleSheet.create({
    container: {
       flex: 1,

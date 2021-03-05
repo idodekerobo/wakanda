@@ -1,10 +1,7 @@
 import React from 'react';
-import { Dimensions } from 'react-native';
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { Avatar, Divider } from 'react-native-elements';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 const friends = [
    'OK',
    'IK', 
