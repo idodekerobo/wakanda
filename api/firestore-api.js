@@ -22,15 +22,6 @@ export async function signInAnon() {
    } catch (e) {
       console.log(`There was an error: ${e}`)
    }
-
-   // auth.signInAnonymously()  // returns a promise
-   // .then(returnObj => {
-   //    // console.log(`just signed in user from signInAnonymously() here's the uid: ${returnObj.user.uid}`);
-   //    return returnObj;
-   // })
-   // .catch(err => {
-   //    console.log(`there was an error signing user in ${err}`);
-   // });
 }
 
 export async function getUserIdToken() {
@@ -42,6 +33,23 @@ export async function getUserIdToken() {
       console.log(`There was an error ${e}`)
       return null
    }
+}
+
+// TODO - get current auth user helper function doesn't work
+export async function getCurrentAuthUser() {
+   let fbUser = null;
+   fbUser = auth.currentUser;
+
+   auth.onAuthStateChanged(user => {
+      fbUser = user
+      // THE BELOW CONSOLE.LOG WORKS
+      console.log(`fbUser inside inner func of getCurrentAuthUser, onAuthStateChanged ${fbUser}`) 
+   })
+   console.log(`return value from getCurrentAuthUser func ${fbUser}`)
+   // BUT THIS RETURNS THE NULL FROM EARLIER IN THE FUNC ??
+
+   // CAN'T GET .onAuthStateChanged() to work synchronously, can't return user from an inner function into an outer function
+   return fbUser;
 }
 
 
@@ -91,43 +99,80 @@ export function pinBusinessToProfile(bizId) {
    });
 }
 
-export function getUserPinnedBusinesses() {
-   auth.onAuthStateChanged(async user => {
-      if (user) {
-         const docReference = db.collection("users").doc(user.uid);
-         try {
-            const doc = await docReference.get();
-            console.log(`doc inside first try block ${doc}`)
-            if (doc.exists) {
-               const userPinnedBizIdArr = doc.data().pinnedBizArr;
-               console.log(`doc data inside if doc.exists ${doc.data().pinnedBizArr}`)
-               // look up those pinned businesses and return data to screen: 
-               let bizObjectArray = [];
-               for (const biz of userPinnedBizIdArr) {
-                  try {
-                     let bizObjRef = await db.collection("businesses").doc(biz).get();
-                     if (bizObjRef.exists) {
-                        // console.log(`this is the current doc ${JSON.stringify(bizObjRef.data())}`)
-                        bizObjectArray = [...bizObjectArray, bizObjRef.data()]
-                     } else {
-                        console.log(`this bizId isn't found in the biz collection`);
-                     }
-                  } catch (err) {
-                     console.log(`there was an error getting ${biz} in businesses collection ${err}`)
-                  }
-               };
-               console.log(`returning ${bizObjectArray}`);
-               return bizObjectArray;
-            } else {
-               console.log(`no such data, user is undefined`)
-            }
-         } catch (err) {
-            console.log(`Error getting the document ${err}`);
-         }
+export async function getUserObjectFromFirestore(user) {
+   if (!user) return;
+
+   let userObj;
+   const collectionName = "users";
+   const uid = user.uid;
+   const docRef = db.collection(collectionName).doc(uid);
+
+   try {
+      const doc = await docRef.get();
+      if (doc.exists) {
+         userObj = doc.data();
+         // console.log(`userobj from get userObj function ${userObj}`)
+         return userObj;
       } else {
-         console.log(`user is not signed in`);
+         console.log(`user not found ${doc}`);
+         userObj = null;
+         return userObj;
       }
-   })
+   } catch (e) {
+      console.log(`error getting user document data ${e}`)
+      console.log(`returning null`);
+      userObj = null;
+      return userObj;
+   }   
+}
+
+export async function getOneBusinessFromFirestore(docId) {
+   if (!docId) return;
+   
+   let businessObj;
+   const collectionName = "businesses";
+
+   const docRef = db.collection(collectionName).doc(docId);
+
+   try {
+      const doc = await docRef.get();
+      if (doc.exists) {
+         businessObj = doc.data();
+         // console.log(`biz from getOneBiz func ${businessObj}`)
+         return businessObj;
+      } else {
+         businessObj = null;
+         return businessObj;
+      }
+   } catch (e) {
+      console.log(`error getting business document data ${e}`)
+      console.log(`returning null`);
+      businessObj = null;
+      return businessObj;
+   }
+}
+
+export async function getUserPinnedBusinesses() {
+   const user = await getCurrentAuthUser(); // this isn't working so just wrapped this in onAuthStateChanged
+   console.log(`user from getUserPinnedBiz func ${user}`);
+   // auth.onAuthStateChanged(async user => {
+      if (user) {
+         const userObject = await getUserObjectFromFirestore(user); // do i have to await this???
+         if (!userObject) return userObject;
+   
+         const pinnedBusinessIdArray = userObject.pinnedBizArr;
+         let arrayOfPinnedBusinessObjects = [ ];
+   
+         for (let bizId of pinnedBusinessIdArray) {
+            const bizObj = await getOneBusinessFromFirestore(bizId); // do i have to await this too???
+            arrayOfPinnedBusinessObjects.push(bizObj);
+         }
+         // console.log(`arr of pinned biz from getUserPinnedBiz func ${arrayOfPinnedBusinessObjects}`)
+         return arrayOfPinnedBusinessObjects;
+      } else {
+         console.log('user is falsy')
+      }
+   // })
 }
 
 export function addBusiness(bizObj) {

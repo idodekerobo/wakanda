@@ -3,7 +3,7 @@ import { AppLoading } from 'expo';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import TabNavigator from './screens/Tab-Navigator';
-import * as dbApi from '../api/firestore-api';
+import { signInAnon, getAllBusinesses } from '../api/firestore-api';
 
 // global state
 import { GlobalContext } from './context/GlobalState';
@@ -32,7 +32,7 @@ export default class Wakanda extends React.Component {
    }
    
    getData = async () => {
-      const fetchBizArr = await dbApi.getAllBusinesses();
+      const fetchBizArr = await getAllBusinesses();
       const { dispatch } = this.context;
       dispatch({type: 'FETCH_BIZ_DATA', arr: fetchBizArr});
    }
@@ -41,8 +41,10 @@ export default class Wakanda extends React.Component {
       console.log('==============================================');
       console.log('app running');
       console.log();
+      signInAnon();
       this.getData();
       this.getLocation();
+      
    }
 
    appLoadingFunc = () => {

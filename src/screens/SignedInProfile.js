@@ -37,22 +37,23 @@ const SignedInProfile = () => {
       console.log('view more press');
    }
 
-   // this map isn't working
-   const el = [0, 12, 3]
+   // const el = [0, 12, 3]
    const pinBizCard = pinnedBusinesses.map((el, i) => {
    // const pinBizCard = el.map((el, i) => {
       return <BizCard key={i} name={el.name} address={el.address} description={el.desc}/>
    })
 
    const pinnedBiz = async () => {
-      const biz = await getUserPinnedBusinesses();
+      // TODO -  this only waits if i use auth.currentUser, but the docs say listen on onAuthStateChanged???
+      // TODO - work around, make sure user is anonSigned in before running this
+      const biz = await getUserPinnedBusinesses(); 
       console.log(`logging from pinnedBiz async function in signedinprofile component ${biz}`);
-      // setPinnedBusinesses(biz)
+      setPinnedBusinesses(biz)
       // return biz;
    }
 
    useEffect(() => {
-      // pinnedBiz();
+      pinnedBiz();
    }, [ ])
 
    return (
