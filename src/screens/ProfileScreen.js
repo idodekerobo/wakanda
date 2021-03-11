@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, ImageBackground } from 'react-native';
-import { Divider } from 'react-native-elements';
-import ProfileOverlay from '../components/ProfileOverlay';
+import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
+import { ProfileOverlay, BizCard } from '../components/Component-Exports';
 import { Feather } from '@expo/vector-icons';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import BizCard from '../components/BizCard'
 import { db } from '../../api/firebase-config';
 import { getCurrentAuthUser, getUserPinnedBusinesses } from  '../../api/firestore-api'
 
-const SignedInProfile = () => {
+const ProfileScreen = () => {
    const [ pinnedBusinesses, setPinnedBusinesses ] = useState([])
 
-   const onViewMorePress = (e) => {
+   const onFeatherPress = (e) => {
       console.log('view more press');
    }
 
    const pinBizCard = pinnedBusinesses.map((el, i) => {
-      return <BizCard key={i} name={el.name} address={el.address} description={el.desc}/>
+      return <BizCard key={i} business={el} />
    })
 
    const pinnedBizHeader = ((pinnedBusinesses) && (pinnedBusinesses.length > 0)) ? <Text style={styles.pinnedBizHeader}>Your Pinned Businesses</Text> : <Text style={styles.pinnedBizHeader}>Your Pinned Businesses Will Go Here</Text>
 
    const getPinnedBiz = async () => {
       // TODO -  this only waits if i use auth.currentUser, but the docs say listen on onAuthStateChanged???
-      // TODO - work around, make sure user is anonSigned in before running this
       const biz = await getUserPinnedBusinesses(); 
       if (biz) setPinnedBusinesses(biz);
    }
@@ -44,8 +41,9 @@ const SignedInProfile = () => {
             getPinnedBiz();
          })
 
-      // stop listening for updates when no longer required
-      return () => subscriber();
+      // don't return this because it causes component to unmount? getting warning can't perform react state upd on unmounted component
+         // stop listening for updates when no longer required
+         // return () => subscriber();
    }
 
    useEffect(() => {
@@ -53,36 +51,36 @@ const SignedInProfile = () => {
    }, [ ])
 
    return (
-      <ImageBackground source={require('../../assets/afe-background-v3.png')} style={{ flex: 1,  resizeMode: 'cover', justifyContent: 'center' }}>
-         <SafeAreaView style={styles.container}>
-            
-            <ScrollView >
+      <SafeAreaView style={styles.container}>
+         <ScrollView >
 
             <View style={styles.titleBar}>
-               <TouchableOpacity onPress={e => onViewMorePress(e)}>
+               <TouchableOpacity onPress={e => onFeatherPress(e)}>
                   <Feather style={styles.feather} name="more-vertical" size={32} color="white" />
                </TouchableOpacity>
             </View>
             
             <ProfileOverlay />
-               <View >
-                  {pinnedBizHeader}
-                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
-                     {(pinnedBusinesses) ? pinBizCard : null}
-                  </ScrollView>
-               </View>
 
-            </ScrollView>
-         </SafeAreaView>
-      </ImageBackground>
+            <View >
+               {pinnedBizHeader}
+               <ScrollView horizontal={false} showsHorizontalScrollIndicator={false} >
+                  {(pinnedBusinesses) ? pinBizCard : null}
+               </ScrollView>
+            </View>
+
+         </ScrollView>
+      </SafeAreaView>
    )
 }
-export default SignedInProfile;
+export default ProfileScreen;
 
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      marginBottom: 10,
+      // marginBottom: 10,
+      backgroundColor: '#d8e8dd',
+      // backgroundColor: '#fff',
    },
    titleBar: {
       flexDirection: 'row',
@@ -93,6 +91,9 @@ const styles = StyleSheet.create({
    },
    pinnedBizHeader: {
       marginLeft: 15,
+      marginTop: 8,
+      marginRight: 0,
+      marginBottom: 10,
       // fontFamily: 'AppleSDGothicNeo-UltraLight',
       fontFamily: 'HelveticaNeue',
       fontWeight: '300',

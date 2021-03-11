@@ -2,12 +2,11 @@ import React from 'react';
 import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SubmitFormScreen, SignedInProfile, SignedOutProfile } from './Screen-Exports';
-import MapTabContainer from './MapTabContainer';
+import { MapTabContainer, SubmitFormScreen, ProfileScreen } from './Screen-Exports';
+// import MapTabContainer from './MapTabContainer';
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import PlayScreen from './PlayScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +20,7 @@ export default function TabNavigator() {
                      return (<FontAwesome name="map" size={30} color={color} />)
                   } else if (route.name === "Submit-Biz") {
                      return <AntDesign name="upload" size={30} color={color} />
-                  } else if (route.name === "SignedInProfile" || route.name === "SignedOutProfile") {
+                  } else if (route.name === "ProfileScreen" || route.name === "SignedOutProfile") {
                      return <MaterialIcons name="person-pin-circle" size={38} color={color} />
                   } else {
                      return <Text>{route.name}</Text>;
@@ -37,8 +36,8 @@ export default function TabNavigator() {
             >
             <Tab.Screen name="Map" component={MapTabContainer}/>
             {/* <Tab.Screen name="SignedOutProfile" component={SignedOutProfile} /> */}
-            <Tab.Screen name="Play" component={PlayScreen} />
-            <Tab.Screen name="SignedInProfile" component={SignedInProfile} />
+            {/* <Tab.Screen name="Play" component={PlayScreen} /> */}
+            <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
             {/* <Tab.Screen name="SignedOutProfile" component={SignedOutProfile} /> */}
             <Tab.Screen name="Submit-Biz" component={SubmitFormScreen} />
          </Tab.Navigator>

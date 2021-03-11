@@ -4,10 +4,8 @@ import { Reducer }  from './AppReducer';
 // initial state
 const initialState = {
    location: {},
-   // errorMsg: 'is this working?',
    bizArr: [{name: "init state in global state context"}],
    selectedCategories: [0, 1, 2, 3, 4],
-   mapSnapshot: '',
 }
 
 // create context

@@ -1,6 +1,5 @@
-import MapTab from './Map-Tab';
+import MapTabContainer from './MapTabContainer'
 import SubmitFormScreen from './Submit-Biz-Tab';
-import SignedInProfile from './SignedInProfile';
-import SignedOutProfile from './SignedOutProfile';
+import ProfileScreen from './ProfileScreen';
 
-export { MapTab, SubmitFormScreen, SignedInProfile, SignedOutProfile };
+export { MapTabContainer, SubmitFormScreen, ProfileScreen };

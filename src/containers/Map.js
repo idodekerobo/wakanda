@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'; // have to import TouchableOpacity from here
 import { GlobalContext } from '../context/GlobalState';
+import { storage } from '../../api/firebase-config'
 
 const styles = StyleSheet.create({
    container: {
@@ -33,9 +34,35 @@ const categoryGetter = (bizCategory) => {
 
 const Map = React.forwardRef((props,mapRef) => {
    const { state } = useContext(GlobalContext);
+
+   function takeSnapshot(coordinates, bizId) {
+      if (!coordinates || !bizId) return; // don't do anything while data is loading
+      const { latitude, longitude } = coordinates;
+      const name = `${bizId}.png`;
+      console.log(`first file name: ${name}, coordinates: ${latitude}, ${longitude}}`)
+
+      const snapshot = mapRef.current.takeSnapshot({
+         width: 300,      // optional, when omitted the view-width is used
+         height: 300,     // optional, when omitted the view-height is used
+         region: { // iOS only, optional region to render
+            latitude,
+            longitude,
+            latitudeDelta: 0.0025,
+            longitudeDelta: 0.0025,
+         }, 
+         format: 'png',   // image formats: 'png', 'jpg' (default: 'png')
+         quality: 0.8,    // image quality: 0..1 (only relevant for jpg, default: 1)
+         result: 'file'   // result types: 'file', 'base64' (default: 'file')
+      });
+      snapshot.then(url => {
+         // need to pass this url into firebase storage
+         console.log(`took screenshot`);
+         console.log(`screenshot url: ${url}`);
+
+      })
+   }
    
    // using onCalloutPress as workaround since TouchableOpacity onPress isn't working
-   // const markers = state.bizArr.slice().map((biz, i) => {
    let markers;
    if ((state.bizArr !== undefined) && (state.bizArr !== null)) {
       markers = state.bizArr.slice().map((biz, i) => {

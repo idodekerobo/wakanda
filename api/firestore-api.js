@@ -76,7 +76,7 @@ export async function pinBusinessToProfile(bizId) {
          const uid = user.uid;
          db.collection(collectionName)
          .doc(uid)
-         .set({ // may have to use update({}) to not overwrite existing data
+         .set({ // may have to use update({}) to not overwrite existing data, if you use update remove object with merge
             pinnedBizArr: firebase.firestore.FieldValue.arrayUnion(bizId)
          },
          {merge: true})
@@ -90,6 +90,28 @@ export async function pinBusinessToProfile(bizId) {
          console.log('user is NOT signed in CANNOT pin business');
       }
    // });
+}
+
+export async function removePinnedBusinessFromProfile(bizId) {
+   const user = await getCurrentAuthUser();
+   const collectionName = 'users';
+   if (user) {
+      // remove the bizId from pinnedBizArr field
+      const uid = user.uid;
+      db.collection(collectionName)
+      .doc(uid)
+      .update({
+         pinnedBizArr: firebase.firestore.FieldValue.arrayRemove(bizId)
+      })
+      .then(() => {
+         console.log(`doc update was successful`)
+      })
+      .catch(err => {
+         console.log(`there was an error updating the document ${err}`)
+      })
+   } else {
+      console.log(`user is not signed in, cannot remove pinned business`);
+   }
 }
 
 export async function getUserDataFromFirestore(user) {
@@ -173,18 +195,45 @@ export function addBusiness(bizObj) {
       .catch(err => errorHandling(err));
 }
 
-export function getAllBusinesses() {
-   const docRef = db.collection("businesses");
+export async function getAllBusinesses() {
+   const collectionName = `businesses`;
+   const docRef = db.collection(collectionName);
    let bizArr = [];
    return docRef.get() // have to return here to return the resolved .get() promise since its async
       .then(querySnapshot => {
          querySnapshot.forEach(doc => {
-            let bizObj = {};
-            bizObj._id = doc.id;
-            Object.assign(bizObj, doc.data());
-            bizArr.push(bizObj);
+            // updated all documents to have a copy of docId in _id field no need to manually add id
+            bizArr.push(doc.data());
          });
          return bizArr; // if resolved it'll return this 
       })
       .catch(err => errorHandling(err));
+}
+
+export function updateAllBusinessesWithId() {
+   const collectionName = `businesses`;
+   const docRef = db.collection(collectionName);
+
+   docRef.get()
+   .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+
+         db.collection(collectionName)
+         .doc(doc.id)
+         .update({ // may have to use update({}) to not overwrite existing data
+            _id: doc.id
+         },
+         )
+         .then(() => {
+            console.log(`updating the doc was successful`)
+         })
+         .catch(err => {
+            console.log(`there was an error updating the document ${err}`);
+         })
+
+      });
+   })
+   .catch(err => {
+      console.log(`error grabbing biz snapshot ${err}`)
+   })
 }

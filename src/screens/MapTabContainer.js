@@ -1,7 +1,7 @@
 import React from 'react'; // importing useContext for global state
-import { MapTab } from './Screen-Exports';
+import MapTab from './Map-Tab';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import DrawerContent from '../containers/DrawerContent';
+import { DrawerContent } from '../containers/Container-Exports';
 
 const Drawer = createDrawerNavigator();
 

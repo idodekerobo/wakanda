@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
-const BizActionButton = ({logo, action}) => {
+const BizActionButton = ({logo, action, inactive}) => {
    return (
       <TouchableOpacity onPress={action}>
-         <View style={styles.iconWrapper}>
+         <View style={(inactive) ? styles.iconWrapper : [ styles.iconWrapper, styles.inactiveLinkStyle]}>
             {logo}
          </View>
       </TouchableOpacity>
@@ -26,5 +26,8 @@ const styles = StyleSheet.create({
       overflow: 'hidden',
       marginRight: 5,
       marginBottom: 5,
+   },
+   inactiveLinkStyle: {
+      backgroundColor: 'grey',
    },
 })

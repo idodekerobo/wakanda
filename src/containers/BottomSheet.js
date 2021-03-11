@@ -1,20 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Dimensions } from 'react-native';
-import * as Linking from 'expo-linking';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { openURL } from 'expo-linking';
 import BottomSheet from 'reanimated-bottom-sheet';
 import { Divider } from 'react-native-elements';
 import openMap from 'react-native-open-maps';
+import { BizActionButton } from '../components/Component-Exports';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { pinBusinessToProfile} from '../../api/firestore-api';
-import BizActionButton from '../components/BizActionButton';
 
-const windowHeight = Dimensions.get('window').height;
-const screenHeight = Dimensions.get('screen').height;
+// const windowHeight = Dimensions.get('window').height;
+// const screenHeight = Dimensions.get('screen').height;
 
-const topSnapPoint = (windowHeight > 800) ? 650 : 500
-const bottomSnapPoint = (windowHeight > 800) ? 190 : 90
+// const topSnapPoint = (windowHeight > 800) ? 650 : 500
+// const bottomSnapPoint = (windowHeight > 800) ? 190 : 90
 
 export default class BottomSheetComponent extends React.Component {
 
@@ -26,7 +26,7 @@ export default class BottomSheetComponent extends React.Component {
    callBusiness = (tel) => {
       // console.log(`call biz`)
       if (tel === undefined || tel === '') return;
-      Linking.openURL(`tel:${tel}`).catch(e => console.log(e));
+      openURL(`tel:${tel}`).catch(e => console.log(e));
    }
 
    openInMaps = (coordinates, name) => {
@@ -38,14 +38,16 @@ export default class BottomSheetComponent extends React.Component {
    visitWebsite = (website) => {
       // console.log(`visit website`)
       if (website === undefined || website === '') return;
-      Linking.openURL(website).catch(e => console.log(e));;
+      openURL(website).catch(e => console.log(e));;
    }
 
    pinBusiness = (biz) => {
-      console.log(`pin this business: ${biz.name}`)
-      // console.log(biz);
-      // signInAnon();
       pinBusinessToProfile(biz._id)
+   }
+
+   checkInactive = (element) => {
+      if ( element === '' || element === undefined ) return false
+      return true;
    }
 
    // extractKey = ({ _id }) => _id;
@@ -58,10 +60,10 @@ export default class BottomSheetComponent extends React.Component {
          </View>
 
          <View style={styles.listItemLinks}>
-            <BizActionButton action={this.callBusiness.bind(this,item.tel)} logo={<Feather name="phone-call" size={22} color="white" />} />
-            <BizActionButton action={this.openInMaps.bind(this, item.coordinates, item.name)} logo={<FontAwesome5 name="directions" size={22} color="white" />}/>
-            <BizActionButton action={this.visitWebsite.bind(this, item.website)} logo={<AntDesign name="earth" size={22} color="white" />} />
-            <BizActionButton action={this.pinBusiness.bind(this,item)} logo={<AntDesign name="pushpino" size={22} color="white" />} />
+            <BizActionButton inactive={this.checkInactive(item.tel)} action={this.callBusiness.bind(this,item.tel)} logo={<Feather name="phone-call" size={22} color="white" />} />
+            <BizActionButton inactive={this.checkInactive(item.coordinates)} action={this.openInMaps.bind(this, item.coordinates, item.name)} logo={<FontAwesome5 name="directions" size={22} color="white" />}/>
+            <BizActionButton inactive={this.checkInactive(item.website)} action={this.visitWebsite.bind(this, item.website)} logo={<AntDesign name="earth" size={22} color="white" />} />
+            <BizActionButton inactive={true} action={this.pinBusiness.bind(this,item)} logo={<AntDesign name="pushpino" size={22} color="white" />} />
          </View>
 
          <Divider style={styles.divider} />
@@ -162,11 +164,7 @@ export default class BottomSheetComponent extends React.Component {
       )
    }
 }
-// snapPoints={[topSnapPoint, bottomSnapPoint]}
-// snapPoints={[500, (windowHeight*0.21)]}
-// snapPoints={[500, 190]}
-// snapPoints={[500, 90]}
-// snapPoints={[600, bottomSnapPoint]}
+
 const styles = StyleSheet.create({
    container: {
       flex: 1,
