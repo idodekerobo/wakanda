@@ -6,7 +6,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 const categoryIcon = (bizCategory, color, size) => {
-   // if (bizCategory === 'restaurant') return <MaterialCommunityIcons name="food-fork-drink" size={size} color={color} />
    if (bizCategory === 'restaurant') return <FontAwesome5 name="hamburger" size={size} color={color} />
    if (bizCategory === 'cosmetics') return <FontAwesome5 name="paint-brush" size={size} color={color} />;
    if (bizCategory === 'arts') return <FontAwesome5 name="paint-brush" size={size} color={color} />;

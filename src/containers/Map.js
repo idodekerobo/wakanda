@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'; // have to import TouchableOpacity from here
 import { GlobalContext } from '../context/GlobalState';
-import { storage } from '../../api/firebase-config'
 
 const styles = StyleSheet.create({
    container: {

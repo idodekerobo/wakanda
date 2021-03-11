@@ -1,5 +1,5 @@
 import React from 'react'; // importing useContext for global state
-import { StyleSheet, View, TouchableHighlight, Modal } from 'react-native';
+import { StyleSheet, View, TouchableHighlight } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Map, BottomSheetComponent } from '../containers/Container-Exports';
 import { GlobalContext } from '../context/GlobalState'; // importing global store

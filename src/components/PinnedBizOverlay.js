@@ -45,10 +45,7 @@ const OverlayChildren = ({ toggleOverlay, business }) => {
       <Text style={styles.headerText}>{name}</Text>
       <View style={styles.bodyContainer}>
          <Text style={styles.bizDetails}>{description}</Text>
-         {/* <View> */}
-            {/* <Text>Address</Text> */}
-            <Text style={styles.bizDetails}>{address}</Text>
-         {/* </View> */}
+         <Text style={styles.bizDetails}>{address}</Text>
          <Text style={styles.bizDetails}>{hours}</Text>
       </View>
 

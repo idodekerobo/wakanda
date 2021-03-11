@@ -3,7 +3,6 @@ import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MapTabContainer, SubmitFormScreen, ProfileScreen } from './Screen-Exports';
-// import MapTabContainer from './MapTabContainer';
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -35,10 +34,7 @@ export default function TabNavigator() {
             }}
             >
             <Tab.Screen name="Map" component={MapTabContainer}/>
-            {/* <Tab.Screen name="SignedOutProfile" component={SignedOutProfile} /> */}
-            {/* <Tab.Screen name="Play" component={PlayScreen} /> */}
             <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
-            {/* <Tab.Screen name="SignedOutProfile" component={SignedOutProfile} /> */}
             <Tab.Screen name="Submit-Biz" component={SubmitFormScreen} />
          </Tab.Navigator>
       </NavigationContainer>
