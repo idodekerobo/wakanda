@@ -1,16 +1,6 @@
 import React from 'react';
 import { ScrollView, View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { Avatar, Divider, Image } from 'react-native-elements';
-const friends = [
-   'OK',
-   'IK', 
-   'OK', 
-   'PK',
-   'BY',
-   'JW',
-   'JBM',
-
-]
 
 let user = {
    firstName: 'Idode',
@@ -20,11 +10,11 @@ let user = {
 user = null;
 const ProfileOverlay = () => {
    
-   const friendsList = friends.map((el, i) => {
-      return <View key={i} style={{marginRight: 15}} >
-         <Avatar title={el} rounded size="large" overlayContainerStyle={{backgroundColor: 'grey'}} />
-      </View>
-   })
+   // const friendsList = friends.map((el, i) => {
+   //    return <View key={i} style={{marginRight: 15}} >
+   //       <Avatar title={el} rounded size="large" overlayContainerStyle={{backgroundColor: 'grey'}} />
+   //    </View>
+   // })
 
    let userInfo;
    if (user) {
