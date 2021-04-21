@@ -1,19 +1,12 @@
 import React from 'react'; // importing useContext for global state
 import { StyleSheet, View, TouchableHighlight } from 'react-native';
+import * as Location from 'expo-location';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Map, BottomSheetComponent } from '../containers/Container-Exports';
 import { GlobalContext } from '../context/GlobalState'; // importing global store
+import { categoryGetter } from '../../api/functions';
 
 // TODO - move style into separate js file and import in
-
-const categoryGetter = (bizCategory) => {
-   if (bizCategory === 'restaurant') return 1;
-   if (bizCategory === 'cosmetics') return 2;
-   if (bizCategory === 'arts') return 3;
-   if (bizCategory === 'clothing') return 3;
-   if (bizCategory === 'technology') return 4;
-   if (bizCategory === 'other') return 4;
-}
 
 export default class MapTab extends React.Component {
    constructor(props) {
@@ -22,6 +15,7 @@ export default class MapTab extends React.Component {
          region: {},
          selectedBiz: {},
          selectedBizModalVisible: false,
+         firstTimeLoading: false,
       }
       this.parentMapRef = React.createRef();
       this.parentBottomSheetRef = React.createRef();
@@ -42,8 +36,8 @@ export default class MapTab extends React.Component {
       const region = { 
          latitude: state.location.coords.latitude,
          longitude: state.location.coords.longitude,
-         latitudeDelta: 0.0122,
-         longitudeDelta: 0.0221,
+         latitudeDelta: 0.0522,
+         longitudeDelta: 0.0521,
       }
       this.parentMapRef.current.animateToRegion(region);
    }
@@ -82,20 +76,38 @@ export default class MapTab extends React.Component {
 
    returnSelectedCategoryBiz = () => {
       const { state } = this.context;
-      let arr = [ ];
-      arr = state.bizArr.map(biz => {
-         if ( state.selectedCategories.includes(categoryGetter(biz.category)) ) {
-            return biz;
-         } else {
-            return;
+
+      const currentBizArr = state.bizArr;
+      const selectedCategories = state.selectedCategories;
+      
+      const filteredBizArr = [ ];
+      currentBizArr.map(biz => {
+         if ( selectedCategories.includes(categoryGetter(biz.category)) ) {
+            // return biz;
+            filteredBizArr.push(biz);
          }
       })
-      console.log(arr);
-      return arr;
+
+      // console.log(filteredBizArr);
+      return filteredBizArr;
+   }
+
+   firstTimeLoadAnimation = async (loaded) => {
+      if (loaded) return;
+      const location =  await Location.getCurrentPositionAsync();
+      const region = { 
+         latitude: location.coords.latitude,
+         longitude: location.coords.longitude,
+         latitudeDelta: 0.0522,
+         longitudeDelta: 0.0521,
+      }
+      if (!loaded) this.parentMapRef.current.animateToRegion(region);
    }
 
    componentDidMount() {
-
+      // zooming in when app is first loaded
+      this.firstTimeLoadAnimation(this.state.firstTimeLoading)
+      // this.returnSelectedCategoryBiz();
    }
 
    render() {
@@ -103,7 +115,7 @@ export default class MapTab extends React.Component {
          <View style={styles.container}>
             <Map
                ref={this.parentMapRef}
-               bizArr={this.props.bizArr}
+               // bizArr={this.props.bizArr}
                onRegionChangeComplete={this.onRegionChangeComplete}
                onCalloutPress={this.onCalloutPress}
                onPress={this.onMapPress}
@@ -114,7 +126,7 @@ export default class MapTab extends React.Component {
                onPressIn={this.onHamburgerPress}
                accessibilityLabel={"choose a category"}>
                <View style={styles.iconWrapper}>
-                  <FontAwesome style={styles.iconStyle} name="bars" size={24} color="black" />
+                  <FontAwesome style={styles.iconStyle} name="filter" size={24} color="black" />
                </View>
             </TouchableHighlight>
             
@@ -150,8 +162,8 @@ export default class MapTab extends React.Component {
                bizSelected={this.state.bizSelected}
                selectedBiz={this.state.selectedBiz}
                ref={this.parentBottomSheetRef}
-               bizArr={this.context.state.bizArr}/>
-               {/* bizArr={this.returnSelectedCategoryBiz} /> */}
+               // bizArr={this.context.state.bizArr}
+               bizArr={this.returnSelectedCategoryBiz()} />
          </View>
          
       );

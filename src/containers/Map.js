@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import MapView, { Marker, Callout } from 'react-native-maps';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'; // have to import TouchableOpacity from here
+import { StyleSheet, Text, TouchableOpacity, Image } from 'react-native'; // have to import TouchableOpacity from here
 import { GlobalContext } from '../context/GlobalState';
+import { categoryGetter } from '../../api/functions';
 
 const styles = StyleSheet.create({
    container: {
@@ -20,17 +21,6 @@ const styles = StyleSheet.create({
    },
 });
 
-
-const categoryGetter = (bizCategory) => {
-   if (bizCategory === 'restaurant') return 1;
-   if (bizCategory === 'cosmetics') return 2;
-   if (bizCategory === 'arts') return 3;
-   if (bizCategory === 'clothing') return 3;
-   if (bizCategory === 'technology') return 4;
-   if (bizCategory === 'other') return 4;
-}
-
-
 const Map = React.forwardRef((props,mapRef) => {
    const { state } = useContext(GlobalContext);
    
@@ -39,6 +29,8 @@ const Map = React.forwardRef((props,mapRef) => {
    if ((state.bizArr !== undefined) && (state.bizArr !== null)) {
       markers = state.bizArr.slice().map((biz, i) => {
          if (state.selectedCategories.includes(0)) {
+            // TODO - figure out how to get stars only for favorites and have a star icon that differentiates favs on the map
+            // return <Marker image={require('../../assets/star.png')} stopPropagation={false} key={`${biz._id}${i}`} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress} pinColor="#0a431d">
             return <Marker stopPropagation={false} key={`${biz._id}${i}`} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress} pinColor="#0a431d">
                <Callout key={biz._id}>
                   <TouchableOpacity >

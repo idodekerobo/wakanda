@@ -4,6 +4,7 @@ import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import TabNavigator from './screens/Tab-Navigator';
 import { signInAnon, getAllBusinesses } from '../api/firestore-api';
+import { sortBizArr } from '../api/functions';
 
 // global state
 import { GlobalContext } from './context/GlobalState';
@@ -32,9 +33,24 @@ export default class Wakanda extends React.Component {
    }
    
    getData = async () => {
-      const fetchBizArr = await getAllBusinesses();
       const { dispatch } = this.context;
-      dispatch({type: 'FETCH_BIZ_DATA', arr: fetchBizArr});
+      const fetchBizArr = await getAllBusinesses();
+
+      // sort the biz array
+      const location =  await Location.getCurrentPositionAsync();
+      const sortedBizArr = await sortBizArr(fetchBizArr, location);
+
+      // dispatch({type: 'FETCH_BIZ_DATA', arr: fetchBizArr});
+      dispatch({type: 'FETCH_BIZ_DATA', arr: sortedBizArr});
+   }
+
+   // sorts the businesses
+   sortData = async () => {
+      const { dispatch } = this.context;
+      const fetchBizArr = await getAllBusinesses();
+      const location =  await Location.getCurrentPositionAsync();
+      const sortedBizArr = await sortBizArr(fetchBizArr, location);
+      dispatch({type: 'FETCH_BIZ_DATA', arr: sortedBizArr});
    }
 
    componentDidMount() {
@@ -44,7 +60,8 @@ export default class Wakanda extends React.Component {
       signInAnon();
       this.getData();
       this.getLocation();
-      
+
+      // this.sortData();
    }
 
    appLoadingFunc = () => {

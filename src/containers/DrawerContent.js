@@ -8,7 +8,7 @@ import { SELECTED_CATEGORY } from '../context/ActionCreators';
 const selectAllBox = {name: 'All',checked: true, categoryKey: 0};
 const categories = [
    {name: 'Food',checked: true, categoryKey: 1},
-   {name: 'Cosmetic',checked: true, categoryKey: 2},
+   {name: 'Beauty',checked: true, categoryKey: 2},
    {name: 'Arts',checked: true, categoryKey: 3},
    {name: 'Other',checked: true, categoryKey: 4},
 ];
@@ -20,7 +20,7 @@ const DrawerContent = (props) => {
 
    const onSelectAllClick = () => {
       const newState = {...selectAll, checked: !selectAll.checked}
-      setSelectAll(newState);
+      setSelectAll(newState); 
 
       // if selectAll is checked, make all of the checkboxes selected
       if (newState.checked) {
@@ -36,7 +36,17 @@ const DrawerContent = (props) => {
          dispatch({type: SELECTED_CATEGORY, selectedCategories: newSelectedCategoryArr});
       } else {
          if (!state.selectedCategories.includes(newState.categoryKey)) return
-         const newSelectedCategoryArr = state.selectedCategories.filter(el => el !== newState.categoryKey)
+
+         // unselect everything
+         let newCheckboxState = [ ];
+         for (let i=0; i < checkboxes.length; i++) {
+            // newCheckboxState = [...newCheckboxState, {...checkboxes[i], checked: false}];
+            newCheckboxState.push({...checkboxes[i], checked: false});
+         }
+         setCheckboxes(newCheckboxState);
+
+         // set selectedCategoryArr to be empty
+         const newSelectedCategoryArr = [ ];
          dispatch({type: SELECTED_CATEGORY, selectedCategories: newSelectedCategoryArr});
       }
 
@@ -63,13 +73,13 @@ const DrawerContent = (props) => {
          let newSelectedCategoryArr = [...state.selectedCategories, el.categoryKey];
          dispatch({type: SELECTED_CATEGORY, selectedCategories: newSelectedCategoryArr});
       } else {
-         console.log(`name: ${el.name} checked: ${checkedVal} key: ${el.categoryKey}`)
+         // console.log(`name: ${el.name} checked: ${checkedVal} key: ${el.categoryKey}`)
          if (!state.selectedCategories.includes(el.categoryKey)) return;
          
          // removing the all index automatically
          let newSelectedCategoryArr = state.selectedCategories.filter(key => (key !== el.categoryKey && key !== 0));
-         console.log(`old selectedcategoryArr ${state.selectedCategories}`)
-         console.log(`new selected cat arr ${newSelectedCategoryArr}`)
+         // console.log(`old selectedcategoryArr ${state.selectedCategories}`)
+         // console.log(`new selected cat arr ${newSelectedCategoryArr}`)
          dispatch({type: SELECTED_CATEGORY, selectedCategories: newSelectedCategoryArr});
       }
    }

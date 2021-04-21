@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MapTabContainer, SubmitFormScreen, ProfileScreen } from './Screen-Exports';
@@ -16,11 +16,26 @@ export default function TabNavigator() {
          <Tab.Navigator screenOptions={ ({route}) => ({
                tabBarIcon: ({focused, color, size}) => {
                   if (route.name === "Map") {
-                     return (<FontAwesome name="map" size={30} color={color} />)
+                     return (
+                              <View style={{flexDirection: 'column', alignItems: 'center'}}>
+                                 <FontAwesome name="map" size={24} color={color} />
+                                 <Text style={{fontSize: 15, color: '#0a431d'}}>Map</Text>
+                              </View>
+                           )
                   } else if (route.name === "Submit-Biz") {
-                     return <AntDesign name="upload" size={30} color={color} />
+                     return (
+                                 <View style={{flexDirection: 'column', alignItems: 'center'}}>
+                                    <AntDesign name="upload" size={24} color={color} />
+                                    <Text style={{fontSize: 15, color: '#0a431d'}}>Share</Text>
+                                 </View>
+                           )
                   } else if (route.name === "ProfileScreen" || route.name === "SignedOutProfile") {
-                     return <MaterialIcons name="person-pin-circle" size={38} color={color} />
+                     return (
+                              <View style={{flexDirection: 'column', alignItems: 'center'}}>
+                                 <MaterialIcons name="person-pin-circle" size={28} color={color} />
+                                 <Text style={{fontSize: 15, color: '#0a431d'}}>Profile</Text>
+                              </View>
+                           )
                   } else {
                      return <Text>{route.name}</Text>;
                   }

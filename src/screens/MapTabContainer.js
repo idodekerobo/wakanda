@@ -13,9 +13,7 @@ const MapTabContainer = () => {
             activeTintColor:"#0a431d",labelStyle:{fontSize: 24,},
             activeBackgroundColor: '#fff', 
             // activeBackgroundColor: '#0a431d', activeTintColor:"#fff",labelStyle:{fontSize: 24,}
-         }}
-      
-      >
+         }}>
          <Drawer.Screen name="Map" component={MapTab}/>
       </Drawer.Navigator>
    )
