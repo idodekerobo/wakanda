@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { PinBizFeedbackOverlay } from '../components/Component-Exports';
 import { openURL } from 'expo-linking';
 import BottomSheet from 'reanimated-bottom-sheet';
 import { Divider } from 'react-native-elements';
@@ -9,6 +10,7 @@ import { Feather } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { pinBusinessToProfile} from '../../api/firestore-api';
+
 
 // const windowHeight = Dimensions.get('window').height;
 // const screenHeight = Dimensions.get('screen').height;
@@ -20,7 +22,14 @@ export default class BottomSheetComponent extends React.Component {
 
    constructor(props) {
       super(props);
-      this.bsRef = React.createRef();      
+      this.state = {
+         isVisible: false,
+      }
+      this.bsRef = React.createRef();
+   }
+   
+   toggleOverlay = () => {
+      this.setState({isVisible: !this.state.isVisible})
    }
 
    callBusiness = (tel) => {
@@ -43,6 +52,7 @@ export default class BottomSheetComponent extends React.Component {
 
    pinBusiness = (biz) => {
       pinBusinessToProfile(biz._id)
+      this.toggleOverlay();
    }
 
    checkInactive = (element) => {
@@ -153,6 +163,7 @@ export default class BottomSheetComponent extends React.Component {
    render() {
       return (
          <View style={styles.container}>
+            <PinBizFeedbackOverlay visible={this.state.isVisible} toggleOverlay={this.toggleOverlay}/>
             <BottomSheet
                ref={this.bsRef}
                snapPoints={['69.5%', '15%']}

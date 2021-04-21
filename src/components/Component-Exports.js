@@ -5,5 +5,6 @@ import BizCard from './BizCard';
 import ProfileOverlay from './ProfileOverlay'
 import PinnedBizOverlay from './PinnedBizOverlay'
 import BizActionButton from './BizActionButton'
+import PinBizFeedbackOverlay from './PinBizFeedbackOverlay';
 
-export { Search, FormikComponent, FormOverlay, BizCard, ProfileOverlay, PinnedBizOverlay, BizActionButton };
+export { Search, FormikComponent, FormOverlay, BizCard, ProfileOverlay, PinnedBizOverlay, BizActionButton, PinBizFeedbackOverlay };
