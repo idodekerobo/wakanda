@@ -210,6 +210,104 @@ export async function getAllBusinesses() {
       .catch(err => errorHandling(err));
 }
 
+export const getBusinessesOfCity = async (city) => {
+   const collectionName = 'businesses';
+   const docRef = db.collection(collectionName).where('city', '==', city);
+
+   let bizArr = [];
+
+   return docRef.get()
+      .then(querySnapshot => {
+         querySnapshot.forEach(doc => {
+            // updated all documents to have a copy of docId in _id field no need to manually add id
+            bizArr.push(doc.data());
+         });
+         return bizArr; // if resolved it'll return this 
+      })
+      .catch(err => {
+         console.log(`error getting business of ${city} from firebase`);
+         errorHandling(err);
+      })
+}
+
+export const getBusinessesOfZip = async (zipCode) => {
+
+}
+
+export const getBusinessesOfState = async (state) => {
+   // state parameter is a string
+
+   const collectionName = 'businesses';
+   const docRef = db.collection(collectionName).where('state', '==', state);
+
+   let bizArr = [];
+
+   return docRef.get()
+      .then(querySnapshot => {
+         querySnapshot.forEach(doc => {
+            // updated all documents to have a copy of docId in _id field no need to manually add id
+            bizArr.push(doc.data());
+         });
+         return bizArr; // if resolved it'll return this 
+      })
+      .catch(err => {
+         console.log(`error getting business of ${city} from firebase`);
+         errorHandling(err);
+      })
+}
+
+export const checkIfStateHasBusinesses = async (state, stateBizArr) => {
+   if (stateBizArr.length > 99) return; // if there is already 100 or more biz in state don't do nun
+
+   switch (state) {
+      case 'Texas':
+         // load biz in AZ, ATL, etc
+         break;
+      case 'Illinois': 
+         // load biz in MI, IN, OH
+         break;
+      default:
+         break;
+   }
+}
+
+const updateAllBizToBreakoutAddress = async () => {
+   const collectionName = `businesses`;
+   const docRef = db.collection(collectionName);
+
+   docRef.get()
+   .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+         const biz = doc.data();
+
+         const address = biz.address;
+         const addressLength = address.length;
+
+         // example address string:
+            // "114 W Adams St, Phoenix, AZ 85003"
+         
+
+         const indexOfFirstComma = address.indexOf(', ')
+         const streetAddress = address.substring(0, indexOfFirstComma);
+         // console.log(streetAddress);
+
+         const indexOfSecondComma = address.indexOf(', ', indexOfFirstComma+2);
+         const city = address.substring(indexOfFirstComma+2, indexOfSecondComma)
+         // console.log(city);
+
+         const zip = address.substr((addressLength-5))
+         // console.log(zip);
+
+         doc.ref.update({
+            streetAddress,
+            city,
+            zip,
+            state: 'Arizona',
+         })
+      })
+   })
+}
+
 export function updateAllBusinessesWithId() {
    const collectionName = `businesses`;
    const docRef = db.collection(collectionName);

@@ -27,7 +27,11 @@ export const distanceBetweenLocationAndBusiness = (currentLocation, bizLocationO
    // const distanceInMilesDivision = distanceInMeters/1609.34;
 
    // console.log(distanceInMiles)
-   return distanceInMiles;
+   if (distanceInMiles > 20) {
+      return distanceInMiles.toFixed(0)
+   } else {
+      return distanceInMiles.toFixed(1);
+   }
 }
 
 export const quickSort = (array) => {

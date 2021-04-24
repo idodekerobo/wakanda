@@ -1,15 +1,28 @@
+// React Native components
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+
+// Custom Components/Containers
 import { PinBizFeedbackOverlay } from '../components/Component-Exports';
+import { BizActionButton } from '../components/Component-Exports';
+
+// npm Packages
 import { openURL } from 'expo-linking';
 import BottomSheet from 'reanimated-bottom-sheet';
 import { Divider } from 'react-native-elements';
 import openMap from 'react-native-open-maps';
-import { BizActionButton } from '../components/Component-Exports';
+
+// API's, Helper Functions
+import { pinBusinessToProfile} from '../../api/firestore-api';
+import { distanceBetweenLocationAndBusiness } from '../../api/functions';
+
+// Global State
+import { GlobalContext } from '../context/GlobalState';
+
+// ICONS
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { pinBusinessToProfile} from '../../api/firestore-api';
 
 
 // const windowHeight = Dimensions.get('window').height;
@@ -26,8 +39,29 @@ export default class BottomSheetComponent extends React.Component {
          isVisible: false,
       }
       this.bsRef = React.createRef();
+      
    }
+   static contextType = GlobalContext;
    
+   returnLocation = () => {
+      const { state } = this.context;
+      const location = state.location;
+      return location;
+   }
+
+   onNearbyBizBSPress = (bizLocationObj) => {
+      // animate to region
+      const amountToPushLatitudeUpToCenterScreen = -.005100;
+      const region = {
+         latitude: (bizLocationObj.latitude + amountToPushLatitudeUpToCenterScreen),
+         longitude: bizLocationObj.longitude,
+         latitudeDelta: 0.0112,
+         longitudeDelta: 0.0112,
+      }
+
+      this.props.parentMapRef.current.animateToRegion(region);
+   }
+
    toggleOverlay = () => {
       this.setState({isVisible: !this.state.isVisible})
    }
@@ -63,22 +97,25 @@ export default class BottomSheetComponent extends React.Component {
    // extractKey = ({ _id }) => _id;
 
    renderNearbyBizJSX = ({ item }) => (
-      <View key={item._id}>
-         <View style={styles.listItemInfo}>
-            <Text style={{ fontSize: 28, paddingBottom: 10 }}>{item.name}</Text>
-            <Text style={{ fontSize: 16, paddingBottom: 5 }}>{item.desc}</Text>
+      <TouchableOpacity onPress={this.onNearbyBizBSPress.bind(this, item.coordinates)}>
+         <View key={item._id}>
+            <View style={styles.listItemInfo}>
+               <Text style={{ fontSize: 28, paddingBottom: 10 }}>{item.name}</Text>
+               <Text style={{ fontSize: 16, paddingBottom: 5 }}>{item.desc}</Text>
+               <Text style={{fontSize: 16, paddingBottom: 5}}>{distanceBetweenLocationAndBusiness(this.returnLocation(), item.coordinates)} miles away</Text>
+            </View>
+
+            <View style={styles.listItemLinks}>
+               <BizActionButton inactive={this.checkInactive(item.tel)} action={this.callBusiness.bind(this,item.tel)} logo={<Feather name="phone-call" size={22} color="white" />} />
+               <BizActionButton inactive={this.checkInactive(item.coordinates)} action={this.openInMaps.bind(this, item.coordinates, item.name)} logo={<FontAwesome5 name="directions" size={22} color="white" />}/>
+               <BizActionButton inactive={this.checkInactive(item.website)} action={this.visitWebsite.bind(this, item.website)} logo={<AntDesign name="earth" size={22} color="white" />} />
+               <BizActionButton inactive={true} action={this.pinBusiness.bind(this,item)} logo={<AntDesign name="pushpino" size={22} color="white" />} />
+            </View>
+
+            <Divider style={styles.divider} />
+
          </View>
-
-         <View style={styles.listItemLinks}>
-            <BizActionButton inactive={this.checkInactive(item.tel)} action={this.callBusiness.bind(this,item.tel)} logo={<Feather name="phone-call" size={22} color="white" />} />
-            <BizActionButton inactive={this.checkInactive(item.coordinates)} action={this.openInMaps.bind(this, item.coordinates, item.name)} logo={<FontAwesome5 name="directions" size={22} color="white" />}/>
-            <BizActionButton inactive={this.checkInactive(item.website)} action={this.visitWebsite.bind(this, item.website)} logo={<AntDesign name="earth" size={22} color="white" />} />
-            <BizActionButton inactive={true} action={this.pinBusiness.bind(this,item)} logo={<AntDesign name="pushpino" size={22} color="white" />} />
-         </View>
-
-         <Divider style={styles.divider} />
-
-      </View>
+      </TouchableOpacity>
    )
 
    // showing selected biz 
@@ -96,7 +133,8 @@ export default class BottomSheetComponent extends React.Component {
 
                   <Divider style={styles.divider} />
                   <View style={styles.infoLineItem}>
-                     <Text style={styles.bizInfo}>{this.props.selectedBiz.address}</Text>
+                     <Text style={{...styles.bizInfo, paddingBottom: 5}}>{this.props.selectedBiz.address}</Text>
+                     <Text style={{fontSize: 16,paddingBottom: 10,}}>{distanceBetweenLocationAndBusiness(this.returnLocation(), this.props.selectedBiz.coordinates)} miles away</Text>
                   </View>
 
                   <Divider style={styles.divider} />

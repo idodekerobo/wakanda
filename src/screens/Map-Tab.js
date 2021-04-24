@@ -101,13 +101,16 @@ export default class MapTab extends React.Component {
          latitudeDelta: 0.0522,
          longitudeDelta: 0.0521,
       }
-      if (!loaded) this.parentMapRef.current.animateToRegion(region);
+      if (!loaded) {
+         this.parentMapRef.current.animateToRegion(region)
+         // TODO - does this fuck anything up? after it animates, making first time loaded true so this doesn't run anymore
+         this.setState({firstTimeLoading: true});
+      };
    }
 
    componentDidMount() {
       // zooming in when app is first loaded
       this.firstTimeLoadAnimation(this.state.firstTimeLoading)
-      // this.returnSelectedCategoryBiz();
    }
 
    render() {
@@ -158,7 +161,8 @@ export default class MapTab extends React.Component {
                   </View>
             </TouchableHighlight>
 
-            <BottomSheetComponent 
+            <BottomSheetComponent
+               parentMapRef={this.parentMapRef}
                bizSelected={this.state.bizSelected}
                selectedBiz={this.state.selectedBiz}
                ref={this.parentBottomSheetRef}
