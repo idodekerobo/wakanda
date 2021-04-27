@@ -49,12 +49,12 @@ export default class Wakanda extends React.Component {
       dispatch({type: 'FETCH_BIZ_DATA', arr: sortedBizArr});
 
 
-      // get data for state user is in;
-      const latlngString = `${location.coords.latitude}, ${location.coords.longitude}`;
-      const googleMapsResponse = await fetchGoogleMapsApi(latlngString);
-      const usersState = await convertGoogleMapsApiResponseToState(googleMapsResponse);
-      const stateBizArr = await getBusinessesOfState(usersState);
-      console.log(stateBizArr)
+      // TODO - get data for state user is in;
+      // const latlngString = `${location.coords.latitude}, ${location.coords.longitude}`;
+      // const googleMapsResponse = await fetchGoogleMapsApi(latlngString);
+      // const usersState = await convertGoogleMapsApiResponseToState(googleMapsResponse);
+      // const stateBizArr = await getBusinessesOfState(usersState);
+      // console.log(stateBizArr)
    }
 
    // sorts the businesses

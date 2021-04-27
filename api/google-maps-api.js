@@ -1,4 +1,3 @@
-// const AFE_GOOGLE_MAPS_API_KEY = '';
 // const campesinoLatLng = '29.746115771150023,-95.39420396098438';
 
 export const fetchGoogleMapsApi = async (latlngString) => {
