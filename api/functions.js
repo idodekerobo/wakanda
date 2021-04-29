@@ -1,4 +1,5 @@
 import { getDistance } from 'geolib';
+import * as Location from 'expo-location';
 
 export const SUBMIT_BIZ_FORM_URL_LINK = 'https://airtable.com/shr3p0hSQyyfL0LTy'
 
@@ -12,7 +13,6 @@ export const categoryGetter = (bizCategory) => {
 }
 
 export const distanceBetweenLocationAndBusiness = (currentLocation, bizLocationObj) => {
-   
    const locationCoords = {
       latitude: currentLocation.coords.latitude,
       longitude: currentLocation.coords.longitude

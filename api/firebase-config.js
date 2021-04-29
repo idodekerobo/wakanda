@@ -1,4 +1,5 @@
-import * as firebase from 'firebase/app';
+// import * as firebase from 'firebase/app';
+import * as firebase from 'firebase';
 import "firebase/firestore";
 import "firebase/auth";
 import "firebase/storage";
@@ -18,7 +19,12 @@ const firebaseConfig = {
    appId: "1:871071266977:web:0d254e9fbe7197f28fd8e0",
    measurementId: "G-3CR409F55C"
 };
-
+/*
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const db = firebaseApp.firestore();
+const auth = firebaseApp.auth();
+const storage = firebaseApp.storage();
+*/
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();

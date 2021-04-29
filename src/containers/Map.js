@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { StyleSheet, Text, TouchableOpacity, Image } from 'react-native'; // have to import TouchableOpacity from here
 import { GlobalContext } from '../context/GlobalState';
@@ -23,6 +23,11 @@ const styles = StyleSheet.create({
 
 const Map = React.forwardRef((props,mapRef) => {
    const { state } = useContext(GlobalContext);
+
+   const dummyCoordinates = {
+      latitude: 6.5480357,
+      longitude: 3.1438688,
+   }
    
    // using onCalloutPress as workaround since TouchableOpacity onPress isn't working
    let markers;
@@ -30,8 +35,8 @@ const Map = React.forwardRef((props,mapRef) => {
       markers = state.bizArr.slice().map((biz, i) => {
          if (state.selectedCategories.includes(0)) {
             // TODO - figure out how to get stars only for favorites and have a star icon that differentiates favs on the map
-            // return <Marker image={require('../../assets/star.png')} stopPropagation={false} key={`${biz._id}${i}`} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress} pinColor="#0a431d">
-            return <Marker stopPropagation={false} key={`${biz._id}${i}`} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress} pinColor="#0a431d">
+            // return <Marker image={require('../../assets/Star_Pin-02.png')} stopPropagation={false} key={`${biz._id}${i}`} coordinate={(biz.coordinates) ? {latitude: biz.coordinates.latitude, longitude: biz.coordinates.longitude} : dummyCoordinates} onCalloutPress={props.onCalloutPress} pinColor="#0a431d">
+            return <Marker stopPropagation={false} key={`${biz._id}${i}`} coordinate={(biz.coordinates) ? {latitude: biz.coordinates.latitude, longitude: biz.coordinates.longitude} : dummyCoordinates} onCalloutPress={props.onCalloutPress} pinColor="#0a431d">
                <Callout key={biz._id}>
                   <TouchableOpacity >
                      <Text>{biz.name}</Text>
@@ -42,7 +47,7 @@ const Map = React.forwardRef((props,mapRef) => {
                </Callout>
             </Marker>
          } else if (state.selectedCategories.includes(categoryGetter(biz.category))) {
-            return <Marker stopPropagation={false} key={`${biz._id}${i}`} coordinate={biz.coordinates} onCalloutPress={props.onCalloutPress} pinColor="#0a431d">
+            return <Marker stopPropagation={false} key={`${biz._id}${i}`} coordinate={(biz.coordinates) ? {latitude: biz.coordinates.latitude, longitude: biz.coordinates.longitude} : dummyCoordinates} onCalloutPress={props.onCalloutPress} pinColor="#0a431d">
                <Callout key={biz._id}>
                   <TouchableOpacity >
                      <Text>{biz.name}</Text>
@@ -55,6 +60,17 @@ const Map = React.forwardRef((props,mapRef) => {
          }
       });
    }
+   useEffect(() => {
+      // passing in the empty array allows this to only re-renders when that arr changes otherwise it re-renders whenever you drag the map
+      
+      // console.log();
+      console.log('rendering map');
+      // console.log(state.location);
+      // console.log();
+      // UPDATE - only updating when the user's latitude, longitude coords change
+         // fine as long as there's no lag from state updates
+   }, [ state.location.coords.latitude, state.location.coords.longitude ]) 
+   // }) 
 
    return (
       <MapView

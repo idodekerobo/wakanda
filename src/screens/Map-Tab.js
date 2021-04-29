@@ -4,6 +4,7 @@ import * as Location from 'expo-location';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Map, BottomSheetComponent } from '../containers/Container-Exports';
 import { GlobalContext } from '../context/GlobalState'; // importing global store
+import { GET_LOCATION } from '../context/ActionCreators'; // importing action creator
 import { categoryGetter } from '../../api/functions';
 
 // TODO - move style into separate js file and import in
@@ -31,8 +32,8 @@ export default class MapTab extends React.Component {
       this.props.navigation.openDrawer();
    }
 
-   findLocationButton = () => {
-      const { state } = this.context;
+   findLocationButton = async () => {
+      const { state, dispatch } = this.context;
       const region = { 
          latitude: state.location.coords.latitude,
          longitude: state.location.coords.longitude,
@@ -40,6 +41,10 @@ export default class MapTab extends React.Component {
          longitudeDelta: 0.0521,
       }
       this.parentMapRef.current.animateToRegion(region);
+      
+      // grabbing new position in case old position is stale
+      const updatedLocation = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest, });
+      dispatch({type: GET_LOCATION, location: updatedLocation})
    }
 
    showNearbyBizButton = () => {
@@ -94,7 +99,9 @@ export default class MapTab extends React.Component {
 
    firstTimeLoadAnimation = async (loaded) => {
       if (loaded) return;
-      const location =  await Location.getCurrentPositionAsync();
+      // const location =  await Location.getCurrentPositionAsync();
+      const { state } = this.context;
+      const location = state.location;
       const region = { 
          latitude: location.coords.latitude,
          longitude: location.coords.longitude,

@@ -2,7 +2,7 @@ import React from 'react';
 import Wakanda from './Wakanda';
 
 // global state
-import { GlobalProvider } from './context/GlobalState';
+import GlobalProvider from './context/GlobalState';
 
 // TODO - make the .getLocation() and .getData() methods call while app is loading
 

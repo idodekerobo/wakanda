@@ -13,7 +13,7 @@ export const GlobalContext = createContext();
 
 // Provider component - so all elements have access to global state
 // chidlren are the elements we wrap in it
-export const GlobalProvider = ({ children }) => {
+const GlobalProvider = ({ children }) => {
    const [state, dispatch] = useReducer(Reducer, initialState);
 
    // const bizArr = getData(); // for some reason this returns a few promises?????
@@ -21,4 +21,6 @@ export const GlobalProvider = ({ children }) => {
    return   (<GlobalContext.Provider value={{state, dispatch}}>
                {children}
             </GlobalContext.Provider>);
-}
+};
+// export { GlobalProvider };
+export default GlobalProvider;

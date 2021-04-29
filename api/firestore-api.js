@@ -129,7 +129,7 @@ export async function getUserDataFromFirestore(user) {
          // console.log(`userobj from get userObj function ${userObj}`)
          return userObj;
       } else {
-         console.log(`user not found ${doc}`);
+         console.log(`no user data found ${doc}`);
          userObj = null;
          return userObj;
       }
