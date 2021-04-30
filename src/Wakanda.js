@@ -57,10 +57,8 @@ export default class Wakanda extends React.Component {
    // update app to more accurate location
    getMostAccurateLocation = async () => {
       const { dispatch } = this.context;
-      
-      // get most accurate location async so the most up to date location is passed in. do not await it because it'll slow app
-      // const updatedLocation = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest, });
-      const updatedLocation = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.BestForNavigation, });
+      const updatedLocation = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest, });
+      // const updatedLocation = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.BestForNavigation, });
       dispatch({type: GET_LOCATION, location: updatedLocation})
    }
    

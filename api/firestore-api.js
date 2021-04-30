@@ -308,7 +308,7 @@ const updateAllBizToBreakoutAddress = async () => {
    })
 }
 
-export function updateAllBusinessesWithId() {
+function updateAllBusinessesWithId() {
    const collectionName = `businesses`;
    const docRef = db.collection(collectionName);
 
