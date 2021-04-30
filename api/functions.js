@@ -89,13 +89,13 @@ export const quickSortBizArr = async (bizArr, currentLocation) => {
 
    // 3 possible cases
    // if (leftBizArr.length > 0 && rightBizArr.length > 0) { // we have two arrays
-   //    return [...await sortBizArr(leftBizArr, currentLocation), pivotBiz, ...await sortBizArr(rightBizArr, currentLocation)];
+   //    return [...await quickSortBizArr(leftBizArr, currentLocation), pivotBiz, ...await quickSortBizArr(rightBizArr, currentLocation)];
    //    } else if (leftBizArr.length > 0) { // rightBizArr is empty, we have one arr
-   //    return [...await sortBizArr(leftBizArr, currentLocation), pivotBiz];
+   //    return [...await quickSortBizArr(leftBizArr, currentLocation), pivotBiz];
    // } else { // rightBizArr.length > 0 and left is empty
-   //    return [pivotBiz, ...await sortBizArr(rightBizArr, currentLocation)]
+   //    return [pivotBiz, ...await quickSortBizArr(rightBizArr, currentLocation)]
    // }
 
    // using <= 1 so only one case. make sure to await the func since it is an async func
-   return [...await sortBizArr(leftBizArr, currentLocation), pivotBiz, ...await sortBizArr(rightBizArr, currentLocation)];
+   return [...await quickSortBizArr(leftBizArr, currentLocation), pivotBiz, ...await quickSortBizArr(rightBizArr, currentLocation)];
 }

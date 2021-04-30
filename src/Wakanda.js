@@ -91,7 +91,7 @@ export default class Wakanda extends React.Component {
       const { dispatch } = this.context;
       const fetchBizArr = await getAllBusinesses();
       const location =  await Location.getCurrentPositionAsync();
-      const sortedBizArr = await sortBizArr(fetchBizArr, location);
+      const sortedBizArr = await quickSortBizArr(fetchBizArr, location);
       dispatch({type: 'FETCH_BIZ_DATA', arr: sortedBizArr});
    }
 
