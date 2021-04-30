@@ -1,5 +1,4 @@
 import { getDistance } from 'geolib';
-import * as Location from 'expo-location';
 
 export const SUBMIT_BIZ_FORM_URL_LINK = 'https://airtable.com/shr3p0hSQyyfL0LTy'
 
@@ -17,7 +16,6 @@ export const distanceBetweenLocationAndBusiness = (currentLocation, bizLocationO
       latitude: currentLocation.coords.latitude,
       longitude: currentLocation.coords.longitude
    }
-   // console.log('obj keys', Object.keys(bizLocationObj));
 
    const bizCoords = {
       latitude: bizLocationObj.latitude,
@@ -28,11 +26,11 @@ export const distanceBetweenLocationAndBusiness = (currentLocation, bizLocationO
    const distanceInMiles = 0.000621371*distanceInMeters;
    // const distanceInMilesDivision = distanceInMeters/1609.34;
 
-   // console.log(distanceInMiles)
-   if (distanceInMiles > 20) {
-      return distanceInMiles.toFixed(0)
+   // toFixed function returns strings, so make sure to cast to a float
+   if (distanceInMiles > 10) {
+      return parseFloat(distanceInMiles.toFixed(0));
    } else {
-      return distanceInMiles.toFixed(1);
+      return parseFloat(distanceInMiles.toFixed(1));
    }
 }
 
@@ -67,18 +65,19 @@ export const quickSort = (array) => {
 }
 
 // making this async so its not blocking
-export const sortBizArr = async (bizArr, currentLocation) => {
-   // need to pass in the bizArr and sort that from largest to smallest
-   if (bizArr.length === 1) return bizArr;
-
-   const pivotBiz = bizArr[bizArr.length-1];
+export const quickSortBizArr = async (bizArr, currentLocation) => {
+   // if (bizArr.length === 1) return bizArr;
+   if (bizArr.length <= 1) return bizArr;
+   
+   const pivotIndex = bizArr.length - 1;
+   const pivotBiz = bizArr[pivotIndex];
    const pivotBizDistance = distanceBetweenLocationAndBusiness(currentLocation, pivotBiz.coordinates)
 
    const leftBizArr = [];
    const rightBizArr = [];
    
    // loop thru every element of array except the last one, which is our pivot
-   for (let i=0; i < bizArr.length-1; i++) {
+   for (let i=0; i < pivotIndex; i++) {
       let currentBiz = bizArr[i];
       let currentBizDistance = distanceBetweenLocationAndBusiness(currentLocation, currentBiz.coordinates);
       if (currentBizDistance < pivotBizDistance) {
@@ -89,12 +88,14 @@ export const sortBizArr = async (bizArr, currentLocation) => {
    }
 
    // 3 possible cases
-   if (leftBizArr.length > 0 && rightBizArr.length > 0) { // we have two arrays
-      return [...quickSort(leftBizArr), pivotBiz, ...quickSort(rightBizArr)];
-   } else if (leftBizArr.length > 0) { // rightBizArr is empty, we have one arr
-      return [...quickSort(leftBizArr), pivotBiz];
-   } else { // rightBizArr.length > 0 and left is empty
-      return [pivotBiz, ...quickSort(rightBizArr)]
-   }
+   // if (leftBizArr.length > 0 && rightBizArr.length > 0) { // we have two arrays
+   //    return [...await sortBizArr(leftBizArr, currentLocation), pivotBiz, ...await sortBizArr(rightBizArr, currentLocation)];
+   //    } else if (leftBizArr.length > 0) { // rightBizArr is empty, we have one arr
+   //    return [...await sortBizArr(leftBizArr, currentLocation), pivotBiz];
+   // } else { // rightBizArr.length > 0 and left is empty
+   //    return [pivotBiz, ...await sortBizArr(rightBizArr, currentLocation)]
+   // }
 
+   // using <= 1 so only one case. make sure to await the func since it is an async func
+   return [...await sortBizArr(leftBizArr, currentLocation), pivotBiz, ...await sortBizArr(rightBizArr, currentLocation)];
 }
