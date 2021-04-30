@@ -4,6 +4,7 @@ import { Text, ButtonGroup, Button } from 'react-native-elements';
 import { BizForm } from '../containers/Container-Exports';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { SUBMIT_BIZ_FORM_URL_LINK } from '../../api/functions';
+import { openURL } from 'expo-linking';
 
 const buttons = [ `Send To Friend`, `Submit Yourself` ];
 
@@ -45,6 +46,11 @@ const SubmitFormScreen = () => {
       }
    };
 
+   const visitWebsite = (webAddress) => {
+      if (webAddress === undefined || webAddress === '') return;
+      openURL(webAddress).catch(e => console.log(e));;
+   }
+
    return (
       <View style={styles.container}>
 
@@ -71,7 +77,7 @@ const SubmitFormScreen = () => {
             null
             : (status == buttons[0]) ?
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-               <Button title="Share With Friends!"
+               <Button title="Click To Share With Friends!"
                   onPress={onShare}
                   containerStyle={styles.buttonContainerStyle}
                   buttonStyle={styles.buttonStyle}
@@ -79,9 +85,17 @@ const SubmitFormScreen = () => {
                />
             </View>
             : 
-            <KeyboardAwareScrollView style={styles.formContainer}>
-               <ScrollView contentContainerStyle={styles.scrollViewContainer}><BizForm/></ScrollView>
-            </KeyboardAwareScrollView>  
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
+               <Button title="Click To Add Business!"
+                  onPress={visitWebsite.bind(this,SUBMIT_BIZ_FORM_URL_LINK)}
+                  containerStyle={styles.buttonContainerStyle}
+                  buttonStyle={styles.buttonStyle}
+                  titleStyle={styles.buttonTitleStyle}
+               />
+            </View>
+            // <KeyboardAwareScrollView style={styles.formContainer}>
+            //    <ScrollView contentContainerStyle={styles.scrollViewContainer}><BizForm/></ScrollView>
+            // </KeyboardAwareScrollView>
          }
       
       </View>
