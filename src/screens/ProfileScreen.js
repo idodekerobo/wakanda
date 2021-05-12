@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
 import { ProfileOverlay, BizCard } from '../components/Component-Exports';
 import { Feather } from '@expo/vector-icons';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { db } from '../../api/firebase-config';
 import { getCurrentAuthUser, getUserPinnedBusinesses } from  '../../api/firestore-api'
+import { GlobalContext } from '../context/GlobalState'
 
 const ProfileScreen = () => {
+   const { state } = useContext(GlobalContext);
    const [ pinnedBusinesses, setPinnedBusinesses ] = useState([])
 
    const onFeatherPress = (e) => {
@@ -19,10 +21,12 @@ const ProfileScreen = () => {
 
    const pinnedBizHeader = ((pinnedBusinesses) && (pinnedBusinesses.length > 0)) ? <Text style={styles.pinnedBizHeader}>Your Pinned Businesses</Text> : <Text style={styles.pinnedBizHeader}>Your Pinned Businesses Will Go Here</Text>
 
-   const getPinnedBiz = async () => {
-      // TODO -  this only waits if i use auth.currentUser, but the docs say listen on onAuthStateChanged???
-      const biz = await getUserPinnedBusinesses(); 
-      if (biz) setPinnedBusinesses(biz);
+   const getPinnedBizFromFirestore = async () => {
+      // this only waits if i use auth.currentUser, but the docs say listen on onAuthStateChanged???
+      const pinnedBizIdArr = state.pinnedBusinessIds;
+      const pinnedBizObjArr = await getUserPinnedBusinesses(pinnedBizIdArr); 
+      if (pinnedBizObjArr.length === 0) return;
+      setPinnedBusinesses(pinnedBizObjArr);
    }
 
    const getUserUid = async () => {
@@ -38,7 +42,8 @@ const ProfileScreen = () => {
          .doc(currentUserUid)
          .onSnapshot(snapshot => {
             // TODO - optimize this to pass in user uid directly since you get it earlier in functoin and not re-read it from database
-            getPinnedBiz();
+            getPinnedBizFromFirestore();
+            // getPinnedBiz(state.pinnedBusinessIds);
          })
 
       // don't return this because it causes component to unmount? getting warning can't perform react state upd on unmounted component

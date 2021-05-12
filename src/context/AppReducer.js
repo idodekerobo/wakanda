@@ -1,4 +1,4 @@
-import { FETCH_BIZ_DATA, GET_LOCATION, SELECTED_CATEGORY } from './ActionCreators';
+import { FETCH_BIZ_DATA, GET_LOCATION, SELECTED_CATEGORY, SET_PINNED_BUSINESS_ID_ARR } from './ActionCreators';
 
 // how we specify how app state changes in response to certain actions to our store
 export const Reducer = (state, action) => {
@@ -19,6 +19,11 @@ export const Reducer = (state, action) => {
             ...state, 
             selectedCategories: action.selectedCategories,
          };
+      case SET_PINNED_BUSINESS_ID_ARR:
+         return {
+            ...state, 
+            pinnedBusinessIds: action.pinnedBusinessIds,
+         }
       default: 
          return state;
    }

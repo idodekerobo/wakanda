@@ -3,13 +3,13 @@ import React from 'react';
 import AppLoading from 'expo-app-loading';
 import * as Location from 'expo-location';
 import TabNavigator from './screens/Tab-Navigator';
-import { signInAnon, getAllBusinesses, getBusinessesOfState } from '../api/firestore-api';
+import { signInAnon, getAllBusinesses, getBusinessesOfState, getUserPinnedBusinessIdArr } from '../api/firestore-api';
 import { fetchGoogleMapsApi, convertGoogleMapsApiResponseToState } from '../api/google-maps-api';
 import { quickSortBizArr } from '../api/functions';
 
 // global state
 import { GlobalContext } from './context/GlobalState';
-import { GET_LOCATION } from './context/ActionCreators';
+import { GET_LOCATION, FETCH_BIZ_DATA, SET_PINNED_BUSINESS_ID_ARR } from './context/ActionCreators';
 
 export default class Wakanda extends React.Component {
    constructor(props) {
@@ -69,7 +69,7 @@ export default class Wakanda extends React.Component {
 
       // sort the biz array
       const sortedBizArr = await quickSortBizArr(fetchBizArr, location);
-      dispatch({type: 'FETCH_BIZ_DATA', arr: sortedBizArr})
+      dispatch({type: FETCH_BIZ_DATA, arr: sortedBizArr})
       /*
       found: object with keys {_U, _V, _W, _X})
       ^this error means its returning a promise. not an array^
@@ -90,7 +90,7 @@ export default class Wakanda extends React.Component {
       const fetchBizArr = await getAllBusinesses();
       const location =  await Location.getCurrentPositionAsync();
       const sortedBizArr = await quickSortBizArr(fetchBizArr, location);
-      dispatch({type: 'FETCH_BIZ_DATA', arr: sortedBizArr});
+      dispatch({type: FETCH_BIZ_DATA, arr: sortedBizArr});
    }
 
    getCurrentState = async () => {
@@ -105,9 +105,16 @@ export default class Wakanda extends React.Component {
       console.log(azBizArr);
    }
 
+   loadPinnedBusinessIds = async () => {
+      const { dispatch } = this.context;
+      const pinnedBusinessIds = await getUserPinnedBusinessIdArr();
+      dispatch({type: SET_PINNED_BUSINESS_ID_ARR, pinnedBusinessIds});
+   }
+
    appLoadingFunc = async () => {
       await this.getLocationForAppLoad(this.getData);
       await signInAnon();
+      await this.loadPinnedBusinessIds();
       this.getMostAccurateLocation();
    }
    componentDidMount() {

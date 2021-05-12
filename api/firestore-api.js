@@ -167,7 +167,7 @@ export async function getOneBusinessFromFirestore(docId) {
    }
 }
 
-export async function getUserPinnedBusinesses() {
+export async function getUserPinnedBusinessIdArr() {
    const user = await getCurrentAuthUser();
    // auth.onAuthStateChanged(async user => {
       if (user) {
@@ -175,17 +175,24 @@ export async function getUserPinnedBusinesses() {
          if (!userObject) return userObject;
    
          const pinnedBusinessIdArray = userObject.pinnedBizArr;
-         let arrayOfPinnedBusinessObjects = [ ];
-   
-         for (let bizId of pinnedBusinessIdArray) {
-            const bizObj = await getOneBusinessFromFirestore(bizId); // do i have to await this too???
-            arrayOfPinnedBusinessObjects.push(bizObj);
-         }
-         return arrayOfPinnedBusinessObjects;
+         return pinnedBusinessIdArray;
       } else {
          console.log('user is falsy (null or undefined)')
       }
    // })
+}
+
+// passing in pinnedBizArr using helper function above
+export async function getUserPinnedBusinesses(pinnedBizArr) {
+   if (pinnedBizArr.length === 0) return; // if arr is empty return
+
+   let arrayOfPinnedBusinessObjects = [ ];
+   
+   for (let bizId of pinnedBizArr) {
+      const bizObj = await getOneBusinessFromFirestore(bizId); // do i have to await this too???
+      arrayOfPinnedBusinessObjects.push(bizObj);
+   }
+   return arrayOfPinnedBusinessObjects;
 }
 
 export function addBusiness(bizObj) {
