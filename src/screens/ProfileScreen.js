@@ -4,11 +4,12 @@ import { ProfileOverlay, BizCard } from '../components/Component-Exports';
 import { Feather } from '@expo/vector-icons';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { db } from '../../api/firebase-config';
-import { getCurrentAuthUser, getUserPinnedBusinesses } from  '../../api/firestore-api'
+import { getCurrentAuthUser, getUserPinnedBusinessIdArr,getUserPinnedBusinesses } from  '../../api/firestore-api'
 import { GlobalContext } from '../context/GlobalState'
+import { SET_PINNED_BUSINESS_ID_ARR } from '../context/ActionCreators';
 
 const ProfileScreen = () => {
-   const { state } = useContext(GlobalContext);
+   const { state, dispatch } = useContext(GlobalContext);
    const [ pinnedBusinesses, setPinnedBusinesses ] = useState([])
 
    const onFeatherPress = (e) => {
@@ -23,10 +24,18 @@ const ProfileScreen = () => {
 
    const getPinnedBizFromFirestore = async () => {
       // this only waits if i use auth.currentUser, but the docs say listen on onAuthStateChanged???
-      const pinnedBizIdArr = state.pinnedBusinessIds;
-      const pinnedBizObjArr = await getUserPinnedBusinesses(pinnedBizIdArr); 
+      // const pinnedBizIdArr = state.pinnedBusinessIds;
+      // const pinnedBizObjArr = await getUserPinnedBusinesses(pinnedBizIdArr); 
+      
+      // fetches from firestore so you can get live changes, feel like this could be optimized tho
+      const latestPinnedBizIdArr = await getUserPinnedBusinessIdArr();
+      const pinnedBizObjArr = await getUserPinnedBusinesses(latestPinnedBizIdArr); 
+      
       if (pinnedBizObjArr.length === 0) return;
+      
       setPinnedBusinesses(pinnedBizObjArr);
+      dispatch({type: SET_PINNED_BUSINESS_ID_ARR, pinnedBusinessIds: latestPinnedBizIdArr });
+      
    }
 
    const getUserUid = async () => {
