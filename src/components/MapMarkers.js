@@ -5,10 +5,15 @@ import { GlobalContext } from '../context/GlobalState';
 
 const MapMarkers = ({ biz, onCalloutPress }) => {
    const { state } = useContext(GlobalContext);
+   
+   const dummyCoordinates = {
+      latitude: 6.5480357,
+      longitude: 3.1438688,
+   }
 
    if (state.pinnedBusinessIds.includes(biz._id)) {
       return (
-         <Marker image={require('../../assets/Star_Pin-03-smallest.png')} stopPropagation={false} coordinate={(biz.coordinates) ? {latitude: biz.coordinates.latitude, longitude: biz.coordinates.longitude} : dummyCoordinates} onCalloutPress={onCalloutPress} pinColor="#0a431d">
+         <Marker image={require('../../assets/Star_Pin-03-final.png')} stopPropagation={false} coordinate={(biz.coordinates) ? {latitude: biz.coordinates.latitude, longitude: biz.coordinates.longitude} : dummyCoordinates} onCalloutPress={onCalloutPress} pinColor="#0a431d">
             <Callout key={biz._id}>
                <TouchableOpacity >
                   <Text>{biz.name}</Text>

@@ -24,18 +24,12 @@ const styles = StyleSheet.create({
 
 const Map = React.forwardRef((props,mapRef) => {
    const { state } = useContext(GlobalContext);
-
-   const dummyCoordinates = {
-      latitude: 6.5480357,
-      longitude: 3.1438688,
-   }
    
    // using onCalloutPress as workaround since TouchableOpacity onPress isn't working
    let markers;
    if ((state.bizArr !== undefined) && (state.bizArr !== null)) {
       markers = state.bizArr.slice().map((biz, i) => {
          if (state.selectedCategories.includes(0)) {
-            // TODO - figure out how to get stars only for favorites and have a star icon that differentiates favs on the map
             return <MapMarkers key={`${biz._id}${i}`} i={i} biz={biz} onCalloutPress={props.onCalloutPress} />
          } else if (state.selectedCategories.includes(categoryGetter(biz.category))) {
             return <MapMarkers key={`${biz._id}${i}`} i={i} biz={biz} onCalloutPress={props.onCalloutPress} />
