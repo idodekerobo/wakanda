@@ -133,7 +133,7 @@ export default class BottomSheetComponent extends React.Component {
 
                   <Divider style={styles.divider} />
                   <View style={styles.infoLineItem}>
-                     <Text style={{...styles.bizInfo, paddingBottom: 5}}>{this.props.selectedBiz.address}</Text>
+                     <Text style={{...styles.bizInfo, paddingBottom: 5}}>{this.props.selectedBiz.streetAddress}, {this.props.selectedBiz.city}, {this.props.selectedBiz.state} {this.props.selectedBiz.zip}</Text>
                      <Text style={{fontSize: 16,paddingBottom: 10,}}>{distanceBetweenLocationAndBusiness(this.returnLocation(), this.props.selectedBiz.coordinates)} miles away</Text>
                   </View>
 
