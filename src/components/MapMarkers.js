@@ -13,7 +13,7 @@ const MapMarkers = ({ biz, onCalloutPress }) => {
 
    // const imageSource = <Image style={{width: 50, height: 50}} source={{uri: '../assets/star-pin'}} />;
    // const imageString = '../../assets/Star_Pin-03-final.png'
-   const imageString = '../assets/Star_Pin-03-final.png';
+   const imageString = '../assets/Star_Pin-03-final-final.png';
    if (state.pinnedBusinessIds.includes(biz._id)) {
       return (
          // <Marker image={<Image style={{width: 50, height: 50}} source={{uri: '../assets/star-pin'}} />} stopPropagation={false} coordinate={(biz.coordinates) ? {latitude: biz.coordinates.latitude, longitude: biz.coordinates.longitude} : dummyCoordinates} onCalloutPress={onCalloutPress} pinColor="#0a431d">
