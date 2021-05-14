@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Marker, Callout } from 'react-native-maps';
 import { Text, TouchableOpacity } from 'react-native'; // have to import TouchableOpacity from here
 import { GlobalContext } from '../context/GlobalState';
+import { MARKER_IMAGE } from '../images/image-exports';
 
 const MapMarkers = ({ biz, onCalloutPress }) => {
    const { state } = useContext(GlobalContext);
@@ -14,9 +15,9 @@ const MapMarkers = ({ biz, onCalloutPress }) => {
    // const imageString = '../assets/Star_Pin-03-final-final.png';
    if (state.pinnedBusinessIds.includes(biz._id)) {
       return (
-         // <Marker image={<Image style={{width: 50, height: 50}} source={{uri: '../assets/star-pin'}} />} stopPropagation={false} coordinate={(biz.coordinates) ? {latitude: biz.coordinates.latitude, longitude: biz.coordinates.longitude} : dummyCoordinates} onCalloutPress={onCalloutPress} pinColor="#0a431d">
          // <Marker image={require(imageString)} stopPropagation={false} coordinate={(biz.coordinates) ? {latitude: biz.coordinates.latitude, longitude: biz.coordinates.longitude} : dummyCoordinates} onCalloutPress={onCalloutPress} pinColor="#0a431d">
-         <Marker image={require('../../assets/map-images/pinned-biz-marker.png')} stopPropagation={false} coordinate={(biz.coordinates) ? {latitude: biz.coordinates.latitude, longitude: biz.coordinates.longitude} : dummyCoordinates} onCalloutPress={onCalloutPress} pinColor="#0a431d">
+         // <Marker image={require('../../assets/map-images/pinned-biz-marker.png')} stopPropagation={false} coordinate={(biz.coordinates) ? {latitude: biz.coordinates.latitude, longitude: biz.coordinates.longitude} : dummyCoordinates} onCalloutPress={onCalloutPress} pinColor="#0a431d">
+         <Marker image={MARKER_IMAGE} stopPropagation={false} coordinate={(biz.coordinates) ? {latitude: biz.coordinates.latitude, longitude: biz.coordinates.longitude} : dummyCoordinates} onCalloutPress={onCalloutPress} pinColor="#0a431d">
             <Callout key={biz._id}>
                <TouchableOpacity >
                   <Text>{biz.name}</Text>
