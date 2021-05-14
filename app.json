@@ -18,7 +18,8 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "**/*"
+      "**/*",
+      "assets/map-images/*"
     ],
     "ios": {
       "bundleIdentifier": "io.afeapp.afe",
