@@ -1,4 +1,4 @@
-import { firebase, db, auth } from './firebase-config';
+import { firebase, db, auth, storage } from './firebase-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function errorHandling(err) {
@@ -64,6 +64,19 @@ export async function getCurrentAuthUser() {
    // BUT THIS RETURNS THE NULL FROM EARLIER IN THE FUNC ??
    */
    
+}
+
+export async function getStarPinImageFromFb() {
+   const imageRef = storage.ref('map-assets/Star_Pin-03-final.png');
+
+   try {
+      const url = imageRef.getDownloadURL();
+      return url;
+   } catch (err) {
+      console.log(`there was an error fetching the star pin image`);
+      console.log(err)
+      return null;
+   }
 }
 
 // will eventually have to limit pins to 3 per user

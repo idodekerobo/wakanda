@@ -3,14 +3,13 @@ import React from 'react';
 import AppLoading from 'expo-app-loading';
 import * as Location from 'expo-location';
 import TabNavigator from './screens/Tab-Navigator';
-import { signInAnon, getAllBusinesses, getBusinessesOfState, getUserPinnedBusinessIdArr } from '../api/firestore-api';
+import { signInAnon, getAllBusinesses, getBusinessesOfState, getUserPinnedBusinessIdArr, getStarPinImageFromFb } from '../api/firestore-api';
 import { fetchGoogleMapsApi, convertGoogleMapsApiResponseToState } from '../api/google-maps-api';
 import { quickSortBizArr } from '../api/functions';
-import { Asset } from 'expo-asset'; // pre-loading assets
 
 // global state
 import { GlobalContext } from './context/GlobalState';
-import { GET_LOCATION, FETCH_BIZ_DATA, SET_PINNED_BUSINESS_ID_ARR } from './context/ActionCreators';
+import { GET_LOCATION, FETCH_BIZ_DATA, SET_PINNED_BUSINESS_ID_ARR, FETCH_STAR_PIN } from './context/ActionCreators';
 
 function cacheImages(images) {
    return images.map(image => {
@@ -122,16 +121,21 @@ export default class Wakanda extends React.Component {
       dispatch({type: SET_PINNED_BUSINESS_ID_ARR, pinnedBusinessIds});
    }
 
-   // when i cache the images the old/larger pin does not work
-   // _loadAssetsAsync = async () => {
-   //    const imageAssets = cacheImages([require('../assets/map-images/pinned-biz-marker.png')]);
-   //    await Promise.all([...imageAssets]);
-   // }
+   fetchStarPinImage = async () => {
+      const { dispatch } = this.context;
+      const starPinUrl = await getStarPinImageFromFb();
+      dispatch({type: FETCH_STAR_PIN, starPinUrl})
+   }
 
-   appLoadingFunc = async () => {
-      // this._loadAssetsAsync();
+   appLoadingFunc = async () => {  
+      // ================================== //
+      // NEED TO RUN SIGN IN ANON FIRST BEFORE FETCHING DATA.
+      // SO NEW ACCOUNTS CAN BE AUTHENTICATED
+      await signInAnon(); 
+      // ================================== //
+
+      await this.fetchStarPinImage();
       await this.getLocationForAppLoad(this.getData);
-      await signInAnon();
       await this.loadPinnedBusinessIds();
       this.getMostAccurateLocation();
    }
