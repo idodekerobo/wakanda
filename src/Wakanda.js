@@ -6,10 +6,21 @@ import TabNavigator from './screens/Tab-Navigator';
 import { signInAnon, getAllBusinesses, getBusinessesOfState, getUserPinnedBusinessIdArr } from '../api/firestore-api';
 import { fetchGoogleMapsApi, convertGoogleMapsApiResponseToState } from '../api/google-maps-api';
 import { quickSortBizArr } from '../api/functions';
+import { Asset } from 'expo-asset'; // pre-loading assets
 
 // global state
 import { GlobalContext } from './context/GlobalState';
 import { GET_LOCATION, FETCH_BIZ_DATA, SET_PINNED_BUSINESS_ID_ARR } from './context/ActionCreators';
+
+function cacheImages(images) {
+   return images.map(image => {
+      if (typeof image === 'string') {
+         return Image.prefetch(image);
+      } else {
+         return Asset.fromModule(image).downloadAsync();
+      }
+   });
+}
 
 export default class Wakanda extends React.Component {
    constructor(props) {
@@ -111,7 +122,14 @@ export default class Wakanda extends React.Component {
       dispatch({type: SET_PINNED_BUSINESS_ID_ARR, pinnedBusinessIds});
    }
 
+   // when i cache the images the old/larger pin does not work
+   // _loadAssetsAsync = async () => {
+   //    const imageAssets = cacheImages([require('../assets/map-images/pinned-biz-marker.png')]);
+   //    await Promise.all([...imageAssets]);
+   // }
+
    appLoadingFunc = async () => {
+      // this._loadAssetsAsync();
       await this.getLocationForAppLoad(this.getData);
       await signInAnon();
       await this.loadPinnedBusinessIds();
