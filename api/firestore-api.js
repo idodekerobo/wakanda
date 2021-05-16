@@ -15,7 +15,7 @@ export async function signInAnon() {
    try {
       const response = await auth.signInAnonymously()
       const user = response.user;
-      console.log('this is the user object uid ', user.uid, ' ', user.displayName)
+      // console.log('this is the user object uid ', user.uid)
       
       // set userIdToken to local storage
       const idToken = await user.getIdToken();
@@ -142,7 +142,7 @@ export async function getUserDataFromFirestore(user) {
          // console.log(`userobj from get userObj function ${userObj}`)
          return userObj;
       } else {
-         console.log(`no user data found ${doc}`);
+         // console.log(`no user data found`); // doc.data() will be undefined
          userObj = null;
          return userObj;
       }
@@ -185,10 +185,14 @@ export async function getUserPinnedBusinessIdArr() {
    // auth.onAuthStateChanged(async user => {
       if (user) {
          const userObject = await getUserDataFromFirestore(user); // do i have to await this???
-         if (!userObject) return userObject;
+         // if userObject is fasly or null just return an empty array that'll get saved to state
+         if (!userObject || null) return [ ];
    
          const pinnedBusinessIdArray = userObject.pinnedBizArr;
-         return pinnedBusinessIdArray;
+
+         // user may be brand new and not have a pinned biz id array so check, if not return an empty array
+         if (pinnedBusinessIdArray) return pinnedBusinessIdArray; 
+         return [ ];
       } else {
          console.log('user is falsy (null or undefined)')
       }
@@ -197,13 +201,14 @@ export async function getUserPinnedBusinessIdArr() {
 
 // passing in pinnedBizArr using helper function above
 export async function getUserPinnedBusinesses(pinnedBizArr) {
-   if (pinnedBizArr.length === 0) return; // if arr is empty return
+   if (pinnedBizArr.length == 0) return; // if arr is empty return
 
    let arrayOfPinnedBusinessObjects = [ ];
    
    for (let bizId of pinnedBizArr) {
       const bizObj = await getOneBusinessFromFirestore(bizId); // do i have to await this too???
-      arrayOfPinnedBusinessObjects.push(bizObj);
+      // check if it isn't null/falsy, because in getOneBusinessFromFirestore function you return null if biz isn't found
+      if (bizObj) arrayOfPinnedBusinessObjects.push(bizObj);
    }
    return arrayOfPinnedBusinessObjects;
 }

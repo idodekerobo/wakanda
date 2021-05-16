@@ -29,13 +29,15 @@ const ProfileScreen = () => {
       
       // fetches from firestore so you can get live changes, feel like this could be optimized tho
       const latestPinnedBizIdArr = await getUserPinnedBusinessIdArr();
+
+      if (latestPinnedBizIdArr.length == 0) return;
+      // if latestPinnedBizIdArr lenght is 0, getUserPinnedBusinesses will be undefined
       const pinnedBizObjArr = await getUserPinnedBusinesses(latestPinnedBizIdArr); 
       
-      if (pinnedBizObjArr.length === 0) return;
+      if (pinnedBizObjArr.length == 0) return; 
       
       setPinnedBusinesses(pinnedBizObjArr);
       dispatch({type: SET_PINNED_BUSINESS_ID_ARR, pinnedBusinessIds: latestPinnedBizIdArr });
-      
    }
 
    const getUserUid = async () => {

@@ -22,7 +22,7 @@
     ],
     "ios": {
       "bundleIdentifier": "io.afeapp.afe",
-      "buildNumber": "0.4.5",
+      "buildNumber": "0.4.6",
       "supportsTablet": true
     }
   }
