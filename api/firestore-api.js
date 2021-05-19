@@ -1,5 +1,6 @@
 import { firebase, db, auth, storage } from './firebase-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getPermissionsAsync } from 'expo-location';
 
 function errorHandling(err) {
    console.log();
@@ -333,6 +334,27 @@ const updateAllBizToBreakoutAddress = async () => {
    })
 }
 
+export async function addNewBusinessToFirestore(bizObject) {
+
+   const collectionName = `businesses`;
+   const newDocRef = db.collection(collectionName).doc();
+
+   const docId = newDocRef.id;
+   const geopoint = new firebase.firestore.GeoPoint(bizObject.coordinates[0], bizObject.coordinates[1]);
+
+   newDocRef.set({
+      ...bizObject,
+      _id: docId,
+      coordinates: geopoint
+   });
+}
+
+export async function addMultipleNewBusinessesToFirestore(bizArr) {
+   for (const biz of bizArr) {
+      await addNewBusinessToFirestore(biz);
+   }
+}
+
 function updateAllBusinessesWithId() {
    const collectionName = `businesses`;
    const docRef = db.collection(collectionName);
@@ -359,4 +381,54 @@ function updateAllBusinessesWithId() {
    .catch(err => {
       console.log(`error grabbing biz snapshot ${err}`)
    })
+}
+
+// if business coordinates is array instead of firebase geopoint object
+export async function changeBizCoordsArrToGeopoint() {
+   const collectionName = `businesses`;
+   const docRef = db.collection(collectionName);
+
+   docRef.get()
+   .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+         const data = doc.data();
+         if (!Array.isArray(data.coordinates)) return // if coordinates is not an array (aka is a geopoint) do nothing
+         // console.log(data.coordinates)
+         const latitude = data.coordinates[0];
+         const longitude = data.coordinates[1]
+
+         const geopoint = new firebase.firestore.GeoPoint(latitude, longitude);
+         // console.log(doc.id, geopoint)
+
+         db.collection(collectionName)
+         .doc(doc.id)
+         .update({ // may have to use update({}) to not overwrite existing data
+            coordinates: geopoint
+         },
+         )
+         .then(() => {
+            console.log(`updating the doc was successful`)
+         })
+         .catch(err => {
+            console.log(`there was an error updating the document ${err}`);
+         })
+      });
+   })
+   .catch(err => {
+      console.log(`error grabbing biz snapshot ${err}`)
+   })  
+}
+
+export async function removeStateBusinesses(state) {
+   const collectionName = `businesses`;
+   const docRef = db.collection(collectionName).where("state","==",state);
+   // const arr = [];
+   
+   const querySnapshot = await docRef.get()
+   querySnapshot.forEach(doc => {
+      // arr.push(doc.data())
+      doc.ref.delete();
+   })
+   
+   // console.log(arr.length);
 }

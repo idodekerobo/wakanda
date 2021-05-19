@@ -15,7 +15,7 @@ const categoryIcon = (bizCategory, color, size) => {
 }
 
 const BizCard = ({business}) => {
-   const { name, address, description, hours, tel, website, category, _id } = business
+   const { name, streetAddress, city, state, zip, description, hours, tel, website, category, _id } = business
 
    // const [ visible, setVisible ] = useState(false);
    const [ visible, setVisible ] = useState(false);
@@ -41,7 +41,7 @@ const BizCard = ({business}) => {
             <View>
                <Text style={[styles.cardHeader, styles.fontStyle]}>{name}</Text>
                <View style={styles.bizInfoContainer}>
-                  <Text style={[styles.cityState, styles.fontStyle]}>{address}</Text>
+                  <Text style={[styles.cityState, styles.fontStyle]}>{streetAddress}, {city}, {state} {zip}</Text>
                   {/* <Text style={[styles.visitStat, styles.fontStyle]}>{3} visits</Text> */}
                </View>
             </View>
