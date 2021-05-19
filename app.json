@@ -6,7 +6,7 @@
       "ios",
       "android"
     ],
-    "version": "0.4.5",
+    "version": "0.4.6",
     "orientation": "portrait",
     "icon": "./assets/afe-v4-icon.png",
     "splash": {
@@ -22,7 +22,7 @@
     ],
     "ios": {
       "bundleIdentifier": "io.afeapp.afe",
-      "buildNumber": "0.4.7",
+      "buildNumber": "0.4.8",
       "supportsTablet": false
     }
   }
