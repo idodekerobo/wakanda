@@ -22,7 +22,7 @@
     ],
     "ios": {
       "bundleIdentifier": "io.afeapp.afe",
-      "buildNumber": "0.4.8",
+      "buildNumber": "0.4.9",
       "supportsTablet": false,
       "infoPlist": {
          "NSLocationWhenInUseUsageDescription": "This app uses the user's location to show the user businesses in their area and how far it is from their location."
