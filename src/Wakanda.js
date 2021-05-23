@@ -40,8 +40,10 @@ export default class Wakanda extends React.Component {
          this.setState({
             errorMsg: 'Permission not granted'
          });
+         alert('Location permission is required for Afe to work properly! Please enable location if you\'d like to use the app.');
+         return;
       }
-
+      
       // const location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High, }); // takes ~10 seconds in this version of expo sdk accurate w/in 10 meters
       // takes 2-3 seconds in this version of expo sdk, accurate within 100 meters
       // const location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced, }); 
