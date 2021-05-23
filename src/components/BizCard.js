@@ -15,7 +15,7 @@ const categoryIcon = (bizCategory, color, size) => {
 }
 
 const BizCard = ({business}) => {
-   const { name, streetAddress, city, state, zip, description, hours, tel, website, category, _id } = business
+   const { name, streetAddress, city, state, zip, desc, hours, tel, website, category, _id } = business
 
    // const [ visible, setVisible ] = useState(false);
    const [ visible, setVisible ] = useState(false);

@@ -11,7 +11,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const OverlayChildren = ({ toggleOverlay, business }) => {
-   const { name, address, description, hours, tel, website, category, coordinates, _id } = business
+   const { name, address, streetAddress, city, state, zip, desc, hours, tel, website, category, coordinates, _id } = business
 
    const callBusiness = (tel) => {
       if (tel === undefined || tel === '') return;
@@ -44,8 +44,8 @@ const OverlayChildren = ({ toggleOverlay, business }) => {
    <View style={styles.viewContainer}>
       <Text style={styles.headerText}>{name}</Text>
       <View style={styles.bodyContainer}>
-         <Text style={styles.bizDetails}>{description}</Text>
-         <Text style={styles.bizDetails}>{address}</Text>
+         <Text style={styles.bizDetails}>{streetAddress}, {city}, {state}, {zip}</Text>
+         <Text style={styles.bizDetails}>{desc}</Text>
          <Text style={styles.bizDetails}>{hours}</Text>
       </View>
 
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
    overlayStyle: {
       width: '90%',
       height: '65%',
-      padding: 10,
+      padding: 1,
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
