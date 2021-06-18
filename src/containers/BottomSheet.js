@@ -69,7 +69,11 @@ export default class BottomSheetComponent extends React.Component {
    callBusiness = (tel) => {
       // console.log(`call biz`)
       if (tel === undefined || tel === '') return;
-      openURL(`tel:${tel}`).catch(e => console.log(e));
+      openURL(`tel:${tel}`).catch(e => {
+         console.log('there was an error calling the business')
+         console.log(e)
+         alert('The business can\'t be called right now!')
+      });
    }
 
    openInMaps = (coordinates, name) => {
@@ -81,7 +85,11 @@ export default class BottomSheetComponent extends React.Component {
    visitWebsite = (website) => {
       // console.log(`visit website`)
       if (website === undefined || website === '') return;
-      openURL(website).catch(e => console.log(e));;
+      openURL(website).catch(e => {
+         console.log('there was an error opening the business website');
+         console.log(e);
+         alert('The website can\'t be opened right now!');
+      })
    }
 
    pinBusiness = (biz) => {
@@ -127,10 +135,14 @@ export default class BottomSheetComponent extends React.Component {
                   <Text style={styles.bizName}>{this.props.selectedBiz.name}</Text>
 
                   <Divider style={styles.divider} />
-                  <View style={styles.infoLineItem}>
-                     <Text style={styles.bizInfo}>{this.props.selectedBiz.desc}</Text>
-                  </View>
-
+                  
+                  {(this.props.selectedBiz.desc !== '') ?
+                     <View style={styles.infoLineItem}>
+                        <Text style={styles.bizInfo}>{this.props.selectedBiz.desc}</Text>
+                     </View>
+                     :
+                     null
+                  }
                   <Divider style={styles.divider} />
                   <View style={styles.infoLineItem}>
                      <Text style={{...styles.bizInfo, paddingBottom: 5}}>{this.props.selectedBiz.streetAddress}, {this.props.selectedBiz.city}, {this.props.selectedBiz.state} {this.props.selectedBiz.zip}</Text>
