@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView, Share } from 'react-native';
+import { StyleSheet, View, Share } from 'react-native';
 import { Text, ButtonGroup, Button } from 'react-native-elements';
-import { BizForm } from '../containers/Container-Exports';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+// import { BizForm } from '../containers/Container-Exports';
+// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { SUBMIT_BIZ_FORM_URL_LINK } from '../../api/functions';
 import { openURL } from 'expo-linking';
 

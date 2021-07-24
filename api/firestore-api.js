@@ -1,6 +1,5 @@
 import { firebase, db, auth, storage } from './firebase-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getPermissionsAsync } from 'expo-location';
 
 function errorHandling(err) {
    console.log();
@@ -297,42 +296,6 @@ export const checkIfStateHasBusinesses = async (state, stateBizArr) => {
    }
 }
 
-const updateAllBizToBreakoutAddress = async () => {
-   const collectionName = `businesses`;
-   const docRef = db.collection(collectionName);
-
-   docRef.get()
-   .then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-         const biz = doc.data();
-
-         const address = biz.address;
-         const addressLength = address.length;
-
-         // example address string:
-            // "114 W Adams St, Phoenix, AZ 85003"
-         
-
-         const indexOfFirstComma = address.indexOf(', ')
-         const streetAddress = address.substring(0, indexOfFirstComma);
-         // console.log(streetAddress);
-
-         const indexOfSecondComma = address.indexOf(', ', indexOfFirstComma+2);
-         const city = address.substring(indexOfFirstComma+2, indexOfSecondComma)
-         // console.log(city);
-
-         const zip = address.substr((addressLength-5))
-         // console.log(zip);
-
-         doc.ref.update({
-            streetAddress,
-            city,
-            zip,
-            state: 'Arizona',
-         })
-      })
-   })
-}
 
 export async function addNewBusinessToFirestore(bizObject) {
 
@@ -419,16 +382,34 @@ export async function changeBizCoordsArrToGeopoint() {
    })  
 }
 
-export async function removeStateBusinesses(state) {
-   const collectionName = `businesses`;
-   const docRef = db.collection(collectionName).where("state","==",state);
-   // const arr = [];
+// export async function removeStateBusinesses(state) {
+//    const collectionName = `businesses`;
+//    const docRef = db.collection(collectionName).where("state","==",state);
+//    // const arr = [];
    
-   const querySnapshot = await docRef.get()
-   querySnapshot.forEach(doc => {
-      // arr.push(doc.data())
-      doc.ref.delete();
-   })
+//    const querySnapshot = await docRef.get()
+//    querySnapshot.forEach(doc => {
+//       // arr.push(doc.data())
+//       doc.ref.delete();
+//    })
    
-   // console.log(arr.length);
-}
+//    // console.log(arr.length);
+// }
+
+// export const quickBizCount = async () => {
+//    const collectionName = `businesses`;
+//    const docRef = db.collection(collectionName);
+
+//    let length = 0;
+
+//    try {
+//       const querySnapshot = await docRef.get();
+//       querySnapshot.forEach(doc => {
+//          length++;
+//       })
+//    } catch (e) {
+//       console.log('error')
+//       console.log(e);
+//    }
+//    console.log(length)
+// }
