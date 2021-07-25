@@ -1,10 +1,16 @@
+// react/npm
 import React, { useState } from 'react';
 import { StyleSheet, View, Share } from 'react-native';
 import { Text, ButtonGroup, Button } from 'react-native-elements';
-// import { BizForm } from '../containers/Container-Exports';
-// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { SUBMIT_BIZ_FORM_URL_LINK } from '../../api/functions';
 import { openURL } from 'expo-linking';
+// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
+// custom components
+// import { BizForm } from '../containers/Container-Exports';
+// import { Search } from '../components/Component-Exports'
+
+// context/api's
+import { SUBMIT_BIZ_FORM_URL_LINK } from '../../api/functions';
 
 const buttons = [ `Send To Friend`, `Submit Yourself` ];
 

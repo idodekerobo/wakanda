@@ -19,8 +19,10 @@
     "expo-linking": "~2.2.3",
     "expo-location": "~12.0.4",
     "expo-permissions": "~12.0.1",
+    "expo-splash-screen": "~0.10.2",
     "firebase": "^8.2.3",
     "formik": "^2.1.5",
+    "fuse.js": "^6.4.6",
     "geolib": "^3.3.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -35,8 +37,7 @@
     "react-native-screens": "~3.0.0",
     "react-native-web": "~0.13.12",
     "reanimated-bottom-sheet": "^1.0.0-alpha.20",
-    "yup": "^0.29.3",
-    "expo-splash-screen": "~0.10.2"
+    "yup": "^0.29.3"
   },
   "devDependencies": {
     "babel-preset-expo": "8.3.0",

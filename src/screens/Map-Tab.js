@@ -1,8 +1,14 @@
+// react/npm
 import React from 'react'; // importing useContext for global state
-import { StyleSheet, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, TouchableHighlight, Dimensions } from 'react-native';
 import * as Location from 'expo-location';
 import { FontAwesome } from '@expo/vector-icons'; 
+
+// custom components
 import { Map, BottomSheetComponent } from '../containers/Container-Exports';
+import { Search } from '../components/Component-Exports'
+
+// helpers/context/api's
 import { GlobalContext } from '../context/GlobalState'; // importing global store
 import { GET_LOCATION } from '../context/ActionCreators'; // importing action creator
 import { categoryGetter } from '../../api/functions';
@@ -28,7 +34,7 @@ export default class MapTab extends React.Component {
       this.setState({region});
    }
 
-   onHamburgerPress = () => {
+   onFilterPress = () => {
       this.props.navigation.openDrawer();
    }
 
@@ -123,6 +129,7 @@ export default class MapTab extends React.Component {
    render() {
       return (
          <View style={styles.container}>
+            {/* map has to be the first component rendered */}
             <Map
                ref={this.parentMapRef}
                // bizArr={this.props.bizArr}
@@ -130,10 +137,10 @@ export default class MapTab extends React.Component {
                onCalloutPress={this.onCalloutPress}
                onPress={this.onMapPress}
             />
-
+            {/* <Search /> */}
             <TouchableHighlight
-               style={styles.hambugerMenuWrapper}
-               onPressIn={this.onHamburgerPress}
+               style={styles.filterMenuWrapper}
+               onPressIn={this.onFilterPress}
                accessibilityLabel={"choose a category"}>
                <View style={styles.iconWrapper}>
                   <FontAwesome style={styles.iconStyle} name="filter" size={24} color="black" />
@@ -188,7 +195,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
    },
-   hambugerMenuWrapper: {
+   filterMenuWrapper: {
       borderRadius: 100,
       // shadow
       shadowColor: "#000",
@@ -203,6 +210,7 @@ const styles = StyleSheet.create({
       //position
       position: 'absolute',
       top: 45,
+      // top: 110,
       left: 15,
    },
    iconStyle: {

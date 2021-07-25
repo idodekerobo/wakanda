@@ -37,7 +37,7 @@ export const distanceBetweenLocationAndBusiness = (currentLocation, bizLocationO
    }
 }
 
-export const quickSort = (array) => {
+const quickSort = (array) => {
    // won't need 3 distinct return cases if base case is array.length <= 1 return array;
    // would just need first return case
    if (array.length === 1) return array;

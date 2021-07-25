@@ -70,11 +70,11 @@ const ProfileScreen = () => {
       <SafeAreaView style={styles.container}>
          <ScrollView >
 
-            <View style={styles.titleBar}>
+            {/* <View style={styles.titleBar}>
                <TouchableOpacity onPress={e => onFeatherPress(e)}>
                   <Feather style={styles.feather} name="more-vertical" size={32} color="white" />
                </TouchableOpacity>
-            </View>
+            </View> */}
             
             <ProfileOverlay />
 
