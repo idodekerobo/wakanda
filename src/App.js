@@ -13,7 +13,7 @@ export default class App extends React.Component {
    }
 
    componentDidMount() {
-      console.log("Wrapper component mounted");
+      // console.log("Wrapper component mounted");
    }
 
    render() {

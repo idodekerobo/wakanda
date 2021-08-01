@@ -5,6 +5,7 @@ export const SUBMIT_BIZ_FORM_URL_LINK = 'https://airtable.com/shr3p0hSQyyfL0LTy'
 export const categoryGetter = (bizCategory) => {
    if (bizCategory === 'restaurant') return 1;
    if (bizCategory === 'food') return 1;
+   if (bizCategory === 'bakery') return 1;
    if (bizCategory === 'cosmetics') return 2;
    if (bizCategory === 'beauty') return 2;
    if (bizCategory === 'arts') return 3;

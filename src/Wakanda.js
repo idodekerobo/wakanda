@@ -142,9 +142,9 @@ export default class Wakanda extends React.Component {
       this.getMostAccurateLocation();
    }
    componentDidMount() {
-      console.log('==============================================');
-      console.log('app running');
-      console.log();
+      // console.log('==============================================');
+      // console.log('app running');
+      // console.log();
    }
 
    render() {

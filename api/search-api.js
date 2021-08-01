@@ -5,7 +5,6 @@ import { getDistance } from 'geolib';
 export const searchObjectArray = async (objArr, keywordSearchString, location) => {
    const options = {
       includeScore: true,
-      
       // search in these properties of the object
       keys: [
          {
@@ -27,49 +26,21 @@ export const searchObjectArray = async (objArr, keywordSearchString, location) =
 
    const searchResults = fuseSearchInstance.search(keywordSearchString);
 
-   // console.log(searchResults.length);
-   const editedArr = await removeBizMoreThan100MilesFromArray(searchResults, location);
-   for (let u=0; u < editedArr.length; u++) {
-      let biz = editedArr[u];
-      console.log(biz['item'].name)
-   }
+   const editedArr = await removeBizMoreThan150MilesFromArray(searchResults, location);
    return editedArr;
-
-   
-   // should i cap this at a max of 50 results ??
-   // for (let u=0; u < searchResults.length; u++) {
-   //    let biz = searchResults[u];
-   //    console.log(biz['item'].name)
-   // }
-   // return searchResults;
-
-   // sort search results by distance
-   // const sortedByLocationSearchResults = await quickSortSearchedBizArr(searchResults, location)
-
-   // // should i cap this at a max of 30 results ??
-   // for (let u=0; u < sortedByLocationSearchResults.length; u++) {
-   //    let biz = sortedByLocationSearchResults[u];
-   //    console.log(biz['item'].name)
-   // }
-   // return sortedByLocationSearchResults;
 }
 
-const removeBizMoreThan100MilesFromArray = async (bizArr, currentLocation) => {
-   // console.log('starting to parse arr')
-   // console.log('from editing function', bizArr.length)
+const removeBizMoreThan150MilesFromArray = async (bizArr, currentLocation) => {
    let newCloseBizArr = [];
-
-   // for (let i=0; i < bizArr.length; i++) {
-   for (let i=0; i < 100; i++) {
-      // if ( i < 5) {
-         let currentBiz = bizArr[i];
-         const distance = distanceBetweenLocationAndBusiness(currentLocation, (currentBiz['item'].coordinates) );
-         if (distance > 100) return;
+   for (let i=0; i < bizArr.length; i++) {
+      if (i > bizArr.length-1) break; // checking to see if the loop tries to iterate longer than the actual bizArr
+      let currentBiz = bizArr[i];
+      const currentBizLocation = currentBiz['item'].coordinates;
+      const distance = distanceBetweenLocationAndBusiness(currentLocation, currentBizLocation);
+      if (distance < 150) {
          newCloseBizArr.push(bizArr[i]);
-      // }
+      }
    }
-
-   // console.log('new biz arr length', newCloseBizArr.length);
    return newCloseBizArr;
 }
 

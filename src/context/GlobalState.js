@@ -4,10 +4,12 @@ import { Reducer }  from './AppReducer';
 // initial state
 const initialState = {
    location: {},
-   bizArr: [{name: "init state in global state context"}],
+   bizArr: [{name: ''}],
    selectedCategories: [0, 1, 2, 3, 4],
    pinnedBusinessIds: [ ],
    starPinUrl: '',
+   searchActive: false,
+   searchResults: [ {  name: ''} ],
 }
 
 // create context

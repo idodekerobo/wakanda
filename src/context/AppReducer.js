@@ -1,4 +1,7 @@
-import { FETCH_BIZ_DATA, GET_LOCATION, SELECTED_CATEGORY, SET_PINNED_BUSINESS_ID_ARR, FETCH_STAR_PIN } from './ActionCreators';
+import { FETCH_BIZ_DATA, GET_LOCATION, SELECTED_CATEGORY,
+   SET_PINNED_BUSINESS_ID_ARR, FETCH_STAR_PIN,
+   SHOW_SEARCH_RESULTS, REMOVE_SEARCH_RESULTS,
+} from './ActionCreators';
 
 // how we specify how app state changes in response to certain actions to our store
 export const Reducer = (state, action) => {
@@ -28,6 +31,18 @@ export const Reducer = (state, action) => {
          return {
             ...state, 
             starPinUrl: action.starPinUrl,
+         }
+      case SHOW_SEARCH_RESULTS:
+         return {
+            ...state,
+            searchActive: true,
+            searchResults: action.searchResults,
+         }
+      case REMOVE_SEARCH_RESULTS:
+         return {
+            ...state,
+            searchActive: false,
+            searchResults: [ { } ],
          }
       default: 
          return state;

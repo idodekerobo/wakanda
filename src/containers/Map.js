@@ -40,7 +40,7 @@ const Map = React.forwardRef((props,mapRef) => {
       // passing in the empty array allows this to only re-renders when that arr changes otherwise it re-renders whenever you drag the map
       
       // console.log();
-      console.log('rendering map');
+      // console.log('rendering map');
       // console.log(state.location);
       // console.log();
       // UPDATE - only updating when the user's latitude, longitude coords change

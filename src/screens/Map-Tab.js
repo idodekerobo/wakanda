@@ -10,7 +10,7 @@ import { Search } from '../components/Component-Exports'
 
 // helpers/context/api's
 import { GlobalContext } from '../context/GlobalState'; // importing global store
-import { GET_LOCATION } from '../context/ActionCreators'; // importing action creator
+import { GET_LOCATION, REMOVE_SEARCH_RESULTS } from '../context/ActionCreators'; // importing action creator
 import { categoryGetter } from '../../api/functions';
 
 // TODO - move style into separate js file and import in
@@ -54,6 +54,8 @@ export default class MapTab extends React.Component {
    }
 
    showNearbyBizButton = () => {
+      const { dispatch } = this.context; // clearing search results so selected biz can render
+      dispatch({ type: REMOVE_SEARCH_RESULTS });
       this.setState({bizSelected: false}, () => {
          this.parentBottomSheetRef.current.snapToOpen();
       });
@@ -65,7 +67,8 @@ export default class MapTab extends React.Component {
       const pressedLat = e.nativeEvent.coordinate.latitude;
       const pressedLng = e.nativeEvent.coordinate.longitude;
       
-      const { state } = this.context;
+      const { state, dispatch } = this.context; // clearing search results so selected biz can render
+      dispatch({ type: REMOVE_SEARCH_RESULTS });
       const selectedBiz = state.bizArr.slice().find(biz => { 
          const { latitude, longitude } = biz.coordinates;
          // have to destructure to access coordinates from geopoint object in firebase
@@ -81,8 +84,6 @@ export default class MapTab extends React.Component {
 
    onCalloutPress = () => {
       this.parentBottomSheetRef.current.snapToOpen();
-      // need to pass in the region of the business into this takeSnapshot function
-      // this.takeSnapshot();
    }
 
    returnSelectedCategoryBiz = () => {
@@ -90,22 +91,27 @@ export default class MapTab extends React.Component {
 
       const currentBizArr = state.bizArr;
       const selectedCategories = state.selectedCategories;
-      
-      const filteredBizArr = [ ];
-      currentBizArr.map(biz => {
-         if ( selectedCategories.includes(categoryGetter(biz.category)) ) {
-            // return biz;
-            filteredBizArr.push(biz);
-         }
-      })
+      const searchActive = state.searchActive;
+      const searchResults = state.searchResults;
 
-      // console.log(filteredBizArr);
+      const filteredBizArr = [ ];
+      if (searchActive) {
+         for (let i=0; i < searchResults.length; i++) {
+            const bizElement = searchResults[i].item;
+            filteredBizArr.push(bizElement);
+         }
+      } else {
+         currentBizArr.map(biz => {
+            if ( selectedCategories.includes(categoryGetter(biz.category)) ) {
+               filteredBizArr.push(biz);
+            }
+         })
+      }
       return filteredBizArr;
    }
 
    firstTimeLoadAnimation = async (loaded) => {
       if (loaded) return;
-      // const location =  await Location.getCurrentPositionAsync();
       const { state } = this.context;
       const location = state.location;
       const region = { 
@@ -116,14 +122,15 @@ export default class MapTab extends React.Component {
       }
       if (!loaded) {
          this.parentMapRef.current.animateToRegion(region)
-         // TODO - does this fuck anything up? after it animates, making first time loaded true so this doesn't run anymore
          this.setState({firstTimeLoading: true});
       };
    }
 
    componentDidMount() {
-      // zooming in when app is first loaded
-      this.firstTimeLoadAnimation(this.state.firstTimeLoading)
+      // zooming in when app is first loaded, delay to have cool animation
+      // setTimeout( () => {
+         this.firstTimeLoadAnimation(this.state.firstTimeLoading)
+      // }, 800)
    }
 
    render() {
@@ -132,12 +139,11 @@ export default class MapTab extends React.Component {
             {/* map has to be the first component rendered */}
             <Map
                ref={this.parentMapRef}
-               // bizArr={this.props.bizArr}
                onRegionChangeComplete={this.onRegionChangeComplete}
                onCalloutPress={this.onCalloutPress}
                onPress={this.onMapPress}
             />
-            {/* <Search /> */}
+            <Search snapOpenFunction={() => this.parentBottomSheetRef.current.snapToOpen() }/>
             <TouchableHighlight
                style={styles.filterMenuWrapper}
                onPressIn={this.onFilterPress}
@@ -209,8 +215,8 @@ const styles = StyleSheet.create({
       
       //position
       position: 'absolute',
-      top: 45,
-      // top: 110,
+      // top: 45,
+      top: 110,
       left: 15,
    },
    iconStyle: {

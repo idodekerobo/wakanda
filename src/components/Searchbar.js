@@ -1,26 +1,31 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import { GlobalContext } from '../context/GlobalState';
 import { searchObjectArray } from '../../api/search-api'
 // import { quickSortBizArr } from '../../api/functions'
+import { GlobalContext } from '../context/GlobalState';
+import { SHOW_SEARCH_RESULTS, REMOVE_SEARCH_RESULTS, FETCH_BIZ_DATA } from '../context/ActionCreators';
 
 // const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 export default class Search extends React.Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+         search: ''
+      };
+   }
    static contextType = GlobalContext;
-   state = {
-      search: ''
-   };
    
    // TODO - make this only show businesses nearby
-   searchBiz = (keywordString) => {
-      const { state } = this.context;
+   searchBiz = async (keywordString) => {
+      const { state, dispatch } = this.context;
       const businesses = state.bizArr;
       const location = state.location;
-      // searchObjectArray(businesses, keywordString, );
-      searchObjectArray(businesses, keywordString, location);
+      const searchResults = await searchObjectArray(businesses, keywordString, location);
+      dispatch({ type: SHOW_SEARCH_RESULTS, searchResults });
+      this.props.snapOpenFunction();
    }
 
    updateSearchText = (search) => {
@@ -28,7 +33,6 @@ export default class Search extends React.Component {
    };
 
    onEnterPress = (text) => {
-      console.log(`on enter press. searched for: ${text}`)
       this.searchBiz(text);
    }
    
